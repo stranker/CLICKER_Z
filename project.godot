@@ -16,7 +16,6 @@ config/icon="res://icon.png"
 
 [display]
 
-window/handheld/orientation="sensor_portrait"
 window/handheld/emulate_touchscreen=true
 
 [rendering]
