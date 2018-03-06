@@ -139,6 +139,10 @@ autostart = false
 
 position = Vector2( 510.293, 924.692 )
 
+[node name="Player" type="Position2D" parent="." index="6"]
+
+position = Vector2( 178.585, 155.584 )
+
 [connection signal="input_event" from="Area" to="." method="_on_Area_input_event"]
 
 [connection signal="timeout" from="Rage" to="." method="_on_Rage_timeout"]

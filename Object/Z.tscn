@@ -20,7 +20,7 @@ _sections_unfolded = [ "Resource" ]
 [sub_resource type="CircleShape2D" id=2]
 
 custom_solver_bias = 0.0
-radius = 32.1131
+radius = 12.7335
 
 [node name="Z" type="KinematicBody2D"]
 
@@ -32,6 +32,7 @@ script = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
 
+scale = Vector2( 0.4, 0.4 )
 texture = ExtResource( 1 )
 _sections_unfolded = [ "Transform" ]
 

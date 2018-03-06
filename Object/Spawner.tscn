@@ -7,22 +7,34 @@ script/source = "extends Position2D
 
 var zombies = preload(\"res://Object/Z.tscn\")
 
-var zombie_count = 0
-
 func _ready():
-	spawn()
 	pass
 
 func spawn():
-	if zombie_count < 100:
-		var z = zombies.instance()
-		get_tree().root.call_deferred(\"add_child\",z)
-		z.global_position = global_position
-	pass"
+	var z = zombies.instance()
+	get_tree().root.call_deferred(\"add_child\",z)
+	z.global_position = global_position
+	Global.zombie_count +=1
+	pass
+
+func _on_Timer_timeout():
+	if Global.zombie_count < 100:
+		spawn()
+	pass # replace with function body
+"
 _sections_unfolded = [ "Resource" ]
 
 [node name="Spawner" type="Position2D" index="0"]
 
 script = SubResource( 1 )
+
+[node name="Timer" type="Timer" parent="." index="0"]
+
+process_mode = 1
+wait_time = 0.8
+one_shot = false
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 
 
