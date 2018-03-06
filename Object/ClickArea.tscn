@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://Object/Wall.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Object/Spawner.tscn" type="PackedScene" id=3]
 
 [sub_resource type="GDScript" id=1]
 
@@ -17,7 +19,7 @@ func _ready():
 	pass
 
 func _process(delta):
-	if !$Rage.is_stopped() and curr_click > 15:
+	if !$Rage.is_stopped() and curr_click > 30:
 		state = STATES.RAGE
 	else:
 		state = STATES.IDLE
@@ -45,14 +47,15 @@ _sections_unfolded = [ "Resource" ]
 [sub_resource type="RectangleShape2D" id=2]
 
 custom_solver_bias = 0.0
-extents = Vector2( 16.595, 8.16944 )
+extents = Vector2( 16.595, 8.47007 )
 
-[node name="ClickArea" type="Node2D" index="0"]
+[node name="ClickArea" type="Node2D"]
 
 script = SubResource( 1 )
 
 [node name="Area" type="Area2D" parent="." index="0"]
 
+editor/display_folded = true
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
@@ -61,17 +64,19 @@ angular_damp = 1.0
 audio_bus_override = false
 audio_bus_name = "Master"
 
-[node name="Colision" type="CollisionShape2D" parent="Area" index="0"]
+[node name="Sprite" type="Sprite" parent="Area" index="0"]
 
-position = Vector2( 515.216, 304.402 )
-scale = Vector2( 29.3523, 33.3356 )
-shape = SubResource( 2 )
-
-[node name="Sprite" type="Sprite" parent="Area" index="1"]
-
-position = Vector2( 512.922, 299.713 )
-scale = Vector2( 15.2193, 8.87126 )
+modulate = Color( 1, 1, 1, 0.0883922 )
+position = Vector2( 306.8, 517.642 )
+scale = Vector2( 8.77798, 15.6815 )
 texture = ExtResource( 1 )
+_sections_unfolded = [ "Visibility" ]
+
+[node name="Colision" type="CollisionShape2D" parent="Area" index="1"]
+
+position = Vector2( 299.901, 521.072 )
+scale = Vector2( 17.3235, 55.8896 )
+shape = SubResource( 2 )
 
 [node name="Clicks" type="Label" parent="." index="1"]
 
@@ -79,10 +84,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = 374.0
-margin_top = 113.0
-margin_right = 414.0
-margin_bottom = 127.0
+margin_left = 218.0
+margin_top = 345.0
+margin_right = 258.0
+margin_bottom = 359.0
 rect_scale = Vector2( 3, 3 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -103,10 +108,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = 338.0
-margin_top = 219.0
-margin_right = 378.0
-margin_bottom = 233.0
+margin_left = 220.0
+margin_top = 478.0
+margin_right = 260.0
+margin_bottom = 492.0
 rect_scale = Vector2( 3, 3 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -127,6 +132,12 @@ process_mode = 1
 wait_time = 0.3
 one_shot = true
 autostart = false
+
+[node name="Wall" parent="." index="4" instance=ExtResource( 2 )]
+
+[node name="Spawner" parent="." index="5" instance=ExtResource( 3 )]
+
+position = Vector2( 510.293, 924.692 )
 
 [connection signal="input_event" from="Area" to="." method="_on_Area_input_event"]
 

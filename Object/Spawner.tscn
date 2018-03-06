@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+
+resource_name = "Spawner.gd"
+script/source = "extends Position2D
+
+var zombies = preload(\"res://Object/Z.tscn\")
+
+var zombie_count = 0
+
+func _ready():
+	spawn()
+	pass
+
+func spawn():
+	if zombie_count < 100:
+		var z = zombies.instance()
+		get_tree().root.call_deferred(\"add_child\",z)
+		z.global_position = global_position
+	pass"
+_sections_unfolded = [ "Resource" ]
+
+[node name="Spawner" type="Position2D" index="0"]
+
+script = SubResource( 1 )
+
+
