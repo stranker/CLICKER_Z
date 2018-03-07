@@ -28,6 +28,7 @@ func _process(delta):
 	$GUI/Gold.text = \"Gold: \"+str(Global.GOLD)
 	$GUI/Exp.text = \"Exp: \"+str(Global.EXP)
 	$GUI/FPS.text = str(Performance.get_monitor(Performance.TIME_FPS))
+	$\"GUI/Z COUNT\".text = \"zc:\"+str(Global.zombie_count)
 	pass
 
 func _on_Area_input_event(viewport, event, shape_idx):
@@ -55,7 +56,7 @@ _sections_unfolded = [ "Resource" ]
 custom_solver_bias = 0.0
 extents = Vector2( 16.595, 8.47007 )
 
-[node name="ClickArea" type="Node2D"]
+[node name="ClickArea" type="Node2D" index="0"]
 
 script = SubResource( 1 )
 
@@ -140,7 +141,7 @@ position = Vector2( -63.5064, 962.444 )
 
 [node name="Player" type="Position2D" parent="." index="4"]
 
-position = Vector2( 316.456, 246.916 )
+position = Vector2( 301.277, 516.345 )
 
 [node name="GUI" type="CanvasLayer" parent="." index="5"]
 
@@ -226,6 +227,28 @@ margin_left = 263.0
 margin_top = 403.0
 margin_right = 303.0
 margin_bottom = 417.0
+rect_scale = Vector2( 2, 2 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Z COUNT" type="Label" parent="GUI" index="4"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 263.0
+margin_top = 331.0
+margin_right = 303.0
+margin_bottom = 345.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
