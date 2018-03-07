@@ -1,0 +1,37 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+
+resource_name = "SpawnControl"
+script/source = "extends Node2D
+
+var spawn_list = []
+
+func _ready():
+	for i in get_children():
+		if !i.name.begins_with(\"Timer\"):
+			spawn_list.push_back(i)
+	pass
+
+func _on_Spawn_timeout():
+	randomize()
+	var sp = randi() % spawn_list.size()
+	spawn_list[sp].spawn()
+	pass # replace with function body
+"
+_sections_unfolded = [ "Resource" ]
+
+[node name="SpawnControl" type="Node2D" index="0"]
+
+script = SubResource( 1 )
+
+[node name="Timer" type="Timer" parent="." index="0"]
+
+process_mode = 1
+wait_time = 0.4
+one_shot = false
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_Spawn_timeout"]
+
+

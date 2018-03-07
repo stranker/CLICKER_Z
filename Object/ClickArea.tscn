@@ -1,21 +1,22 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
 [ext_resource path="res://Object/Wall.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Object/Spawner.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Object/SpawnControl.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Object/Spawner.tscn" type="PackedScene" id=4]
 
 [sub_resource type="GDScript" id=1]
 
 resource_name = "Click.gd"
 script/source = "extends Node2D
 
-var clicks = 0
 var curr_click = 0
 enum STATES {IDLE,RAGE}
 var state = STATES.IDLE
 
 func _ready():
 	set_process(true)
+	Global.player_pos = $Player.global_position
 	pass
 
 func _process(delta):
@@ -23,20 +24,24 @@ func _process(delta):
 		state = STATES.RAGE
 	else:
 		state = STATES.IDLE
-	match state:
-		0: $State.text = \"IDLE\"
-		1: $State.text = \"RAGE!!!\"
+	$GUI/ZK.text = \"Killed: \"+str(Global.zombie_killed)
+	$GUI/Gold.text = \"Gold: \"+str(Global.GOLD)
+	$GUI/Exp.text = \"Exp: \"+str(Global.EXP)
 	pass
 
 func _on_Area_input_event(viewport, event, shape_idx):
 	if event is InputEventScreenTouch:
 		if event.is_pressed():
-			clicks +=1
+			Global.EXP += 1
 			curr_click += 1
-			$Clicks.text = \"Clicks: \"+str(clicks)
 			$Rage.start()
+			attack()
 	pass # replace with function body
 
+func attack():
+	if Global.ZOMBI_LIST.size()>0:
+		Global.ZOMBI_LIST[0].get_damage(Global.DAMAGE)
+	pass
 
 func _on_Rage_timeout():
 	curr_click = 0
@@ -78,70 +83,103 @@ position = Vector2( 299.901, 521.072 )
 scale = Vector2( 17.3235, 55.8896 )
 shape = SubResource( 2 )
 
-[node name="Clicks" type="Label" parent="." index="1"]
-
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 218.0
-margin_top = 345.0
-margin_right = 258.0
-margin_bottom = 359.0
-rect_scale = Vector2( 3, 3 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
-
-[node name="State" type="Label" parent="." index="2"]
-
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 220.0
-margin_top = 478.0
-margin_right = 260.0
-margin_bottom = 492.0
-rect_scale = Vector2( 3, 3 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
-
-[node name="Rage" type="Timer" parent="." index="3"]
+[node name="Rage" type="Timer" parent="." index="1"]
 
 process_mode = 1
 wait_time = 0.3
 one_shot = true
 autostart = false
 
-[node name="Wall" parent="." index="4" instance=ExtResource( 2 )]
+[node name="Wall" parent="." index="2" instance=ExtResource( 2 )]
 
-[node name="Spawner" parent="." index="5" instance=ExtResource( 3 )]
+[node name="SpawnControl" parent="." index="3" instance=ExtResource( 3 )]
 
-position = Vector2( 510.293, 924.692 )
+[node name="Spawner" parent="SpawnControl" index="1" instance=ExtResource( 4 )]
 
-[node name="Player" type="Position2D" parent="." index="6"]
+position = Vector2( 654.057, 546.088 )
 
-position = Vector2( 178.585, 155.584 )
+[node name="Spawner2" parent="SpawnControl" index="2" instance=ExtResource( 4 )]
+
+position = Vector2( -60.4279, 799.028 )
+
+[node name="Spawner3" parent="SpawnControl" index="3" instance=ExtResource( 4 )]
+
+position = Vector2( 294.777, 1049.25 )
+
+[node name="Player" type="Position2D" parent="." index="4"]
+
+position = Vector2( 271.893, 164.178 )
+
+[node name="GUI" type="CanvasLayer" parent="." index="5"]
+
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+
+[node name="ZK" type="Label" parent="GUI" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 85.0
+margin_top = 13.0
+margin_right = 125.0
+margin_bottom = 27.0
+rect_scale = Vector2( 2, 2 )
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Gold" type="Label" parent="GUI" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 238.0
+margin_top = 13.0
+margin_right = 278.0
+margin_bottom = 27.0
+rect_scale = Vector2( 2, 2 )
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Exp" type="Label" parent="GUI" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 394.0
+margin_top = 10.0
+margin_right = 434.0
+margin_bottom = 24.0
+rect_scale = Vector2( 2, 2 )
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
 
 [connection signal="input_event" from="Area" to="." method="_on_Area_input_event"]
 

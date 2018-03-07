@@ -7,14 +7,39 @@
 resource_name = "Zombie.gd"
 script/source = "extends KinematicBody2D
 
-var velocity = Vector2(-50,-50)
+const WALK = 50
+var player = Global.player_pos
+var direction = Vector2()
+var life = 2
+var gold = 2
 
 func _ready():
+	randomize()
+	direction.x = rand_range(-1,1)
+	direction.y = rand_range(-1,0)
+	$Chase.wait_time = rand_range(3,7)
+	pass
+
+func _process(delta):
+	if life<=0:
+		Global.ZOMBI_LIST.erase(self)
+		queue_free()
+		Global.zombie_killed += 1
+		Global.GOLD += gold
+		Global.zombie_count -= 1
 	pass
 
 func _physics_process(delta):
-	move_and_slide(velocity,Vector2(0,0))
-	pass"
+	move_and_slide(direction*WALK,Vector2(0,0))
+	pass
+
+func _on_Chase_timeout():
+	direction = (player-global_position).normalized()
+	pass # replace with function body
+
+func get_damage(dmg):
+	if life>0:
+		life -= dmg"
 _sections_unfolded = [ "Resource" ]
 
 [sub_resource type="CircleShape2D" id=2]
@@ -39,5 +64,14 @@ _sections_unfolded = [ "Transform" ]
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
 
 shape = SubResource( 2 )
+
+[node name="Chase" type="Timer" parent="." index="2"]
+
+process_mode = 1
+wait_time = 5.0
+one_shot = false
+autostart = true
+
+[connection signal="timeout" from="Chase" to="." method="_on_Chase_timeout"]
 
 

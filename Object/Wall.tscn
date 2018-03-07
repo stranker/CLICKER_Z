@@ -60,18 +60,21 @@ polygon = PoolVector2Array( -2.31305, 280.56, -2.31305, 314.909, 108.49, 318.233
 
 [node name="Bound" type="CollisionPolygon2D" parent="." index="7"]
 
+position = Vector2( 59.0052, 37.0123 )
 build_mode = 0
-polygon = PoolVector2Array( 1.05511, 1062.37, 607.006, 1071.41, 600.976, 1024.68, 1.05511, 1023.17 )
+polygon = PoolVector2Array( -230.676, 1056.2, 250.485, 1093.21, 681.35, 1071, 650.218, 1019.18, 248.634, 1069.15, -165.904, 1021.03 )
 
 [node name="Bound2" type="CollisionPolygon2D" parent="." index="8"]
 
+position = Vector2( 26.2012, -22.2074 )
+scale = Vector2( 1.02375, 1 )
 build_mode = 0
-polygon = PoolVector2Array( 607.168, 942.059, 608.837, 1077.72, 664.98, 1075.36, 670.143, 151.304, 608.195, 120.33 )
+polygon = PoolVector2Array( 607.168, 942.059, 608.837, 1077.72, 664.98, 1075.36, 685.891, 338.157, 670.143, 151.304, 608.195, 120.33, 646.122, 565.783 )
 
 [node name="Bound3" type="CollisionPolygon2D" parent="." index="9"]
 
-position = Vector2( -668.698, 40.1813 )
+position = Vector2( -748.275, -30.1422 )
 build_mode = 0
-polygon = PoolVector2Array( 607.168, 942.059, 609.651, 1022.98, 668.437, 1022.98, 670.792, 241.731, 617.124, 234.329 )
+polygon = PoolVector2Array( 699.395, 294.274, 573.553, 607.029, 571.703, 1073.38, 642.026, 1086.34, 617.968, 608.879, 743.81, 310.93 )
 
 
