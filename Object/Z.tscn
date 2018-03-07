@@ -5,22 +5,28 @@
 [sub_resource type="GDScript" id=1]
 
 resource_name = "Zombie.gd"
-script/source = "extends KinematicBody2D
+script/source = "extends RigidBody2D
 
-const WALK = 50
+const WALK = 20
 var player = Global.player_pos
 var direction = Vector2()
 var life = 2
 var gold = 2
 
 func _ready():
-	randomize()
-	direction.x = rand_range(-1,1)
-	direction.y = rand_range(-1,0)
-	$Chase.wait_time = rand_range(3,7)
+	direction = (player-global_position).normalized()
+	hide()
 	pass
 
-func _process(delta):
+func _integrate_forces(state):
+	direction = (player-global_position).normalized()
+	set_axis_velocity(direction*Vector2(WALK,WALK))
+	look_at(player)
+	pass
+
+func get_damage(dmg):
+	if life>0:
+		life -= dmg
 	if life<=0:
 		Global.ZOMBI_LIST.erase(self)
 		queue_free()
@@ -29,35 +35,45 @@ func _process(delta):
 		Global.zombie_count -= 1
 	pass
 
-func _physics_process(delta):
-	move_and_slide(direction*WALK,Vector2(0,0))
-	pass
-
-func _on_Chase_timeout():
-	direction = (player-global_position).normalized()
+func _on_VisibilityNotifier2D_screen_entered():
+	show()
 	pass # replace with function body
-
-func get_damage(dmg):
-	if life>0:
-		life -= dmg"
+"
 _sections_unfolded = [ "Resource" ]
 
-[sub_resource type="CircleShape2D" id=2]
+[sub_resource type="CapsuleShape2D" id=2]
 
 custom_solver_bias = 0.0
-radius = 12.7335
+radius = 18.734
+height = 5.13605
 
-[node name="Z" type="KinematicBody2D"]
+[node name="Z" type="RigidBody2D" index="0"]
 
 input_pickable = false
-collision_layer = 1
-collision_mask = 1
-collision/safe_margin = 0.08
+collision_layer = 3
+collision_mask = 3
+mode = 0
+mass = 1.02041e-05
+friction = 1.0
+bounce = 0.0
+gravity_scale = 0.0
+custom_integrator = true
+continuous_cd = 0
+contacts_reported = 1
+contact_monitor = false
+sleeping = false
+can_sleep = true
+linear_velocity = Vector2( 0, 0 )
+linear_damp = -1.0
+angular_velocity = 0.0
+angular_damp = -1.0
 script = SubResource( 1 )
+_sections_unfolded = [ "Collision", "collision" ]
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
 
-scale = Vector2( 0.4, 0.4 )
+rotation = 1.5708
+scale = Vector2( 0.6, 0.6 )
 texture = ExtResource( 1 )
 _sections_unfolded = [ "Transform" ]
 
@@ -65,13 +81,10 @@ _sections_unfolded = [ "Transform" ]
 
 shape = SubResource( 2 )
 
-[node name="Chase" type="Timer" parent="." index="2"]
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="." index="2"]
 
-process_mode = 1
-wait_time = 5.0
-one_shot = false
-autostart = true
+rect = Rect2( -10, -10, 20, 20 )
 
-[connection signal="timeout" from="Chase" to="." method="_on_Chase_timeout"]
+[connection signal="screen_entered" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_entered"]
 
 

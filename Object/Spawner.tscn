@@ -11,7 +11,7 @@ func _ready():
 	pass
 
 func spawn():
-	if Global.zombie_count < Global.MAX_COUNT_ZOMBIES:
+	if Global.zombie_count < Global.MAX_COUNT_ZOMBIES and Performance.get_monitor(Performance.TIME_FPS)>=30:
 		var z = zombies.instance()
 		get_tree().root.call_deferred(\"add_child\",z)
 		z.global_position = global_position

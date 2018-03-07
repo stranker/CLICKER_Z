@@ -27,6 +27,7 @@ func _process(delta):
 	$GUI/ZK.text = \"Killed: \"+str(Global.zombie_killed)
 	$GUI/Gold.text = \"Gold: \"+str(Global.GOLD)
 	$GUI/Exp.text = \"Exp: \"+str(Global.EXP)
+	$GUI/FPS.text = str(Performance.get_monitor(Performance.TIME_FPS))
 	pass
 
 func _on_Area_input_event(viewport, event, shape_idx):
@@ -66,8 +67,11 @@ gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
 linear_damp = 0.1
 angular_damp = 1.0
+collision_layer = 4
+collision_mask = 4
 audio_bus_override = false
 audio_bus_name = "Master"
+_sections_unfolded = [ "Collision" ]
 
 [node name="Sprite" type="Sprite" parent="Area" index="0"]
 
@@ -96,19 +100,47 @@ autostart = false
 
 [node name="Spawner" parent="SpawnControl" index="1" instance=ExtResource( 4 )]
 
-position = Vector2( 654.057, 546.088 )
+position = Vector2( 641.577, 817.684 )
 
 [node name="Spawner2" parent="SpawnControl" index="2" instance=ExtResource( 4 )]
 
-position = Vector2( -60.4279, 799.028 )
+position = Vector2( -64.972, 614.99 )
 
 [node name="Spawner3" parent="SpawnControl" index="3" instance=ExtResource( 4 )]
 
-position = Vector2( 294.777, 1049.25 )
+position = Vector2( 258.424, 1058.34 )
+
+[node name="Spawner6" parent="SpawnControl" index="4" instance=ExtResource( 4 )]
+
+position = Vector2( 74.3857, 1031.07 )
+
+[node name="Spawner7" parent="SpawnControl" index="5" instance=ExtResource( 4 )]
+
+position = Vector2( 431.101, 1046.98 )
+
+[node name="Spawner8" parent="SpawnControl" index="6" instance=ExtResource( 4 )]
+
+position = Vector2( -71.0271, 774.329 )
+
+[node name="Spawner9" parent="SpawnControl" index="7" instance=ExtResource( 4 )]
+
+position = Vector2( 637.86, 953.823 )
+
+[node name="Spawner10" parent="SpawnControl" index="8" instance=ExtResource( 4 )]
+
+position = Vector2( 644.676, 724.343 )
+
+[node name="Spawner5" parent="SpawnControl" index="9" instance=ExtResource( 4 )]
+
+position = Vector2( 559.805, 1027.52 )
+
+[node name="Spawner4" parent="SpawnControl" index="10" instance=ExtResource( 4 )]
+
+position = Vector2( -63.5064, 962.444 )
 
 [node name="Player" type="Position2D" parent="." index="4"]
 
-position = Vector2( 271.893, 164.178 )
+position = Vector2( 316.456, 246.916 )
 
 [node name="GUI" type="CanvasLayer" parent="." index="5"]
 
@@ -130,6 +162,7 @@ margin_right = 125.0
 margin_bottom = 27.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -151,6 +184,7 @@ margin_right = 278.0
 margin_bottom = 27.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -172,6 +206,29 @@ margin_right = 434.0
 margin_bottom = 24.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
+
+[node name="FPS" type="Label" parent="GUI" index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 263.0
+margin_top = 403.0
+margin_right = 303.0
+margin_bottom = 417.0
+rect_scale = Vector2( 2, 2 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1

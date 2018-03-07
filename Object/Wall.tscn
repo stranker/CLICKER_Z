@@ -2,61 +2,65 @@
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
 
-[node name="Wall" type="StaticBody2D"]
+[node name="Wall" type="StaticBody2D" groups=[
+"wall",
+]]
 
 input_pickable = false
 collision_layer = 1
-collision_mask = 1
+collision_mask = 2
 constant_linear_velocity = Vector2( 0, 0 )
 constant_angular_velocity = 0.0
 friction = 1.0
 bounce = 0.0
+_sections_unfolded = [ "Collision" ]
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
 
-position = Vector2( 57.9837, 298.614 )
+position = Vector2( 585.707, 612.356 )
 scale = Vector2( 1.7627, 0.655664 )
 texture = ExtResource( 1 )
 
 [node name="Sprite2" type="Sprite" parent="." index="1"]
 
-position = Vector2( 165.381, 291.394 )
-rotation = -0.182948
+position = Vector2( 475.549, 613.48 )
+rotation = -0.0503423
 scale = Vector2( 1.7627, 0.655664 )
 texture = ExtResource( 1 )
 
 [node name="Sprite3" type="Sprite" parent="." index="2"]
 
-position = Vector2( 272.86, 268.125 )
-rotation = -0.182948
+position = Vector2( 361.424, 612.124 )
+rotation = 0.273348
 scale = Vector2( 1.7627, 0.655664 )
 texture = ExtResource( 1 )
 
 [node name="Sprite4" type="Sprite" parent="." index="3"]
 
-position = Vector2( 382.556, 242.64 )
-rotation = -0.351223
+position = Vector2( 253.198, 577.735 )
+rotation = -2.78577
 scale = Vector2( 1.7627, 0.655664 )
 texture = ExtResource( 1 )
 
 [node name="Sprite5" type="Sprite" parent="." index="4"]
 
-position = Vector2( 484.495, 199.427 )
-rotation = -0.351223
+position = Vector2( 143.664, 537.77 )
+rotation = -2.75901
 scale = Vector2( 1.7627, 0.655664 )
 texture = ExtResource( 1 )
 
 [node name="Sprite6" type="Sprite" parent="." index="5"]
 
-position = Vector2( 584.218, 161.754 )
-rotation = -0.351223
+position = Vector2( 38.7982, 480.316 )
+rotation = -2.51364
 scale = Vector2( 1.7627, 0.655664 )
 texture = ExtResource( 1 )
 
 [node name="Wall" type="CollisionPolygon2D" parent="." index="6"]
 
+position = Vector2( 6.84961, 195.213 )
 build_mode = 0
-polygon = PoolVector2Array( -2.31305, 280.56, -2.31305, 314.909, 108.49, 318.233, 334.156, 280.403, 643.161, 158.308, 626.58, 119.117, 326.619, 238.197, 115.592, 280.403 )
+polygon = PoolVector2Array( 663.689, 432.771, 571.22, 439.62, 390.179, 453.805, 134.043, 368.314, 23.2542, 316.328, -34.9672, 258.107, -24.6929, 213.584, 144.482, 328.696, 384.149, 407.078, 543.821, 395.098, 670.538, 364.275 )
 
 [node name="Bound" type="CollisionPolygon2D" parent="." index="7"]
 
@@ -69,12 +73,12 @@ polygon = PoolVector2Array( -230.676, 1056.2, 250.485, 1093.21, 681.35, 1071, 65
 position = Vector2( 26.2012, -22.2074 )
 scale = Vector2( 1.02375, 1 )
 build_mode = 0
-polygon = PoolVector2Array( 607.168, 942.059, 608.837, 1077.72, 664.98, 1075.36, 685.891, 338.157, 670.143, 151.304, 608.195, 120.33, 646.122, 565.783 )
+polygon = PoolVector2Array( 669.023, 1077.04, 705.077, 1134.45, 672.494, 566.435, 630.546, 579.178 )
 
 [node name="Bound3" type="CollisionPolygon2D" parent="." index="9"]
 
 position = Vector2( -748.275, -30.1422 )
 build_mode = 0
-polygon = PoolVector2Array( 699.395, 294.274, 573.553, 607.029, 571.703, 1073.38, 642.026, 1086.34, 617.968, 608.879, 743.81, 310.93 )
+polygon = PoolVector2Array( 696.184, 432.7, 573.553, 607.029, 578.821, 1119.79, 642.026, 1086.34, 617.968, 608.879, 717.896, 487.048 )
 
 

@@ -21,14 +21,14 @@ func _on_Spawn_timeout():
 "
 _sections_unfolded = [ "Resource" ]
 
-[node name="SpawnControl" type="Node2D" index="0"]
+[node name="SpawnControl" type="Node2D"]
 
 script = SubResource( 1 )
 
 [node name="Timer" type="Timer" parent="." index="0"]
 
 process_mode = 1
-wait_time = 0.4
+wait_time = 0.1
 one_shot = false
 autostart = true
 
