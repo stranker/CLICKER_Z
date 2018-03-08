@@ -40,11 +40,12 @@ _sections_unfolded = [ "Resource" ]
 [sub_resource type="CapsuleShape2D" id=2]
 
 custom_solver_bias = 0.0
-radius = 14.2462
-height = 5.13605
+radius = 9.55702
+height = 14.019
 
 [node name="Z" type="RigidBody2D"]
 
+position = Vector2( 0, -0.142397 )
 input_pickable = false
 collision_layer = 3
 collision_mask = 3

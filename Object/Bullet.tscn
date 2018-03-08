@@ -1,0 +1,48 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=1]
+
+resource_name = "Bullet.gd"
+script/source = "extends Sprite
+
+var direction = Vector2()
+const VELOCITY = 1000
+
+func _ready():
+	set_process(true)
+	pass
+
+func _process(delta):
+	translate((direction-global_position).normalized()*VELOCITY*delta)
+	pass
+
+func set_direction(dir):
+	direction = dir
+	pass
+
+
+func _on_Timer_timeout():
+	queue_free()
+	pass # replace with function body
+"
+_sections_unfolded = [ "Resource" ]
+
+[node name="Bullet" type="Sprite" index="0"]
+
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 1 )
+script = SubResource( 1 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Timer" type="Timer" parent="." index="0"]
+
+process_mode = 1
+wait_time = 0.4
+one_shot = false
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+
+
