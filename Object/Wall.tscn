@@ -62,20 +62,20 @@ position = Vector2( 6.84961, 195.213 )
 build_mode = 0
 polygon = PoolVector2Array( 663.689, 432.771, 571.22, 439.62, 390.179, 453.805, 134.043, 368.314, 23.2542, 316.328, -34.9672, 258.107, -24.6929, 213.584, 144.482, 328.696, 384.149, 407.078, 543.821, 395.098, 670.538, 364.275 )
 
-[node name="Bound" type="CollisionPolygon2D" parent="." index="7"]
+[node name="Bottom" type="CollisionPolygon2D" parent="." index="7"]
 
 position = Vector2( 59.0052, 37.0123 )
 build_mode = 0
-polygon = PoolVector2Array( -230.676, 1056.2, 250.485, 1093.21, 681.35, 1071, 650.218, 1019.18, 248.634, 1069.15, -165.904, 1021.03 )
+polygon = PoolVector2Array( -230.676, 1056.2, 244.85, 1149.93, 690.518, 1071.36, 659.824, 1030.84, 241.167, 1118.01, -165.904, 1021.03 )
 
-[node name="Bound2" type="CollisionPolygon2D" parent="." index="8"]
+[node name="Right" type="CollisionPolygon2D" parent="." index="8"]
 
 position = Vector2( 26.2012, -22.2074 )
 scale = Vector2( 1.02375, 1 )
 build_mode = 0
-polygon = PoolVector2Array( 669.023, 1077.04, 705.077, 1134.45, 672.494, 566.435, 630.546, 579.178 )
+polygon = PoolVector2Array( 676.643, 1087.8, 705.077, 1134.45, 672.494, 566.435, 630.546, 579.178 )
 
-[node name="Bound3" type="CollisionPolygon2D" parent="." index="9"]
+[node name="Left" type="CollisionPolygon2D" parent="." index="9"]
 
 position = Vector2( -748.275, -30.1422 )
 build_mode = 0

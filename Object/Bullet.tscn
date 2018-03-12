@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
 
@@ -9,40 +9,72 @@ script/source = "extends Sprite
 
 var direction = Vector2()
 const VELOCITY = 1000
+var damage = 0
+var init_pos = Vector2()
 
 func _ready():
 	set_process(true)
+	init_pos = global_position
 	pass
 
 func _process(delta):
-	translate((direction-global_position).normalized()*VELOCITY*delta)
+	translate((direction-init_pos).normalized()*VELOCITY*delta)
 	pass
 
 func set_direction(dir):
 	direction = dir
 	pass
 
+func set_damage(val):
+	damage = val
 
-func _on_Timer_timeout():
+func _on_Col_body_entered(body):
+	if body.is_in_group(\"enemy\"):
+		body.get_damage(damage)
+		queue_free()
+	pass # replace with function body
+
+
+func _on_Vis_screen_exited():
 	queue_free()
 	pass # replace with function body
 "
 _sections_unfolded = [ "Resource" ]
 
-[node name="Bullet" type="Sprite" index="0"]
+[sub_resource type="CircleShape2D" id=2]
+
+custom_solver_bias = 0.0
+radius = 31.1176
+
+[node name="Bullet" type="Sprite"]
 
 scale = Vector2( 0.2, 0.2 )
 texture = ExtResource( 1 )
 script = SubResource( 1 )
-_sections_unfolded = [ "Transform" ]
+_sections_unfolded = [ "Transform", "Visibility" ]
 
-[node name="Timer" type="Timer" parent="." index="0"]
+[node name="Col" type="Area2D" parent="." index="0"]
 
-process_mode = 1
-wait_time = 0.4
-one_shot = false
-autostart = true
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
 
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Col" index="0"]
+
+shape = SubResource( 2 )
+
+[node name="Vis" type="VisibilityNotifier2D" parent="." index="1"]
+
+position = Vector2( -0.0625811, -1.09249 )
+scale = Vector2( 3.11189, 3.15452 )
+rect = Rect2( -10, -10, 20, 20 )
+
+[connection signal="body_entered" from="Col" to="." method="_on_Col_body_entered"]
+
+[connection signal="screen_exited" from="Vis" to="." method="_on_Vis_screen_exited"]
 
 

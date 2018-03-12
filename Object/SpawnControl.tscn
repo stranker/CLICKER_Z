@@ -13,11 +13,18 @@ func _ready():
 			spawn_list.push_back(i)
 	pass
 
+func _process(delta):
+	if Global.ZOMBI_LIST.size()>200:
+		var z = Global.ZOMBI_LIST.pop()
+		z.queue_free()
+	pass
+
 func _on_Spawn_timeout():
 	randomize()
 	var sp = randi() % spawn_list.size()
-	spawn_list[sp].spawn()
-	pass # replace with function body
+	if Global.ZOMBI_LIST.size() < Global.MAX_COUNT_ZOMBIES:
+		 spawn_list[sp].spawn()
+	pass
 "
 _sections_unfolded = [ "Resource" ]
 
@@ -28,7 +35,7 @@ script = SubResource( 1 )
 [node name="Timer" type="Timer" parent="." index="0"]
 
 process_mode = 1
-wait_time = 0.1
+wait_time = 0.15
 one_shot = false
 autostart = true
 

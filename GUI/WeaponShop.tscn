@@ -1,0 +1,84 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+
+resource_name = "WeaponShop.gd"
+script/source = "extends ItemList
+
+var weapon = preload(\"res://Object/Weapon.tscn\")
+
+func _ready():
+	create_weapons()
+	init_weapons()
+	pass
+
+func init_weapons():
+	var w = Global.WEAPON_LIST[0]
+	if !Global.WEAPON_LIST.empty():
+		for i in Global.WEAPON_LIST:
+			add_item(i.get_weapon_name(),load(i.get_shop_texture()),false)
+			add_icon_item(load(\"res://icon.png\"),true)
+	pass
+
+
+func create_weapons():
+	for i in range(2):
+		var w = weapon.instance()
+		if i == 0:
+			w.create_weapon(\"Pistol\",0,1,\"res://Sprite/Pistol.png\")
+		if i == 1:
+			w.create_weapon(\"MP6\",5,2,\"res://Sprite/MP6.png\")
+		Global.WEAPON_LIST.push_back(w)
+		get_tree().root.call_deferred(\"add_child\",w)
+	Global.curr_weapon = Global.WEAPON_LIST[0]
+	pass
+
+func _on_WeaponShop_item_selected(index):
+	if index % 2 != 0:
+		buy_weapon(index)
+	else:
+		if Global.WEAPON_LIST[index/2].get_buy():
+			Global.curr_weapon = Global.WEAPON_LIST[index/2] 
+	pass # replace with function body
+
+func buy_weapon(ind):
+	var w = Global.WEAPON_LIST[(ind-1)/2]
+	if Global.GOLD >= w.get_cost():
+		print(\"xd\")
+		w.set_buy(true)
+		Global.curr_weapon = w
+		Global.GOLD -= w.get_cost()
+	else:
+		unselect(ind)
+	pass"
+_sections_unfolded = [ "Resource" ]
+
+[node name="WeaponShop" type="ItemList"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 191.0
+margin_bottom = 180.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+items = [  ]
+select_mode = 0
+allow_reselect = false
+max_text_lines = 2
+max_columns = 2
+same_column_width = true
+icon_mode = 1
+fixed_icon_size = Vector2( 0, 0 )
+script = SubResource( 1 )
+_sections_unfolded = [ "Columns", "Icon" ]
+
+[connection signal="item_selected" from="." to="." method="_on_WeaponShop_item_selected"]
+
+

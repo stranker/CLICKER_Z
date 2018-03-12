@@ -12,6 +12,7 @@ var player = Global.player_pos
 var direction = Vector2()
 var life = 2
 var gold = 2
+var coin = preload(\"res://Object/CoinCandy.tscn\")
 
 func _ready():
 	direction = (player-global_position).normalized()
@@ -29,10 +30,13 @@ func get_damage(dmg):
 		life -= dmg
 	if life<=0:
 		Global.ZOMBI_LIST.erase(self)
-		queue_free()
 		Global.zombie_killed += 1
-		Global.GOLD += gold
-		Global.zombie_count -= 1
+		Global.EXP += 1
+		var c = coin.instance()
+		get_tree().root.call_deferred(\"add_child\",c)
+		c.global_position = global_position
+		c.cant = gold
+		queue_free()
 	pass
 "
 _sections_unfolded = [ "Resource" ]
@@ -43,7 +47,9 @@ custom_solver_bias = 0.0
 radius = 9.55702
 height = 14.019
 
-[node name="Z" type="RigidBody2D"]
+[node name="Z" type="RigidBody2D" groups=[
+"enemy",
+]]
 
 position = Vector2( 0, -0.142397 )
 input_pickable = false
