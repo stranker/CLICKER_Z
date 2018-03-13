@@ -48,6 +48,14 @@ func attack():
 func _on_Rage_timeout():
 	curr_click = 0
 	pass # replace with function body
+
+
+func _on_Shop_pressed():
+	if !$GUI/Shop/WeaponShop.visible:
+		$GUI/Shop/WeaponShop.show()
+	else:
+		$GUI/Shop/WeaponShop.hide()
+	pass # replace with function body
 "
 _sections_unfolded = [ "Resource" ]
 
@@ -254,13 +262,46 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
-[node name="WeaponShop" parent="." index="6" instance=ExtResource( 4 )]
+[node name="Shop" type="Button" parent="GUI" index="6"]
 
-margin_right = 176.0
-margin_bottom = 214.0
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 0.0
+anchor_bottom = 1.0
+margin_top = -68.0
+margin_right = 207.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "SHOP"
+flat = false
+align = 1
+
+[node name="WeaponShop" parent="GUI/Shop" index="0" instance=ExtResource( 4 )]
+
+visible = false
+show_behind_parent = true
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -103.5
+margin_top = -245.0
+margin_right = 495.5
+margin_bottom = 0.0
 
 [connection signal="input_event" from="Area" to="." method="_on_Area_input_event"]
 
 [connection signal="timeout" from="Rage" to="." method="_on_Rage_timeout"]
+
+[connection signal="pressed" from="GUI/Shop" to="." method="_on_Shop_pressed"]
 
 
