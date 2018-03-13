@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://GUI/Weapons.tscn" type="PackedScene" id=1]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends Container
+
+var drag_unit = 5
+
+func _ready():
+	pass
+
+func _on_PanelShop_gui_input(ev):
+	if ev is InputEventScreenDrag:
+		if ev.relative.y>0:
+			$Weapons.rect_position.y -= drag_unit
+		else:
+			$Weapons.rect_position.y += drag_unit
+	pass # replace with function body
+
+
+func _on_Weapons_gui_input(ev):
+	print(ev)
+	pass # replace with function body
+"
+
+[node name="PanelShop" type="Container" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -596.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+script = SubResource( 1 )
+
+[node name="Weapons" parent="." index="0" instance=ExtResource( 1 )]
+
+margin_bottom = 0.0
+
+
