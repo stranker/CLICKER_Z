@@ -56,13 +56,13 @@ resource_name = "WeaponShop.gd"
 script/source = "extends ItemList
 
 var weapon = preload(\"res://Object/Weapon.tscn\")
-var drag_unit = 10
+var drag_unit = 5
 
 func _ready():
 	create_weapons()
 	init_weapons()
 	buy_weapon(1)
-	#hide()
+	hide()
 	pass
 
 func init_weapons():
