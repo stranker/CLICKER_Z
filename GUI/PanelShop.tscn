@@ -25,7 +25,7 @@ func gui_input(ev):
 
 func _on_VScrollBar_value_changed( value ):
 	$Weapons.rect_position.y = -value
-	pass # replace with function body
+	pass
 "
 _sections_unfolded = [ "Resource" ]
 
@@ -43,6 +43,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 script = SubResource( 1 )
+_sections_unfolded = [ "Rect" ]
 
 [node name="Weapons" parent="." index="0" instance=ExtResource( 1 )]
 
