@@ -6,6 +6,7 @@ var shop_texture = "test"
 var weapon_name = "test"
 var bullet = preload("res://Object/Bullet.tscn")
 var buyed = false
+var shop_info = "test"
 
 func _ready():
 	pass
@@ -34,11 +35,12 @@ func set_weapon_name(nam):
 func get_weapon_name():
 	return weapon_name
 
-func create_weapon(wname,cst,dmg,stext):
+func create_weapon(wname,cst,dmg,stext,inf):
 	weapon_name = wname
 	cost = cst
 	damage = dmg
 	shop_texture = stext
+	shop_info = inf
 	pass
 
 func set_buy(con):
@@ -46,6 +48,9 @@ func set_buy(con):
 
 func get_buy():
 	return buyed
+
+func get_shop_info():
+	return shop_info
 
 func shoot():
 	if Global.ZOMBI_LIST.size()>0:

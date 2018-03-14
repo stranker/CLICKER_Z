@@ -4,28 +4,32 @@
 
 [sub_resource type="GDScript" id=1]
 
+resource_name = "PanelShop.gd"
 script/source = "extends Container
 
 var drag_unit = 5
 
 func _ready():
+	$VScrollBar.min_value = 0
+	$VScrollBar.max_value = rect_size.y
+	hide()
 	pass
 
-func _on_PanelShop_gui_input(ev):
+func gui_input(ev):
 	if ev is InputEventScreenDrag:
 		if ev.relative.y>0:
-			$Weapons.rect_position.y -= drag_unit
+			$VScrollBar.value -= drag_unit
 		else:
-			$Weapons.rect_position.y += drag_unit
-	pass # replace with function body
+			$VScrollBar.value  += drag_unit
+	pass
 
-
-func _on_Weapons_gui_input(ev):
-	print(ev)
+func _on_VScrollBar_value_changed( value ):
+	$Weapons.rect_position.y = -value
 	pass # replace with function body
 "
+_sections_unfolded = [ "Resource" ]
 
-[node name="PanelShop" type="Container" index="0"]
+[node name="PanelShop" type="Container"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -42,6 +46,38 @@ script = SubResource( 1 )
 
 [node name="Weapons" parent="." index="0" instance=ExtResource( 1 )]
 
-margin_bottom = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 580.0
+margin_bottom = 428.0
+
+[node name="VScrollBar" type="VScrollBar" parent="." index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 580.0
+margin_top = 27.0
+margin_right = 600.0
+margin_bottom = 202.0
+rect_min_size = Vector2( 20, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 0
+size_flags_vertical = 1
+min_value = 0.0
+max_value = 100.0
+step = 0.0
+page = 0.0
+value = 0.0
+exp_edit = false
+rounded = false
+custom_step = -1.0
+_sections_unfolded = [ "Rect" ]
+
+[connection signal="value_changed" from="VScrollBar" to="." method="_on_VScrollBar_value_changed"]
 
 

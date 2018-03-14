@@ -2,6 +2,7 @@
 
 [sub_resource type="GDScript" id=1]
 
+resource_name = "Weapons.gd"
 script/source = "extends GridContainer
 
 var weapon = preload(\"res://Object/Weapon.tscn\")
@@ -18,25 +19,25 @@ func create_weapons():
 	for i in range(10):
 		var w = weapon.instance()
 		if i == 0:
-			w.create_weapon(\"Pistol \\t Cost: FREE\",0,1,\"res://Sprite/Pistol.png\")
+			w.create_weapon(\"Pistol\",0,1,\"res://Sprite/Pistol.png\",\"test\")
 		if i == 1:
-			w.create_weapon(\"MP5 \\t Cost: $5\",5,2,\"res://Sprite/MP5.png\")
+			w.create_weapon(\"MP5\",5,2,\"res://Sprite/MP5.png\",\"test\")
 		if i == 2:
-			w.create_weapon(\"M4A4 \\t Cost: $20\",20,3,\"res://Sprite/MP5.png\")
+			w.create_weapon(\"M4A4\",20,3,\"res://Sprite/MP5.png\",\"test\")
 		if i == 3:
-			w.create_weapon(\"TEST \\t Cost: $200\",200,3,\"res://Sprite/Pistol.png\")
+			w.create_weapon(\"TEST\",200,3,\"res://Sprite/Pistol.png\",\"test\")
 		if i == 4:
-			w.create_weapon(\"TEST \\t Cost: $200\",200,3,\"res://Sprite/Pistol.png\")
+			w.create_weapon(\"TEST\",200,3,\"res://Sprite/Pistol.png\",\"test\")
 		if i == 5:
-			w.create_weapon(\"TEST \\t Cost: $200\",200,3,\"res://Sprite/Pistol.png\")
+			w.create_weapon(\"TEST\",200,3,\"res://Sprite/Pistol.png\",\"test\")
 		if i == 6:
-			w.create_weapon(\"TEST \\t Cost: $200\",200,3,\"res://Sprite/Pistol.png\")
+			w.create_weapon(\"TEST\",200,3,\"res://Sprite/Pistol.png\",\"test\")
 		if i == 7:
-			w.create_weapon(\"TEST \\t Cost: $200\",200,3,\"res://Sprite/Pistol.png\")
+			w.create_weapon(\"TEST\",200,3,\"res://Sprite/Pistol.png\",\"test\")
 		if i == 8:
-			w.create_weapon(\"TEST \\t Cost: $200\",200,3,\"res://Sprite/Pistol.png\")
+			w.create_weapon(\"TEST\",200,3,\"res://Sprite/Pistol.png\",\"test\")
 		if i == 9:
-			w.create_weapon(\"TEST \\t Cost: $200\",200,3,\"res://Sprite/Pistol.png\")
+			w.create_weapon(\"TEST\",200,3,\"res://Sprite/Pistol.png\",\"test\")
 		Global.WEAPON_LIST.push_back(w)
 		get_tree().root.call_deferred(\"add_child\",w)
 	Global.curr_weapon = Global.WEAPON_LIST[0]
@@ -45,10 +46,11 @@ func create_weapons():
 func create_panels():
 	for i in Global.WEAPON_LIST:
 		var wp = w_panel.instance()
-		wp.create_panel(i.get_shop_texture(),i.get_name(),i.get_name())
+		wp.create_panel(i.get_shop_texture(),i.get_weapon_name(),i.get_shop_info())
 		add_child(wp)
 	pass
 "
+_sections_unfolded = [ "Resource" ]
 
 [node name="Weapons" type="GridContainer"]
 
@@ -57,6 +59,7 @@ anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_bottom = -648.0
+rect_min_size = Vector2( 580, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
 mouse_filter = 1

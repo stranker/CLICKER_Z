@@ -6,7 +6,7 @@
 [ext_resource path="res://Sprite/ButtonShopH.png" type="Texture" id=4]
 [ext_resource path="res://Sprite/ButtonShopC.png" type="Texture" id=5]
 [ext_resource path="res://Sprite/ButtonShop.png" type="Texture" id=6]
-[ext_resource path="res://GUI/Weapons.tscn" type="PackedScene" id=7]
+[ext_resource path="res://GUI/PanelShop.tscn" type="PackedScene" id=7]
 
 [sub_resource type="GDScript" id=1]
 
@@ -54,10 +54,10 @@ func _on_Rage_timeout():
 
 
 func _on_Shop_pressed():
-	if !$GUI/Shop/Weapons.visible:
-		$GUI/Shop/Weapons.show()
+	if !$GUI/Shop/PanelShop.visible:
+		$GUI/Shop/PanelShop.show()
 	else:
-		$GUI/Shop/Weapons.hide()
+		$GUI/Shop/PanelShop.hide()
 	pass # replace with function body
 "
 _sections_unfolded = [ "Resource" ]
@@ -202,7 +202,6 @@ margin_right = 125.0
 margin_bottom = 27.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -224,7 +223,6 @@ margin_right = 278.0
 margin_bottom = 27.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -246,7 +244,6 @@ margin_right = 434.0
 margin_bottom = 24.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -268,7 +265,6 @@ margin_right = 303.0
 margin_bottom = 401.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -290,7 +286,6 @@ margin_right = 305.0
 margin_bottom = 281.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -312,7 +307,6 @@ margin_right = 295.0
 margin_bottom = 336.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -331,7 +325,6 @@ anchor_bottom = 1.0
 margin_top = -68.0
 margin_right = 207.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -349,11 +342,11 @@ flat = false
 align = 1
 _sections_unfolded = [ "Rect", "custom_styles" ]
 
-[node name="Weapons" parent="GUI/Shop" index="0" instance=ExtResource( 7 )]
+[node name="PanelShop" parent="GUI/Shop" index="0" instance=ExtResource( 7 )]
 
-margin_left = 2.0
-margin_top = -203.0
-margin_bottom = 3.0
+margin_top = -274.0
+margin_right = 395.0
+margin_bottom = -68.0
 
 [connection signal="input_event" from="Area" to="." method="_on_Area_input_event"]
 
