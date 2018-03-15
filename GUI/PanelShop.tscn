@@ -8,34 +8,44 @@ resource_name = "PanelShop.gd"
 script/source = "extends Container
 
 var drag_unit = 5
+var panel_rect
 
 func _ready():
-	$VScrollBar.min_value = 0
+	$VScrollBar.min_value = -10
 	$VScrollBar.max_value = rect_size.y
-	hide()
+	panel_rect = Rect2(0,0,rect_size.x,rect_size.y)
 	pass
 
-func gui_input(ev):
-	if ev is InputEventScreenDrag:
-		if ev.relative.y>0:
-			$VScrollBar.value -= drag_unit
-		else:
-			$VScrollBar.value  += drag_unit
+func _process(delta):
 	pass
+
+func to_global(pos):
+	return Vector2(pos.x,pos.y+rect_global_position.y)
 
 func _on_VScrollBar_value_changed( value ):
 	$Weapons.rect_position.y = -value
 	pass
+
+func is_inside(point):
+	if panel_rect.has_point(point):
+		return true
+	else:
+		return false
+
+
+func _on_PanelShop_gui_input( ev ):
+	print(ev)
+	pass # replace with function body
 "
 _sections_unfolded = [ "Resource" ]
 
-[node name="PanelShop" type="Container"]
+[node name="PanelShop" type="Container" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_bottom = -596.0
+margin_bottom = -624.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
 mouse_filter = 0
@@ -46,11 +56,6 @@ script = SubResource( 1 )
 _sections_unfolded = [ "Rect" ]
 
 [node name="Weapons" parent="." index="0" instance=ExtResource( 1 )]
-
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 580.0
-margin_bottom = 428.0
 
 [node name="VScrollBar" type="VScrollBar" parent="." index="1"]
 
@@ -78,6 +83,8 @@ exp_edit = false
 rounded = false
 custom_step = -1.0
 _sections_unfolded = [ "Rect" ]
+
+[connection signal="gui_input" from="." to="." method="_on_PanelShop_gui_input"]
 
 [connection signal="value_changed" from="VScrollBar" to="." method="_on_VScrollBar_value_changed"]
 

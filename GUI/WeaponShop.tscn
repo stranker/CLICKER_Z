@@ -146,7 +146,7 @@ func _on_WeaponShop_gui_input(ev):
 "
 _sections_unfolded = [ "Resource" ]
 
-[node name="WeaponShop" type="ItemList"]
+[node name="WeaponShop" type="ItemList" index="0"]
 
 show_behind_parent = true
 anchor_left = 0.0
@@ -171,7 +171,6 @@ custom_constants/icon_margin = 0
 custom_constants/hseparation = 170
 items = [  ]
 select_mode = 0
-allow_reselect = false
 max_columns = 2
 same_column_width = true
 icon_mode = 0
