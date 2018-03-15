@@ -34,6 +34,8 @@ func create_panel(tex,nam,info):
 func _on_EquipButton_pressed():
 	if weapon.get_buy():
 		Global.curr_weapon = weapon
+		get_parent().enable_equip()
+		$EquipButton.disabled = true
 	pass
 
 func _on_BuyButton_pressed():
@@ -47,6 +49,10 @@ func _on_BuyButton_pressed():
 		$UpgradeButton.disabled = false
 	pass # replace with function body
 
+func enable_equip_button():
+	if weapon.get_buy():
+		$EquipButton.disabled = false
+	pass
 
 func _on_UpgradeButton_pressed():
 	pass # replace with function body
@@ -64,6 +70,7 @@ margin_right = -20.0
 margin_bottom = -934.0
 rect_min_size = Vector2( 580, 90 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -83,6 +90,7 @@ margin_right = 159.0
 margin_bottom = 79.0
 rect_min_size = Vector2( 150, 70 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -103,6 +111,7 @@ margin_top = 11.0
 margin_right = 420.0
 margin_bottom = 25.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -124,6 +133,7 @@ margin_top = 47.0
 margin_right = 420.0
 margin_bottom = 61.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -145,13 +155,13 @@ margin_top = 6.0
 margin_right = 573.0
 margin_bottom = 84.0
 rect_pivot_offset = Vector2( 0, 0 )
-focus_mode = 2
+rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 toggle_mode = false
-enabled_focus_mode = 2
+enabled_focus_mode = 0
 shortcut = null
 group = null
 text = "Buy"
@@ -170,13 +180,13 @@ margin_top = 6.0
 margin_right = 573.0
 margin_bottom = 84.0
 rect_pivot_offset = Vector2( 0, 0 )
-focus_mode = 2
+rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 toggle_mode = false
-enabled_focus_mode = 2
+enabled_focus_mode = 0
 shortcut = null
 group = null
 text = "Upgrade"
@@ -195,13 +205,13 @@ margin_top = 6.0
 margin_right = 486.0
 margin_bottom = 84.0
 rect_pivot_offset = Vector2( 0, 0 )
-focus_mode = 2
+rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 toggle_mode = false
-enabled_focus_mode = 2
+enabled_focus_mode = 0
 shortcut = null
 group = null
 text = "Equip"
