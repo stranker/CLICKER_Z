@@ -7,6 +7,7 @@ var weapon_name = "test"
 var bullet = preload("res://Object/Bullet.tscn")
 var buyed = false
 var shop_info = "test"
+var w_pos = Vector2(0,0)
 
 func _ready():
 	pass
@@ -52,12 +53,16 @@ func get_buy():
 func get_shop_info():
 	return shop_info
 
-func shoot():
-	if Global.ZOMBI_LIST.size()>0:
-		var zombi = Global.ZOMBI_LIST[0]
+func set_position(pos):
+	w_pos = pos
+	pass
+
+func shoot(zombie):
+	if Global.ZOMBI_LIST.size() > 0:
 		var b = bullet.instance()
-		get_tree().root.call_deferred("add_child",b)
-		b.set_direction(zombi.global_position)
-		b.global_position = Global.player_pos
-		b.set_damage(get_dmg())
+		if zombie.is_inside_tree():
+			b.set_direction(zombie.global_position)
+			b.global_position = w_pos
+			b.set_damage(get_dmg())
+			get_tree().root.call_deferred("add_child",b)
 	pass

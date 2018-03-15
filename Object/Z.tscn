@@ -38,7 +38,9 @@ func get_damage(dmg):
 		c.cant = gold
 		queue_free()
 	pass
-"
+
+func alive():
+	return life>0"
 _sections_unfolded = [ "Resource" ]
 
 [sub_resource type="CapsuleShape2D" id=2]
