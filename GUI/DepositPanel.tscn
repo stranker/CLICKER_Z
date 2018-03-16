@@ -1,0 +1,266 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://GUI/CostLabel.tscn" type="PackedScene" id=1]
+
+[sub_resource type="GDScript" id=1]
+
+resource_name = "DepositPanel.gd"
+script/source = "extends Panel
+
+# Capacity variables
+const UPGRADE_FOOD = 100
+const UPGRADE_WATER = 100
+
+const COST_FOOD = 5
+const COST_WATER = 5
+
+# Reduce variables
+var food_consume = 0
+var water_consume = 0
+
+var food_reduce = 0.1
+var water_reduce = 0.1
+
+func _ready():
+	pass
+
+func start_consume():
+	food_consume = Global.SURVIVOR_LIST.size()
+	water_consume = Global.SURVIVOR_LIST.size()
+	set_costs()
+	pass
+
+func _on_CloseButton_pressed():
+	hide()
+	pass
+
+func _on_FoodButton_pressed():
+	if Global.GOLD > COST_FOOD * Global.SURVIVOR_LIST.size():
+		Global.GOLD -= COST_FOOD * Global.SURVIVOR_LIST.size()
+		food_consume -= food_reduce
+	pass
+
+func _on_WaterButton_pressed():
+	if Global.GOLD > (1/(water_consume * 10)) * COST_WATER:
+		Global.GOLD -= (1/(water_consume * 10)) * COST_WATER
+		water_consume -= water_reduce
+	pass
+
+func set_costs():
+	$FoodButton/Cost.text = str(COST_FOOD * Global.SURVIVOR_LIST.size())
+	$WaterButton/Cost.text = str(int(1/water_consume * 10) * COST_WATER)
+	$UpCapFood/Cost.text = str(Global.MAX_FOOD * COST_FOOD)
+	$UpCapWater/Cost.text = str(Global.MAX_WATER * COST_WATER)
+	pass
+
+func _on_UpCapFood_pressed():
+	if Global.GOLD > Global.MAX_FOOD * COST_FOOD:
+		Global.GOLD -= Global.MAX_FOOD * COST_FOOD
+		Global.MAX_FOOD += UPGRADE_FOOD
+	pass # replace with function body
+
+func _on_UpCapWater_pressed():
+	if Global.GOLD > Global.MAX_WATER * COST_WATER:
+		Global.GOLD -= Global.MAX_WATER * COST_WATER
+		Global.MAX_WATER += UPGRADE_WATER
+	pass # replace with function body
+
+func _on_FoodTime_timeout():
+	if Global.curr_food > food_consume:
+		Global.curr_food -= food_consume
+	pass # replace with function body
+
+func _on_WaterTime_timeout():
+	if Global.curr_water > water_consume:
+		Global.curr_water -= water_consume
+	pass # replace with function body"
+_sections_unfolded = [ "Resource" ]
+
+[node name="DepositPanel" type="Panel" index="0"]
+
+anchor_left = 0.5
+anchor_top = 0.0
+anchor_right = 0.5
+anchor_bottom = 0.0
+margin_left = -170.0
+margin_top = 20.0
+margin_right = 160.0
+margin_bottom = 370.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+script = SubResource( 1 )
+_sections_unfolded = [ "Rect", "Visibility" ]
+
+[node name="FoodButton" type="Button" parent="." index="0"]
+
+editor/display_folded = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -115.0
+margin_top = 5.0
+margin_right = -25.0
+margin_bottom = 45.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Food"
+flat = false
+align = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Cost" parent="FoodButton" index="0" instance=ExtResource( 1 )]
+
+[node name="WaterButton" type="Button" parent="." index="1"]
+
+editor/display_folded = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 25.0
+margin_top = 5.0
+margin_right = 115.0
+margin_bottom = 45.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Water"
+flat = false
+align = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Cost" parent="WaterButton" index="0" instance=ExtResource( 1 )]
+
+[node name="UpCapFood" type="Button" parent="." index="2"]
+
+editor/display_folded = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -115.0
+margin_top = -105.0
+margin_right = -25.0
+margin_bottom = -65.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Cap Food"
+flat = false
+align = 1
+
+[node name="Cost" parent="UpCapFood" index="0" instance=ExtResource( 1 )]
+
+[node name="UpCapWater" type="Button" parent="." index="3"]
+
+editor/display_folded = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 25.0
+margin_top = -105.0
+margin_right = 115.0
+margin_bottom = -65.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Cap Water"
+flat = false
+align = 1
+
+[node name="Cost" parent="UpCapWater" index="0" instance=ExtResource( 1 )]
+
+[node name="CloseButton" type="Button" parent="." index="4"]
+
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -80.0
+margin_top = -30.0
+margin_right = -20.0
+margin_bottom = 10.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "X"
+flat = false
+align = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="FoodTime" type="Timer" parent="." index="5"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = true
+
+[node name="WaterTime" type="Timer" parent="." index="6"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = true
+
+[connection signal="pressed" from="FoodButton" to="." method="_on_FoodButton_pressed"]
+
+[connection signal="pressed" from="WaterButton" to="." method="_on_WaterButton_pressed"]
+
+[connection signal="pressed" from="UpCapFood" to="." method="_on_UpCapFood_pressed"]
+
+[connection signal="pressed" from="UpCapWater" to="." method="_on_UpCapWater_pressed"]
+
+[connection signal="pressed" from="CloseButton" to="." method="_on_CloseButton_pressed"]
+
+[connection signal="timeout" from="FoodTime" to="." method="_on_FoodTime_timeout"]
+
+[connection signal="timeout" from="WaterTime" to="." method="_on_WaterTime_timeout"]
+
+

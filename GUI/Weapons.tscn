@@ -11,7 +11,7 @@ var w_panel = preload(\"res://GUI/WeaponPanel.tscn\")
 func _ready():
 	create_weapons()
 	create_panels()
-	get_parent().set_max_scroll(get_child_count()*get_children()[0].rect_size.y+get_child_count()*5)
+	get_parent().get_parent().set_max_scroll(get_child_count()*get_children()[0].rect_size.y+get_child_count()*5)
 	pass
 
 func create_weapons():
@@ -48,6 +48,7 @@ margin_right = -20.0
 margin_bottom = -1024.0
 rect_min_size = Vector2( 580, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1

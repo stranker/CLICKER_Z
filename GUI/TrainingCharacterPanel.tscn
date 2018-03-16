@@ -1,30 +1,54 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://GUI/CostLabel.tscn" type="PackedScene" id=1]
 
 [sub_resource type="GDScript" id=1]
 
 resource_name = "TrainingCharacterPanel.gd"
 script/source = "extends Panel
 
-var survivor = preload(\"res://Object/Characters/Survivor.tscn\")
+var training_cost
+var curr_survivor
 
 func _ready():
-	pass"
+	pass
+
+func set_panel(survivor):
+	$Level.text = \"Lvl \"+str(survivor.get_level())
+	$Name.text = survivor.get_survivor_name()
+	$Info.text = survivor.get_info()
+	training_cost = survivor.get_level()*100
+	$TrainButton/Cost.text = str(training_cost)
+	curr_survivor = survivor 
+	pass
+
+func _on_TrainButton_pressed():
+	if Global.GOLD >= training_cost:
+		Global.GOLD -= training_cost
+		curr_survivor.train()
+		set_panel(curr_survivor)
+	pass
+"
 _sections_unfolded = [ "Resource" ]
 
 [node name="TrainingCharacterPanel" type="Panel" index="0"]
 
-anchor_left = 0.0
+anchor_left = 0.5
 anchor_top = 0.0
-anchor_right = 0.0
+anchor_right = 0.5
 anchor_bottom = 0.0
-margin_right = 400.0
+margin_left = -200.0
+margin_right = 150.0
 margin_bottom = 80.0
+rect_min_size = Vector2( 350, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 script = SubResource( 1 )
+_sections_unfolded = [ "Rect" ]
 
 [node name="Face" type="TextureRect" parent="." index="0"]
 
@@ -35,23 +59,88 @@ anchor_bottom = 0.0
 margin_right = 80.0
 margin_bottom = 80.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 stretch_mode = 0
 
-[node name="Button" type="Button" parent="." index="1"]
+[node name="Level" type="Label" parent="." index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 330.0
+margin_left = 100.0
 margin_top = 10.0
-margin_right = 390.0
+margin_right = 190.0
+margin_bottom = 30.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Level"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Name" type="Label" parent="." index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 100.0
+margin_top = 30.0
+margin_right = 190.0
+margin_bottom = 50.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Name"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Info" type="Label" parent="." index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 100.0
+margin_top = 50.0
+margin_right = 190.0
 margin_bottom = 70.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Info"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="TrainButton" type="Button" parent="." index="4"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 280.0
+margin_top = 10.0
+margin_right = 340.0
+margin_bottom = 70.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -65,64 +154,13 @@ text = "Train"
 flat = false
 align = 1
 
-[node name="Level" type="Label" parent="." index="2"]
+[node name="Cost" parent="TrainButton" index="0" instance=ExtResource( 1 )]
 
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 100.0
+margin_left = -10.0
 margin_top = 10.0
-margin_right = 190.0
+margin_right = 50.0
 margin_bottom = 30.0
-rect_pivot_offset = Vector2( 0, 0 )
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-text = "Level"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
 
-[node name="Name" type="Label" parent="." index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 100.0
-margin_top = 30.0
-margin_right = 190.0
-margin_bottom = 50.0
-rect_pivot_offset = Vector2( 0, 0 )
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-text = "Name"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[node name="Info" type="Label" parent="." index="4"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 100.0
-margin_top = 50.0
-margin_right = 190.0
-margin_bottom = 70.0
-rect_pivot_offset = Vector2( 0, 0 )
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-text = "Info"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+[connection signal="pressed" from="TrainButton" to="." method="_on_TrainButton_pressed"]
 
 
