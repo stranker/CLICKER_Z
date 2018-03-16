@@ -12,47 +12,21 @@ var weapon
 func _ready():
 	pass
 
-func _process(delta):
-	if weapon != null:
-		if Global.GOLD >= weapon.get_cost() and $BuyButton.disabled:
-			$BuyButton.disabled = false
-	pass
-
 func create_panel(tex,nam,info):
 	$TextureRect.texture = load(tex)
 	$WeaponName.text = nam
 	$WeaponInfo.text = info
-	$EquipButton.disabled = true
-	$UpgradeButton.disabled = true
-	$UpgradeButton.hide()
-	$BuyButton.disabled = true
+	#$EquipButton.disabled = true
 	for i in Global.WEAPON_LIST:
 		if i.get_weapon_name() == $WeaponName.text:
 			weapon = i
 	pass
 
 func _on_EquipButton_pressed():
-	if weapon.get_buy():
+	if weapon != null and weapon.get_buy():
 		weapon.set_position(Global.player_pos)
 		Global.curr_weapon = weapon
-		get_parent().enable_equip()
 		$EquipButton.disabled = true
-	pass
-
-func _on_BuyButton_pressed():
-	if !weapon.get_buy() and Global.GOLD >= weapon.get_cost():
-		Global.GOLD -= weapon.get_cost()
-		weapon.set_buy(true)
-		$EquipButton.disabled = false
-		$BuyButton.disabled = true
-		$BuyButton.hide()
-		$UpgradeButton.show()
-		$UpgradeButton.disabled = false
-	pass # replace with function body
-
-func enable_equip_button():
-	if weapon.get_buy():
-		$EquipButton.disabled = false
 	pass
 
 func _on_UpgradeButton_pressed():
@@ -67,11 +41,10 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = -20.0
+margin_right = -100.0
 margin_bottom = -934.0
-rect_min_size = Vector2( 580, 90 )
+rect_min_size = Vector2( 500, 90 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -91,7 +64,6 @@ margin_right = 159.0
 margin_bottom = 79.0
 rect_min_size = Vector2( 150, 70 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -112,7 +84,6 @@ margin_top = 11.0
 margin_right = 420.0
 margin_bottom = 25.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -135,7 +106,6 @@ margin_top = 47.0
 margin_right = 420.0
 margin_bottom = 61.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -147,43 +117,17 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Mouse" ]
 
-[node name="BuyButton" type="Button" parent="." index="3"]
+[node name="UpgradeButton" type="Button" parent="." index="3"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 489.0
+margin_left = 410.0
 margin_top = 6.0
-margin_right = 573.0
+margin_right = 494.0
 margin_bottom = 84.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 0
-shortcut = null
-group = null
-text = "Buy"
-flat = false
-align = 1
-_sections_unfolded = [ "Mouse", "Rect" ]
-
-[node name="UpgradeButton" type="Button" parent="." index="4"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 489.0
-margin_top = 6.0
-margin_right = 573.0
-margin_bottom = 84.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -197,18 +141,17 @@ flat = false
 align = 1
 _sections_unfolded = [ "Mouse", "Rect" ]
 
-[node name="EquipButton" type="Button" parent="." index="5"]
+[node name="EquipButton" type="Button" parent="." index="4"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 402.0
+margin_left = 319.0
 margin_top = 6.0
-margin_right = 486.0
+margin_right = 403.0
 margin_bottom = 84.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -221,8 +164,6 @@ text = "Equip"
 flat = false
 align = 1
 _sections_unfolded = [ "Rect" ]
-
-[connection signal="pressed" from="BuyButton" to="." method="_on_BuyButton_pressed"]
 
 [connection signal="pressed" from="UpgradeButton" to="." method="_on_UpgradeButton_pressed"]
 

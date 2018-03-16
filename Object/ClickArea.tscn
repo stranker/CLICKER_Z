@@ -1,12 +1,9 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Object/Wall.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Object/SpawnControl.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Object/Spawner.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Sprite/ButtonShopC.png" type="Texture" id=4]
-[ext_resource path="res://Sprite/ButtonShop.png" type="Texture" id=5]
-[ext_resource path="res://GUI/PanelShop.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Object/Characters/Survivor.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Object/Characters/Survivor.tscn" type="PackedScene" id=4]
 
 [sub_resource type="GDScript" id=1]
 
@@ -43,7 +40,7 @@ func _on_Area_input_event(viewport, event, shape_idx):
 			curr_click += 1
 			$Rage.start()
 			attack()
-	pass # replace with function body
+	pass
 
 func attack():
 	if Global.ZOMBI_LIST.size()>0:
@@ -52,60 +49,13 @@ func attack():
 
 func _on_Rage_timeout():
 	curr_click = 0
-	pass # replace with function body
-
-
-func _on_Shop_pressed():
-	if !$GUI/Shop/PanelShop.visible:
-		$GUI/Shop/PanelShop.show()
-	else:
-		$GUI/Shop/PanelShop.hide()
-	pass # replace with function body
-"
+	pass"
 _sections_unfolded = [ "Resource" ]
 
 [sub_resource type="RectangleShape2D" id=2]
 
 custom_solver_bias = 0.0
 extents = Vector2( 16.595, 8.47007 )
-
-[sub_resource type="StyleBoxTexture" id=3]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-texture = ExtResource( 4 )
-region_rect = Rect2( 0, 0, 200, 60 )
-margin_left = 0.0
-margin_right = 0.0
-margin_top = 0.0
-margin_bottom = 0.0
-expand_margin_left = 0.0
-expand_margin_right = 0.0
-expand_margin_top = 0.0
-expand_margin_bottom = 0.0
-modulate_color = Color( 1, 1, 1, 1 )
-draw_center = true
-
-[sub_resource type="StyleBoxTexture" id=4]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-texture = ExtResource( 5 )
-region_rect = Rect2( 0, 0, 200, 60 )
-margin_left = 0.0
-margin_right = 0.0
-margin_top = 0.0
-margin_bottom = 0.0
-expand_margin_left = 0.0
-expand_margin_right = 0.0
-expand_margin_top = 0.0
-expand_margin_bottom = 0.0
-modulate_color = Color( 1, 1, 1, 1 )
-draw_center = true
 
 [node name="ClickArea" type="Node2D"]
 
@@ -185,7 +135,6 @@ margin_right = 125.0
 margin_bottom = 27.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -207,7 +156,6 @@ margin_right = 278.0
 margin_bottom = 27.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -229,7 +177,6 @@ margin_right = 434.0
 margin_bottom = 24.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -251,7 +198,6 @@ margin_right = 303.0
 margin_bottom = 401.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -273,7 +219,6 @@ margin_right = 305.0
 margin_bottom = 281.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -295,7 +240,6 @@ margin_right = 295.0
 margin_bottom = 336.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -305,46 +249,12 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
-[node name="Shop" type="Button" parent="GUI" index="6"]
-
-anchor_left = 0.0
-anchor_top = 1.0
-anchor_right = 0.0
-anchor_bottom = 1.0
-margin_top = -68.0
-margin_right = 207.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-custom_styles/pressed = SubResource( 3 )
-custom_styles/normal = SubResource( 4 )
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "SHOP"
-flat = false
-align = 1
-_sections_unfolded = [ "Rect", "custom_styles" ]
-
-[node name="PanelShop" parent="GUI/Shop" index="0" instance=ExtResource( 6 )]
-
-margin_top = -407.0
-margin_right = 393.0
-margin_bottom = -75.0
-
-[node name="Survivor" parent="." index="6" instance=ExtResource( 7 )]
+[node name="Survivor" parent="." index="6" instance=ExtResource( 4 )]
 
 position = Vector2( 151.987, 424.227 )
 
 [connection signal="input_event" from="Area" to="." method="_on_Area_input_event"]
 
 [connection signal="timeout" from="Rage" to="." method="_on_Rage_timeout"]
-
-[connection signal="pressed" from="GUI/Shop" to="." method="_on_Shop_pressed"]
 
 
