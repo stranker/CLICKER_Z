@@ -35,7 +35,10 @@ func _on_PanelShop_gui_input( ev ):
 func _on_CloseButton_pressed():
 	hide()
 	pass # replace with function body
-"
+
+func init_weapons():
+	$Container/Weapons.init_weapons()
+	pass"
 _sections_unfolded = [ "Resource" ]
 
 [node name="ArmoryPanel" type="Panel"]
@@ -49,7 +52,6 @@ margin_top = 20.0
 margin_right = 255.0
 margin_bottom = 520.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -118,7 +120,6 @@ margin_top = -24.0
 margin_right = -8.0
 margin_bottom = 11.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0

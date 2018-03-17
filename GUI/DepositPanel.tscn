@@ -21,6 +21,9 @@ var water_consume = 0
 var food_reduce = 0.1
 var water_reduce = 0.1
 
+var COST_FOOD_REDUCE = 100
+var COST_WATER_REDUCE = 200
+
 func _ready():
 	pass
 
@@ -35,20 +38,24 @@ func _on_CloseButton_pressed():
 	pass
 
 func _on_FoodButton_pressed():
-	if Global.GOLD > COST_FOOD * Global.SURVIVOR_LIST.size():
-		Global.GOLD -= COST_FOOD * Global.SURVIVOR_LIST.size()
+	if Global.GOLD > COST_FOOD_REDUCE * Global.SURVIVOR_LIST.size():
+		Global.GOLD -= COST_FOOD_REDUCE * Global.SURVIVOR_LIST.size()
 		food_consume -= food_reduce
+		COST_FOOD_REDUCE += COST_FOOD_REDUCE * 2
+	set_costs()
 	pass
 
 func _on_WaterButton_pressed():
-	if Global.GOLD > (1/(water_consume * 10)) * COST_WATER:
-		Global.GOLD -= (1/(water_consume * 10)) * COST_WATER
+	if Global.GOLD > COST_WATER_REDUCE * Global.SURVIVOR_LIST.size():
+		Global.GOLD -= COST_WATER_REDUCE * Global.SURVIVOR_LIST.size()
 		water_consume -= water_reduce
+		COST_WATER_REDUCE += COST_WATER_REDUCE * 2
+	set_costs()
 	pass
 
 func set_costs():
-	$FoodButton/Cost.text = str(COST_FOOD * Global.SURVIVOR_LIST.size())
-	$WaterButton/Cost.text = str(int(1/water_consume * 10) * COST_WATER)
+	$FoodButton/Cost.text = str(COST_FOOD_REDUCE * Global.SURVIVOR_LIST.size())
+	$WaterButton/Cost.text = str(COST_WATER_REDUCE * Global.SURVIVOR_LIST.size())
 	$UpCapFood/Cost.text = str(Global.MAX_FOOD * COST_FOOD)
 	$UpCapWater/Cost.text = str(Global.MAX_WATER * COST_WATER)
 	pass
@@ -57,12 +64,14 @@ func _on_UpCapFood_pressed():
 	if Global.GOLD > Global.MAX_FOOD * COST_FOOD:
 		Global.GOLD -= Global.MAX_FOOD * COST_FOOD
 		Global.MAX_FOOD += UPGRADE_FOOD
+	set_costs()
 	pass # replace with function body
 
 func _on_UpCapWater_pressed():
 	if Global.GOLD > Global.MAX_WATER * COST_WATER:
 		Global.GOLD -= Global.MAX_WATER * COST_WATER
 		Global.MAX_WATER += UPGRADE_WATER
+	set_costs()
 	pass # replace with function body
 
 func _on_FoodTime_timeout():
@@ -85,9 +94,8 @@ anchor_bottom = 0.0
 margin_left = -170.0
 margin_top = 20.0
 margin_right = 160.0
-margin_bottom = 370.0
+margin_bottom = 350.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -103,11 +111,10 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -115.0
-margin_top = 5.0
+margin_top = 35.0
 margin_right = -25.0
-margin_bottom = 45.0
+margin_bottom = 75.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -132,11 +139,10 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = 25.0
-margin_top = 5.0
+margin_top = 35.0
 margin_right = 115.0
-margin_bottom = 45.0
+margin_bottom = 75.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -165,7 +171,6 @@ margin_top = -105.0
 margin_right = -25.0
 margin_bottom = -65.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -193,7 +198,6 @@ margin_top = -105.0
 margin_right = 115.0
 margin_bottom = -65.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -220,7 +224,6 @@ margin_top = -30.0
 margin_right = -20.0
 margin_bottom = 10.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0

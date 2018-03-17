@@ -2,6 +2,7 @@ extends Node
 
 var cost = 0
 var damage = 0
+var level = 0
 var shop_texture = "test"
 var weapon_name = "test"
 var bullet = preload("res://Object/Bullet.tscn")
@@ -42,6 +43,18 @@ func create_weapon(wname,cst,dmg,stext,inf):
 	damage = dmg
 	shop_texture = stext
 	shop_info = inf
+	level = 1
+	Global.WEAPON_LIST.push_back(self)
+	pass
+
+func create_default_weapon():
+	weapon_name = "Pistol"
+	cost = 0
+	damage = 1
+	shop_texture = "res://Sprite/Pistol.png"
+	shop_info = "Arma por defecto"
+	level = 1
+	Global.WEAPON_LIST.push_back(self)
 	pass
 
 func set_buy(con):
@@ -53,9 +66,21 @@ func get_buy():
 func get_shop_info():
 	return shop_info
 
+func set_shop_info(info):
+	shop_info = info
+
 func set_position(pos):
 	w_pos = pos
 	pass
+
+func get_position():
+	return w_pos
+
+func set_level(val):
+	level = val
+
+func get_level():
+	return level
 
 func shoot(zombie):
 	if Global.ZOMBI_LIST.size() > 0:

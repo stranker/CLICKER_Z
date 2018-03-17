@@ -19,7 +19,11 @@ func _on_Skin_pressed():
 	pass # replace with function body
 
 func close_panel():
-	$ArmoryPanel.hide()"
+	$ArmoryPanel.hide()
+
+func init_weapons():
+	$ArmoryPanel.init_weapons()
+	pass"
 _sections_unfolded = [ "Resource" ]
 
 [node name="Armory" type="Control"]
@@ -31,7 +35,6 @@ anchor_bottom = 1.0
 margin_right = -599.0
 margin_bottom = -1023.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -51,7 +54,6 @@ margin_right = 464.0
 margin_bottom = 130.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0

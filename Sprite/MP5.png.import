@@ -10,7 +10,7 @@ source_file="res://Sprite/MP5.png"
 source_md5="b8aa16cedb56153b14552beeef1b6ac0"
 
 dest_files=[ "res://.import/MP5.png-0a87fd66b5fe4b819af662fa7376e8f4.stex" ]
-dest_md5="a70a8e36798de681f08fefe861d65d16"
+dest_md5="41ab972158b6c7519aa90937d633646f"
 
 [params]
 
@@ -19,7 +19,7 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

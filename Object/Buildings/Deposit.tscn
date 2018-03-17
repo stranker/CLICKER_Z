@@ -35,7 +35,6 @@ anchor_bottom = 1.0
 margin_right = -599.0
 margin_bottom = -1023.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -54,7 +53,6 @@ margin_top = 80.0
 margin_right = 164.0
 margin_bottom = 144.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -69,9 +67,9 @@ _sections_unfolded = [ "Textures" ]
 
 [node name="DepositPanel" parent="." index="1" instance=ExtResource( 2 )]
 
-margin_left = 149.5
+margin_left = 139.5
 margin_top = 70.0
-margin_right = 479.5
+margin_right = 469.5
 margin_bottom = 420.0
 
 [connection signal="pressed" from="DepositButton" to="." method="_on_DepositButton_pressed"]

@@ -5,36 +5,24 @@
 resource_name = "Weapons.gd"
 script/source = "extends GridContainer
 
-var weapon = preload(\"res://Object/Weapon.tscn\")
 var w_panel = preload(\"res://GUI/WeaponPanel.tscn\")
 
 func _ready():
-	create_weapons()
-	create_panels()
-	get_parent().get_parent().set_max_scroll(get_child_count()*get_children()[0].rect_size.y+get_child_count()*5)
-	pass
-
-func create_weapons():
-	for i in range(4):
-		var w = weapon.instance()
-		if i == 0:
-			w.create_weapon(\"Pistol\",0,1,\"res://Sprite/Pistol.png\",\"test\")
-		if i == 1:
-			w.create_weapon(\"MP5\",5,2,\"res://Sprite/MP5.png\",\"test\")
-		if i == 2:
-			w.create_weapon(\"M4A4\",20,3,\"res://Sprite/MP5.png\",\"test\")
-		if i == 3:
-			w.create_weapon(\"TEST\",200,3,\"res://Sprite/Pistol.png\",\"test\")
-		Global.WEAPON_LIST.push_back(w)
-		get_tree().root.call_deferred(\"add_child\",w)
-	Global.curr_weapon = Global.WEAPON_LIST[0]
+	if get_children().size() > 0:
+		get_parent().get_parent().set_max_scroll(get_child_count()*get_children()[0].rect_size.y+get_child_count()*5)
+	else:
+		get_parent().get_parent().set_max_scroll(0)
 	pass
 
 func create_panels():
 	for i in Global.WEAPON_LIST:
 		var wp = w_panel.instance()
-		wp.create_panel(i.get_shop_texture(),i.get_weapon_name(),i.get_shop_info())
+		wp.create_panel(i)
 		add_child(wp)
+	pass
+
+func init_weapons():
+	create_panels()
 	pass"
 _sections_unfolded = [ "Resource" ]
 
@@ -48,7 +36,6 @@ margin_right = -20.0
 margin_bottom = -1024.0
 rect_min_size = Vector2( 580, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
