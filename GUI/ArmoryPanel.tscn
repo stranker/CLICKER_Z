@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://GUI/Weapons.tscn" type="PackedScene" id=1]
+[ext_resource path="res://GUI/EquipWeaponPanel.tscn" type="PackedScene" id=2]
 
 [sub_resource type="GDScript" id=1]
 
@@ -38,6 +39,20 @@ func _on_CloseButton_pressed():
 
 func init_weapons():
 	$Container/Weapons.init_weapons()
+	pass
+
+func show_equip_panel(weapon):
+	$EquipWeaponPanel.set_weapon_to_change(weapon)
+	$EquipWeaponPanel.show()
+	pass
+
+func reset_info():
+	$Container/Weapons.reset_info()
+	pass
+
+func create_equip_panel():
+	$EquipWeaponPanel.create_panels()
+	$EquipWeaponPanel.hide()
 	pass"
 _sections_unfolded = [ "Resource" ]
 
@@ -132,6 +147,17 @@ group = null
 text = "X"
 flat = false
 align = 1
+
+[node name="EquipWeaponPanel" parent="." index="3" instance=ExtResource( 2 )]
+
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -135.0
+margin_top = -185.0
+margin_right = 135.0
+margin_bottom = 185.0
 
 [connection signal="gui_input" from="." to="." method="_on_PanelShop_gui_input"]
 

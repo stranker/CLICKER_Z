@@ -18,6 +18,10 @@ func _on_WatchButton_pressed():
 	$WatchPanel.show()
 	pass
 
+func seek_result(typ):
+	$WatchPanel.seek_result(typ)
+	pass
+
 func close_panel():
 	$WatchPanel.hide()"
 _sections_unfolded = [ "Resource" ]
@@ -31,7 +35,6 @@ anchor_bottom = 1.0
 margin_right = -599.0
 margin_bottom = -1023.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -50,7 +53,6 @@ margin_top = 40.0
 margin_right = 324.0
 margin_bottom = 104.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0

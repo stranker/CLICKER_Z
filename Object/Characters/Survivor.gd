@@ -30,12 +30,15 @@ func train():
 	level += 1
 
 func set_weapon(weap):
+	weapon.set_w_owner(null)
 	weapon = weap
+	weapon.set_w_owner(self)
+	pass
 
 func get_weapon():
 	return weapon
 
 func create_weapon():
 	weapon = weapon_scene.instance()
-	weapon.create_default_weapon()
+	weapon.create_default_weapon(self)
 	pass

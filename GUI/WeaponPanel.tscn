@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Sprite/Pistol.png" type="Texture" id=1]
-[ext_resource path="res://GUI/EquipWeaponPanel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://GUI/CostLabel.tscn" type="PackedScene" id=2]
 
 [sub_resource type="GDScript" id=1]
 
@@ -11,8 +11,6 @@ script/source = "extends Panel
 var weapon
 
 func _ready():
-	$EquipWeaponPanel.create_panels()
-	$EquipWeaponPanel.hide()
 	pass
 
 func create_panel(weap):
@@ -21,14 +19,26 @@ func create_panel(weap):
 	$WeaponName.text = weap.get_weapon_name()
 	$WeaponInfo.text = weap.get_shop_info()
 	$WeaponLevel.text = \"Level \"+str(weap.get_level())
-	#$EquipButton.disabled = true
+	if weapon.get_w_owner()!=null:
+		$WeaponOwner.text = \"Owner: \"+weap.get_w_owner().get_survivor_name()
+	else:
+		$WeaponOwner.text = \"Owner: \"
+	$UpgradeButton/Cost.text = str(weapon.get_cost()*weapon.get_level())
+	pass
+
+func reset_info():
+	create_panel(weapon)
 	pass
 
 func _on_EquipButton_pressed():
-	$EquipWeaponPanel.show()
+	get_parent().show_equip_panel(weapon)
 	pass
 
 func _on_UpgradeButton_pressed():
+	if Global.GOLD >= weapon.get_cost()*weapon.get_level():
+		Global.GOLD -= weapon.get_cost()*weapon.get_level()
+		weapon.set_level(weapon.get_level()+1)
+		reset_info()
 	pass # replace with function body
 "
 _sections_unfolded = [ "Resource" ]
@@ -101,9 +111,9 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 150.0
-margin_top = 40.0
+margin_top = 30.0
 margin_right = 562.0
-margin_bottom = 54.0
+margin_bottom = 44.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 2
 mouse_default_cursor_shape = 0
@@ -122,9 +132,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -100.0
-margin_top = 15.0
+margin_top = 25.0
 margin_right = 74.0
-margin_bottom = 29.0
+margin_bottom = 39.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 2
 mouse_default_cursor_shape = 0
@@ -136,7 +146,28 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Mouse" ]
 
-[node name="UpgradeButton" type="Button" parent="." index="4"]
+[node name="WeaponOwner" type="Label" parent="." index="4"]
+
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -100.0
+margin_top = 5.0
+margin_right = 74.0
+margin_bottom = 19.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "TEST"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Mouse" ]
+
+[node name="UpgradeButton" type="Button" parent="." index="5"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -160,7 +191,14 @@ flat = false
 align = 1
 _sections_unfolded = [ "Mouse", "Rect" ]
 
-[node name="EquipButton" type="Button" parent="." index="5"]
+[node name="Cost" parent="UpgradeButton" index="0" instance=ExtResource( 2 )]
+
+margin_left = -12.0
+margin_top = 15.0
+margin_right = 48.0
+margin_bottom = 35.0
+
+[node name="EquipButton" type="Button" parent="." index="6"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -183,13 +221,6 @@ text = "Equip"
 flat = false
 align = 1
 _sections_unfolded = [ "Rect" ]
-
-[node name="EquipWeaponPanel" parent="." index="6" instance=ExtResource( 2 )]
-
-margin_left = 50.0
-margin_top = 70.0
-margin_right = 430.0
-margin_bottom = 410.0
 
 [connection signal="pressed" from="UpgradeButton" to="." method="_on_UpgradeButton_pressed"]
 

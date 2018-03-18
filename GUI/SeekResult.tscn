@@ -1,0 +1,103 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends Panel
+
+# Seek TYPE
+const TYPE_SURVIVOR = 0
+const TYPE_WEAPON = 1
+const TYPE_SUPPLY = 2
+
+func _ready():
+	pass
+
+func set_info(typ,result):
+	var label = \"\"
+	match typ:
+		TYPE_SURVIVOR:
+			label = \"Survivor found!\"
+		TYPE_WEAPON:
+			label = \"Weapon found!\"
+		TYPE_SUPPLY:
+			label = \"Supplies found!\"
+	if result:
+		$Result.text = label
+	else:
+		$Result.text = \"Search failed\"
+	pass
+
+func _on_CloseRButton_pressed():
+	queue_free()
+	pass # replace with function body
+"
+
+[node name="SeekResult" type="Panel"]
+
+modulate = Color( 1, 0.222656, 0.222656, 1 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -110.0
+margin_top = -362.0
+margin_right = 110.0
+margin_bottom = -232.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+script = SubResource( 1 )
+_sections_unfolded = [ "Visibility" ]
+
+[node name="Result" type="Label" parent="." index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+margin_left = -5.0
+margin_top = 25.0
+margin_right = -5.0
+margin_bottom = 39.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Test"
+align = 1
+valign = 1
+autowrap = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="CloseRButton" type="Button" parent="." index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 175.0
+margin_top = 115.0
+margin_right = 210.0
+margin_bottom = 140.0
+rect_pivot_offset = Vector2( 0, 0 )
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "X"
+flat = false
+align = 1
+
+[connection signal="pressed" from="CloseRButton" to="." method="_on_CloseRButton_pressed"]
+
+

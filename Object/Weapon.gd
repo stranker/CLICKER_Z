@@ -8,7 +8,7 @@ var weapon_name = "test"
 var bullet = preload("res://Object/Bullet.tscn")
 var buyed = false
 var shop_info = "test"
-var w_pos = Vector2(0,0)
+var weapon_owner = null
 
 func _ready():
 	pass
@@ -37,7 +37,7 @@ func set_weapon_name(nam):
 func get_weapon_name():
 	return weapon_name
 
-func create_weapon(wname,cst,dmg,stext,inf):
+func create_weapon(wname,cst,dmg,stext,inf,own):
 	weapon_name = wname
 	cost = cst
 	damage = dmg
@@ -45,9 +45,10 @@ func create_weapon(wname,cst,dmg,stext,inf):
 	shop_info = inf
 	level = 1
 	Global.WEAPON_LIST.push_back(self)
+	weapon_owner = own
 	pass
 
-func create_default_weapon():
+func create_default_weapon(own):
 	weapon_name = "Pistol"
 	cost = 0
 	damage = 1
@@ -55,6 +56,7 @@ func create_default_weapon():
 	shop_info = "Arma por defecto"
 	level = 1
 	Global.WEAPON_LIST.push_back(self)
+	weapon_owner = own
 	pass
 
 func set_buy(con):
@@ -69,25 +71,25 @@ func get_shop_info():
 func set_shop_info(info):
 	shop_info = info
 
-func set_position(pos):
-	w_pos = pos
-	pass
-
-func get_position():
-	return w_pos
-
 func set_level(val):
 	level = val
 
 func get_level():
 	return level
 
+func set_w_owner(own):
+	weapon_owner = own
+	pass
+
+func get_w_owner():
+	return weapon_owner
+
 func shoot(zombie):
 	if Global.ZOMBI_LIST.size() > 0:
 		var b = bullet.instance()
 		if zombie.is_inside_tree():
 			b.set_direction(zombie.global_position)
-			b.global_position = w_pos
+			b.global_position = get_owner().global_position
 			b.set_damage(get_dmg())
 			get_tree().root.call_deferred("add_child",b)
 	pass

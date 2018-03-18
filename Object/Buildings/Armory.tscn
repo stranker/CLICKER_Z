@@ -15,6 +15,7 @@ func _ready():
 func _on_Skin_pressed():
 	get_parent().close_panels()
 	get_parent().move_child(self,get_parent().get_child_count())
+	init_weapons()
 	$ArmoryPanel.show()
 	pass # replace with function body
 
@@ -23,6 +24,7 @@ func close_panel():
 
 func init_weapons():
 	$ArmoryPanel.init_weapons()
+	$ArmoryPanel.create_equip_panel()
 	pass"
 _sections_unfolded = [ "Resource" ]
 
