@@ -48,20 +48,26 @@ func _process(delta):
 
 func _on_SeekSurvivor_pressed():
 	if Global.MAX_SURVIVOR > Global.SURVIVOR_LIST.size():
-		get_node(\"/root/Buildings\").create_seek(supplies_time)
-		curr_seek = TYPE_SURVIVOR
-		$SeekTimer.wait_time = survivor_time
-		$SeekTimer.start()
+		seek_configure(TYPE_SURVIVOR,survivor_time)
 	else:
 		$Error.text = \"Upgrade the houses to seek more survivors!\"
 		$ErrorTimer.start()
 	pass # replace with function body
 
 func _on_SeekWeapon_pressed():
-	pass # replace with function body
+	pass
 
 func _on_SeekSupplies_pressed():
+	seek_configure(TYPE_SUPPLY,supplies_time)
 	pass # replace with function body
+
+func seek_configure(typ,time):
+	get_node(\"/root/Buildings\").create_seek(time)
+	curr_seek = typ
+	$SeekTimer.wait_time = time
+	$SeekTimer.start()
+	pass
+
 
 func _on_ErrorTimer_timeout():
 	$Error.text = \"\"
@@ -73,7 +79,7 @@ func seek_result():
 	var result = false
 	match curr_seek:
 		TYPE_SURVIVOR:
-			if nr > SUPPLY_PROB:
+			if nr > SURVIVOR_PROB:
 				var s = survivor.instance()
 				s.create_survivor(\"Ramiro\",\"Some stuff\",1)
 				Global.SURVIVOR_LIST.push_back(s)
@@ -81,7 +87,14 @@ func seek_result():
 		TYPE_WEAPON:
 			print(\"miau\")
 		TYPE_SUPPLY:
-			print(\"miau\")
+			if nr > SUPPLY_PROB:
+				var f = rand_range(1,Global.MAX_FOOD/2)
+				var w = rand_range(1,Global.MAX_WATER/2)
+				if Global.curr_food < Global.MAX_FOOD:
+					Global.curr_food += f
+				if Global.curr_water < Global.MAX_WATER:
+					Global.curr_water += w
+				result = true
 	return result
 
 func _on_SeekTimer_timeout():

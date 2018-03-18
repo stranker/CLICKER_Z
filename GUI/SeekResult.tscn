@@ -2,6 +2,7 @@
 
 [sub_resource type="GDScript" id=1]
 
+resource_name = "SeekResult.gd"
 script/source = "extends Panel
 
 # Seek TYPE
@@ -31,6 +32,7 @@ func _on_CloseRButton_pressed():
 	queue_free()
 	pass # replace with function body
 "
+_sections_unfolded = [ "Resource" ]
 
 [node name="SeekResult" type="Panel"]
 
