@@ -16,7 +16,8 @@ var survivor = preload(\"res://Object/Characters/Survivor.tscn\")
 var seek_type
 
 func _ready():
-	create_survivors()
+	$Deposit.init_consume()
+	$Armory.init_weapons()
 	$GUI/Seek.hide()
 	pass
 
@@ -24,14 +25,6 @@ func _process(delta):
 	$GUI/Gold.text = \"Gold: \"+str(Global.GOLD)
 	$GUI/Food.text = \"Food: \"+str(Global.curr_food)
 	$GUI/Water.text = \"Water: \"+str(Global.curr_water)
-	pass
-
-func create_survivors():
-	var s = survivor.instance()
-	s.create_survivor(\"Jorge\",\"Test\",5)
-	Global.SURVIVOR_LIST.push_back(s)
-	$Deposit.init_consume()
-	$Armory.init_weapons()
 	pass
 
 func close_panels():
@@ -54,7 +47,7 @@ func hide_seek():
 	pass"
 _sections_unfolded = [ "Resource" ]
 
-[node name="Buildings" type="Control" index="0"]
+[node name="Buildings" type="Control"]
 
 anchor_left = 0.0
 anchor_top = 0.0

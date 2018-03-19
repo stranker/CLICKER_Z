@@ -28,3 +28,12 @@ var WEAPON_LIST = []
 
 func _ready():
 	pass
+
+func search_supplies(food,water):
+	curr_food += food
+	curr_water += water
+	if curr_food > MAX_FOOD:
+		curr_food = MAX_FOOD
+	if curr_water > MAX_WATER:
+		curr_water = MAX_WATER
+	pass

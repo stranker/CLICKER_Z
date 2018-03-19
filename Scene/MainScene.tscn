@@ -1,0 +1,142 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Object/Wall.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Object/SpawnControl.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Object/Spawner.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Object/Buildings/Buildings.tscn" type="PackedScene" id=4]
+
+[sub_resource type="GDScript" id=1]
+
+resource_name = "MainScene.gd"
+script/source = "extends Control
+
+var survivor = preload(\"res://Object/Characters/Survivor.tscn\")
+
+var curr_click = 0
+enum STATES {IDLE,RAGE}
+var state = STATES.IDLE
+var player
+
+func _ready():
+	create_player()
+	set_pos_survivors()
+	$Buildings._ready()
+	pass
+
+func _process(delta):
+	if !$InteractiveArea/RageTimer.is_stopped() and curr_click > 30:
+		state = STATES.RAGE
+	else:
+		state = STATES.IDLE
+	pass
+
+func create_player():
+	player = survivor.instance()
+	player.create_player(\"Daniel\")
+	Global.player_pos = $InteractiveArea/PlayerPos.global_position
+	Global.curr_weapon = player.get_weapon()
+	pass
+
+func set_pos_survivors():
+	for i in Global.SURVIVOR_LIST:
+		get_tree().root.call_deferred(\"add_child\",i)
+		if i.get_survivor_type() == i.get_player_type():
+			i.global_position = $InteractiveArea/PlayerPos.global_position
+	pass
+
+func _on_InteractiveArea_gui_input( ev ):
+	if ev is InputEventScreenTouch:
+		if ev.is_pressed():
+			curr_click += 1
+			$InteractiveArea/RageTimer.start()
+			attack()
+	pass # replace with function body
+
+func attack():
+	if Global.ZOMBI_LIST.size()>0:
+		player.get_weapon().shoot(Global.ZOMBI_LIST[0]) #ATACA AL PRIMERO
+	pass
+
+
+func _on_RageTimer_timeout():
+	curr_click = 0
+	pass
+"
+_sections_unfolded = [ "Resource" ]
+
+[node name="MainScene" type="Control"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+script = SubResource( 1 )
+_sections_unfolded = [ "Rect" ]
+
+[node name="InteractiveArea" type="Control" parent="." index="0"]
+
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -300.0
+margin_top = -634.0
+margin_right = 300.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Wall" parent="InteractiveArea" index="0" instance=ExtResource( 1 )]
+
+position = Vector2( 30, -360 )
+
+[node name="SpawnControl" parent="InteractiveArea" index="1" instance=ExtResource( 2 )]
+
+[node name="Spawner" parent="InteractiveArea/SpawnControl" index="1" instance=ExtResource( 3 )]
+
+position = Vector2( -50, 500 )
+
+[node name="Spawner2" parent="InteractiveArea/SpawnControl" index="2" instance=ExtResource( 3 )]
+
+position = Vector2( 90, 680 )
+
+[node name="Spawner3" parent="InteractiveArea/SpawnControl" index="3" instance=ExtResource( 3 )]
+
+position = Vector2( 370, 700 )
+
+[node name="Spawner4" parent="InteractiveArea/SpawnControl" index="4" instance=ExtResource( 3 )]
+
+position = Vector2( 610, 680 )
+
+[node name="Spawner5" parent="InteractiveArea/SpawnControl" index="5" instance=ExtResource( 3 )]
+
+position = Vector2( 660, 510 )
+
+[node name="PlayerPos" type="Position2D" parent="InteractiveArea" index="2"]
+
+position = Vector2( 310, 150 )
+
+[node name="RageTimer" type="Timer" parent="InteractiveArea" index="3"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = false
+
+[node name="Buildings" parent="." index="1" instance=ExtResource( 4 )]
+
+margin_bottom = -634.0
+
+[connection signal="gui_input" from="InteractiveArea" to="." method="_on_InteractiveArea_gui_input"]
+
+[connection signal="timeout" from="InteractiveArea/RageTimer" to="." method="_on_RageTimer_timeout"]
+
+

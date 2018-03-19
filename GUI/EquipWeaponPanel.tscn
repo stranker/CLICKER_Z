@@ -42,7 +42,7 @@ func get_weapon_to_change():
 	return weapon_to_change"
 _sections_unfolded = [ "Resource" ]
 
-[node name="EquipWeaponPanel" type="Panel" index="0"]
+[node name="EquipWeaponPanel" type="Panel"]
 
 anchor_left = 0.0
 anchor_top = 0.0

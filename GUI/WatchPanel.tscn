@@ -5,8 +5,6 @@
 resource_name = "WatchPanel.gd"
 script/source = "extends Panel
 
-var seek_res = preload(\"res://GUI/SeekResult.tscn\")
-
 # Seek time
 var survivor_time = 4
 var weapon_time = 4
@@ -18,13 +16,16 @@ const TYPE_WEAPON = 1
 const TYPE_SUPPLY = 2
 
 # Seek PROB
-const SURVIVOR_PROB = 60
-const WEAPON_PROB = 80
-const SUPPLY_PROB = 50
+const SURVIVOR_PROB = 0
+const WEAPON_PROB = 0
+const SUPPLY_PROB = 0
 
 # KIND OF SEEK
 var survivor = preload(\"res://Object/Characters/Survivor.tscn\")
+var weapon = preload(\"res://Object/Weapon.tscn\")
+var seek_res = preload(\"res://GUI/SeekResult.tscn\")
 var curr_seek
+
 
 func _ready():
 	pass
@@ -43,7 +44,7 @@ func _process(delta):
 				time = weapon_time
 			TYPE_SUPPLY:
 				time = supplies_time
-		get_node(\"/root/Buildings\").set_seek_value(time - $SeekTimer.time_left)
+		get_node(\"/root/MainScene/Buildings\").set_seek_value(time - $SeekTimer.time_left)
 	pass
 
 func _on_SeekSurvivor_pressed():
@@ -55,6 +56,7 @@ func _on_SeekSurvivor_pressed():
 	pass # replace with function body
 
 func _on_SeekWeapon_pressed():
+	seek_configure(TYPE_WEAPON,weapon_time)
 	pass
 
 func _on_SeekSupplies_pressed():
@@ -62,7 +64,7 @@ func _on_SeekSupplies_pressed():
 	pass # replace with function body
 
 func seek_configure(typ,time):
-	get_node(\"/root/Buildings\").create_seek(time)
+	get_node(\"/root/MainScene/Buildings\").create_seek(time)
 	curr_seek = typ
 	$SeekTimer.wait_time = time
 	$SeekTimer.start()
@@ -82,30 +84,30 @@ func seek_result():
 			if nr > SURVIVOR_PROB:
 				var s = survivor.instance()
 				s.create_survivor(\"Ramiro\",\"Some stuff\",1)
-				Global.SURVIVOR_LIST.push_back(s)
 				result = true
 		TYPE_WEAPON:
-			print(\"miau\")
+			if nr > WEAPON_PROB:
+				var w = weapon.instance().create_random_weapon()
+				get_tree().root.call_deferred(\"add_child\",w)
+				result = true
 		TYPE_SUPPLY:
 			if nr > SUPPLY_PROB:
-				var f = rand_range(1,Global.MAX_FOOD/2)
-				var w = rand_range(1,Global.MAX_WATER/2)
-				if Global.curr_food < Global.MAX_FOOD:
-					Global.curr_food += f
-				if Global.curr_water < Global.MAX_WATER:
-					Global.curr_water += w
+				randomize()
+				var f = int(rand_range(1,Global.MAX_FOOD/2))
+				var w = int(rand_range(1,Global.MAX_WATER/2))
+				Global.search_supplies(f,w)
 				result = true
 	return result
 
 func _on_SeekTimer_timeout():
-	get_node(\"/root/Buildings\").hide_seek()
+	get_node(\"/root/MainScene/Buildings\").hide_seek()
 	var sr = seek_res.instance()
 	get_tree().root.call_deferred(\"add_child\",sr)
 	sr.set_info(curr_seek,seek_result())
 	pass # replace with function body"
 _sections_unfolded = [ "Resource" ]
 
-[node name="WatchPanel" type="Panel" index="0"]
+[node name="WatchPanel" type="Panel"]
 
 anchor_left = 0.5
 anchor_top = 0.0
@@ -201,10 +203,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -30.0
-margin_top = -10.0
+margin_left = -70.0
+margin_top = -20.0
 margin_right = -10.0
-margin_bottom = 10.0
+margin_bottom = 20.0
 rect_pivot_offset = Vector2( 0, 0 )
 focus_mode = 2
 mouse_filter = 0

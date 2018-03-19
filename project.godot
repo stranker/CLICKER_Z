@@ -11,7 +11,7 @@ config_version=3
 [application]
 
 config/name="Clicker"
-run/main_scene="res://Object/Buildings/Buildings.tscn"
+run/main_scene="res://Scene/MainScene.tscn"
 config/icon="res://icon.png"
 
 [autoload]

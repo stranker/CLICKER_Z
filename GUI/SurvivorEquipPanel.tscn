@@ -14,11 +14,15 @@ func set_info(surv):
 	survivor = surv
 	$Name.text = surv.get_survivor_name()
 	$Level.text = \"Level \"+str(surv.get_level())
-	$Weapon.text = \"Weapon :\"+surv.get_weapon().get_weapon_name()
+	if survivor.get_weapon()==null:
+		$Weapon.text = \"Weapon :\"
+	else:
+		$Weapon.text = \"Weapon :\"+surv.get_weapon().get_weapon_name()
+		
 	pass
 
 func _on_EquipButton_pressed():
-	survivor.set_weapon(get_parent().get_parent().get_weapon_to_change())
+	survivor.change_weapon(get_parent().get_parent().get_weapon_to_change())
 	get_parent().get_parent().reset_info()
 	pass # replace with function body
 "

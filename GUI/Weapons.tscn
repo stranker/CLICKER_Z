@@ -17,6 +17,7 @@ func _ready():
 func create_panels():
 	clear_panels()
 	for i in Global.WEAPON_LIST:
+		i.update()
 		var wp = w_panel.instance()
 		wp.create_panel(i)
 		add_child(wp)
@@ -28,8 +29,7 @@ func clear_panels():
 	pass
 
 func reset_info():
-	for i in get_children():
-		i.reset_info()
+	create_panels()
 	pass
 
 func init_weapons():

@@ -37,13 +37,13 @@ func _on_EquipButton_pressed():
 func _on_UpgradeButton_pressed():
 	if Global.GOLD >= weapon.get_cost()*weapon.get_level():
 		Global.GOLD -= weapon.get_cost()*weapon.get_level()
-		weapon.set_level(weapon.get_level()+1)
+		weapon.upgrade()
 		reset_info()
 	pass # replace with function body
 "
 _sections_unfolded = [ "Resource" ]
 
-[node name="WeaponPanel" type="Panel" index="0"]
+[node name="WeaponPanel" type="Panel"]
 
 show_behind_parent = true
 anchor_left = 0.0
