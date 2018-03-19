@@ -1,4 +1,4 @@
-extends Node
+extends Node2D
 
 var cost = 0
 var damage = 0
@@ -95,7 +95,7 @@ func shoot(zombie):
 		if zombie.is_inside_tree():
 			var b = bullet.instance()
 			b.set_direction(zombie.global_position)
-			b.global_position = get_w_owner().global_position
+			b.position = position
 			b.set_damage(get_dmg())
-			get_tree().root.call_deferred("add_child",b)
+			call_deferred("add_child",b)
 	pass

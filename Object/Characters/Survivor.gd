@@ -1,4 +1,4 @@
-extends Node
+extends Node2D
 
 var survivor_name = ""
 var info = ""
@@ -8,8 +8,12 @@ var weapon
 const TYPE_PLAYER = 0
 const TYPE_NPC = 1
 var survivor_type
+var shoot_time = 4
 
 func _ready():
+	if survivor_type != TYPE_PLAYER:
+		$ShootTime.wait_time = shoot_time
+		$ShootTime.start()
 	pass
 
 func create_survivor(nam,inf,lvl):
@@ -21,10 +25,12 @@ func create_survivor(nam,inf,lvl):
 	weapon = weapon.create_default_weapon(self)
 	Global.SURVIVOR_LIST.push_back(self)
 	add_child(weapon)
+	weapon.position = $WeaponPos.position
 	pass
 
 func create_player(nam):
 	create_survivor(nam,"Player character",1)
+	Global.player = self
 	survivor_type = TYPE_PLAYER
 	pass
 
@@ -42,6 +48,7 @@ func train():
 
 func set_weapon(weap):
 	weapon = weap
+	weapon.global_position = $WeaponPos.global_position
 	pass
 
 func change_weapon(weap):
@@ -63,3 +70,11 @@ func get_survivor_type():
 
 func get_weapon():
 	return weapon
+
+func _on_ShootTime_timeout():
+	if survivor_type != TYPE_PLAYER:
+		if get_weapon()!= null:
+			randomize()
+			var zn = int(rand_range(Global.ZOMBI_LIST.size()/2,Global.ZOMBI_LIST.size()))
+			get_weapon().shoot(Global.ZOMBI_LIST[zn])
+	pass # replace with function body

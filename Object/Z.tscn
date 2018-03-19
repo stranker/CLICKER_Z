@@ -12,7 +12,10 @@ var player = Global.player_pos
 var direction = Vector2()
 var life = 2
 var gold = 2
+# DROP
+const DROP_PROB = 60
 var coin = preload(\"res://Object/CoinCandy.tscn\")
+var supply = preload(\"res://Object/Supply.tscn\")
 
 func _ready():
 	direction = (player-global_position).normalized()
@@ -26,17 +29,35 @@ func _integrate_forces(state):
 	pass
 
 func get_damage(dmg):
-	if life>0:
+	if life > 0:
 		life -= dmg
-	if life<=0:
+	if life <= 0 and !alive():
 		Global.ZOMBI_LIST.erase(self)
 		Global.zombie_killed += 1
 		Global.EXP += 1
-		var c = coin.instance()
-		get_tree().root.call_deferred(\"add_child\",c)
-		c.global_position = global_position
-		c.cant = gold
+		drop_coin()
+		drop_supply()
 		queue_free()
+	pass
+
+func drop_coin():
+	var c = coin.instance()
+	get_tree().root.call_deferred(\"add_child\",c)
+	c.global_position = global_position
+	c.cant = gold
+	pass
+
+func drop_supply():
+	var nr = int(rand_range(0,100))
+	if nr > DROP_PROB:
+		var s = supply.instance()
+		if nr % 2 == 0:
+			s.create_food(10,global_position)
+		else:
+			s.create_water(10,global_position)
+		get_tree().root.call_deferred(\"add_child\",s)
+		if s.is_inside_tree():
+			s.start_tween()
 	pass
 
 func alive():

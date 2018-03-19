@@ -1,0 +1,63 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+
+resource_name = "Supply.gd"
+script/source = "extends Sprite
+
+var supply_type = -1
+const TYPE_FOOD = 0
+const TYPE_WATER = 1
+var cant = 0
+var tex = \"\"
+var active = false
+var type_pos = -1
+
+func _ready():
+	$Tween.interpolate_property(self,\"global_position\",global_position,type_pos,1,Tween.TRANS_EXPO,Tween.EASE_OUT,0)
+	$Tween.start()
+	pass
+
+func create_food(c,pos):
+	create_supply(c,pos)
+	supply_type = TYPE_FOOD
+	type_pos = Global.food_pos
+	pass
+
+func create_supply(c,pos):
+	active = true
+	global_position = pos
+	cant = c
+	texture = load(\"res://icon.png\")
+	pass
+
+func create_water(c,pos):
+	create_supply(c,pos)
+	supply_type = TYPE_WATER
+	type_pos = Global.water_pos
+	pass
+
+func _process(delta):
+	if global_position == type_pos:
+		if supply_type == TYPE_FOOD:
+			Global.add_supplies(cant,0)
+		else:
+			Global.add_supplies(0,cant)
+		queue_free()
+	pass"
+_sections_unfolded = [ "Resource" ]
+
+[node name="Supply" type="Sprite"]
+
+script = SubResource( 1 )
+
+[node name="Tween" type="Tween" parent="." index="0"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+

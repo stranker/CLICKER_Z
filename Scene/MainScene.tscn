@@ -16,10 +16,10 @@ var curr_click = 0
 enum STATES {IDLE,RAGE}
 var state = STATES.IDLE
 var player
+var survivor_pos = 1
 
 func _ready():
 	create_player()
-	set_pos_survivors()
 	$Buildings._ready()
 	pass
 
@@ -33,15 +33,20 @@ func _process(delta):
 func create_player():
 	player = survivor.instance()
 	player.create_player(\"Daniel\")
-	Global.player_pos = $InteractiveArea/PlayerPos.global_position
+	Global.player_pos = $InteractiveArea/SurvivorPositions/PlayerPos.global_position
 	Global.curr_weapon = player.get_weapon()
+	set_pos_survivor(player)
 	pass
 
-func set_pos_survivors():
-	for i in Global.SURVIVOR_LIST:
-		get_tree().root.call_deferred(\"add_child\",i)
-		if i.get_survivor_type() == i.get_player_type():
-			i.global_position = $InteractiveArea/PlayerPos.global_position
+func set_pos_survivor(s):
+	$InteractiveArea.call_deferred(\"add_child\",s)
+	if s.get_survivor_type() == s.get_player_type():
+		s.position = $InteractiveArea/SurvivorPositions/PlayerPos.position
+	else:
+		for i in $InteractiveArea/SurvivorPositions.get_children():
+			if i.get_name().find(str(survivor_pos)) > 0:
+				s.position = i.position
+		survivor_pos += 1
 	pass
 
 func _on_InteractiveArea_gui_input( ev ):
@@ -50,7 +55,7 @@ func _on_InteractiveArea_gui_input( ev ):
 			curr_click += 1
 			$InteractiveArea/RageTimer.start()
 			attack()
-	pass # replace with function body
+	pass
 
 func attack():
 	if Global.ZOMBI_LIST.size()>0:
@@ -60,8 +65,7 @@ func attack():
 
 func _on_RageTimer_timeout():
 	curr_click = 0
-	pass
-"
+	pass"
 _sections_unfolded = [ "Resource" ]
 
 [node name="MainScene" type="Control"]
@@ -71,6 +75,7 @@ anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -85,9 +90,10 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -300.0
-margin_top = -634.0
+margin_top = -694.0
 margin_right = 300.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -120,20 +126,53 @@ position = Vector2( 610, 680 )
 
 position = Vector2( 660, 510 )
 
-[node name="PlayerPos" type="Position2D" parent="InteractiveArea" index="2"]
-
-position = Vector2( 310, 150 )
-
-[node name="RageTimer" type="Timer" parent="InteractiveArea" index="3"]
+[node name="RageTimer" type="Timer" parent="InteractiveArea" index="2"]
 
 process_mode = 1
 wait_time = 1.0
 one_shot = false
 autostart = false
 
+[node name="SurvivorPositions" type="Node2D" parent="InteractiveArea" index="3"]
+
+[node name="PlayerPos" type="Position2D" parent="InteractiveArea/SurvivorPositions" index="0"]
+
+position = Vector2( 320, 140 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Survivor1" type="Position2D" parent="InteractiveArea/SurvivorPositions" index="1"]
+
+position = Vector2( 240, 120 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Survivor2" type="Position2D" parent="InteractiveArea/SurvivorPositions" index="2"]
+
+position = Vector2( 400, 160 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Survivor3" type="Position2D" parent="InteractiveArea/SurvivorPositions" index="3"]
+
+position = Vector2( 480, 180 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Survivor4" type="Position2D" parent="InteractiveArea/SurvivorPositions" index="4"]
+
+position = Vector2( 160, 90 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Survivor5" type="Position2D" parent="InteractiveArea/SurvivorPositions" index="5"]
+
+position = Vector2( 560, 180 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Survivor6" type="Position2D" parent="InteractiveArea/SurvivorPositions" index="6"]
+
+position = Vector2( 70, 50 )
+_sections_unfolded = [ "Transform" ]
+
 [node name="Buildings" parent="." index="1" instance=ExtResource( 4 )]
 
-margin_bottom = -634.0
+margin_bottom = -694.0
 
 [connection signal="gui_input" from="InteractiveArea" to="." method="_on_InteractiveArea_gui_input"]
 

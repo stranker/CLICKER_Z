@@ -15,6 +15,8 @@ var curr_food = 100
 var curr_water = 100
 var MAX_FOOD = 100
 var MAX_WATER = 100
+var food_pos = Vector2()
+var water_pos = Vector2()
 
 # Variables de Houses
 var curr_survivor = 0
@@ -22,6 +24,7 @@ var MAX_SURVIVOR = 1
 
 # Survivors
 var SURVIVOR_LIST = []
+var player
 
 # Weapons
 var WEAPON_LIST = []
@@ -29,7 +32,7 @@ var WEAPON_LIST = []
 func _ready():
 	pass
 
-func search_supplies(food,water):
+func add_supplies(food,water):
 	curr_food += food
 	curr_water += water
 	if curr_food > MAX_FOOD:
