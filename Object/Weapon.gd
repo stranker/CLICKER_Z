@@ -43,9 +43,9 @@ func create_weapon(wname,lvl,cst,dmg,stext,own):
 	cost = cst
 	damage = dmg * level
 	shop_texture = stext
-	Global.WEAPON_LIST.push_back(self)
 	weapon_owner = own
 	shop_info = "Damage: "+str(damage)
+	Global.WEAPON_LIST.push_back(self)
 	return self
 
 func create_default_weapon(own):

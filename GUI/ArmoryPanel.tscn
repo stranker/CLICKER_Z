@@ -10,27 +10,42 @@ script/source = "extends Panel
 
 var drag_unit = 7
 var rect
+var weapon = preload(\"res://Object/Weapon.tscn\")
+var survivor = preload(\"res://Object/Characters/Survivor.tscn\")
 
 func _ready():
-	$VScrollBar.min_value = -10
-	rect = Rect2(Vector2(0,50),Vector2(rect_size.x,rect_size.y - 50))
+	$Container/Weapons.create_panels()
+	configure_scroll()
+	$EquipWeaponPanel.hide()
 	pass
 
-func set_max_scroll(val):
-	$VScrollBar.max_value = val - rect_size.y + 10
+func _process(delta):
+	if Global.WEAPON_LIST.size() != $Container/Weapons.get_child_count():
+		$Container/Weapons.create_panels()
+	pass
+
+func configure_scroll():
+	$VScrollBar.min_value = -20
+	$VScrollBar.max_value = $Container/Weapons.get_total_size() - $Container.rect_min_size.y
 	pass
 
 func _on_VScrollBar_value_changed( value ):
 	$Container/Weapons.rect_position.y = -value
+	$VScrollBar.max_value = $Container/Weapons.get_total_size() - $Container.rect_min_size.y
 	pass
 
-func _on_PanelShop_gui_input( ev ):
-	if ev is InputEventScreenDrag:
-		if rect.has_point(ev.position):
-			if ev.relative.y > 0:
-				$VScrollBar.value -= drag_unit
-			else:
-				$VScrollBar.value += drag_unit
+func create_test_weapons():
+	print(\"Soy un test en ArmoryPanel\")
+	for i in range(3):
+		var w = weapon.instance()
+		w.create_default_weapon(null)
+	pass
+
+func create_survivors_test():
+	print(\"Soy un test en ArmoryPanel\")
+	for i in range(3):
+		var s = survivor.instance()
+		s.create_survivor(\"test\",0,0)
 	pass
 
 func _on_CloseButton_pressed():
@@ -39,6 +54,7 @@ func _on_CloseButton_pressed():
 
 func init_weapons():
 	$Container/Weapons.init_weapons()
+	configure_scroll()
 	pass
 
 func show_equip_panel(weapon):
@@ -53,7 +69,26 @@ func reset_info():
 func create_equip_panel():
 	$EquipWeaponPanel.create_panels()
 	$EquipWeaponPanel.hide()
-	pass"
+	pass
+
+func _on_ArmoryPanel_gui_input(ev):
+	if ev is InputEventScreenDrag:
+			if ev.relative.y > 0:
+				$VScrollBar.value -= drag_unit
+			else:
+				$VScrollBar.value += drag_unit
+	pass # replace with function body
+
+
+func _on_Add_W_pressed():
+	create_test_weapons()
+	pass # replace with function body
+
+
+func _on_Add_Sur_pressed():
+	create_survivors_test()
+	pass # replace with function body
+"
 _sections_unfolded = [ "Resource" ]
 
 [node name="ArmoryPanel" type="Panel"]
@@ -73,7 +108,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 script = SubResource( 1 )
-_sections_unfolded = [ "Rect", "Visibility" ]
+_sections_unfolded = [ "Mouse", "Visibility" ]
 
 [node name="Container" type="Container" parent="." index="0"]
 
@@ -81,11 +116,12 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 499.0
+margin_right = 500.0
 margin_bottom = 476.0
+rect_min_size = Vector2( 500, 476 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
-mouse_filter = 0
+mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
@@ -98,7 +134,6 @@ anchor_bottom = 0.0
 margin_right = 500.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 500, 0 )
-rect_clip_content = false
 
 [node name="VScrollBar" type="VScrollBar" parent="." index="1"]
 
@@ -153,6 +188,7 @@ align = 1
 
 [node name="EquipWeaponPanel" parent="." index="3" instance=ExtResource( 2 )]
 
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -161,12 +197,67 @@ margin_left = -135.0
 margin_top = -185.0
 margin_right = 135.0
 margin_bottom = 185.0
-rect_clip_content = false
 
-[connection signal="gui_input" from="." to="." method="_on_PanelShop_gui_input"]
+[node name="Add_W" type="Button" parent="." index="4"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 40.0
+margin_top = 540.0
+margin_right = 240.0
+margin_bottom = 640.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "ADD W"
+flat = false
+align = 1
+
+[node name="Add_Sur" type="Button" parent="." index="5"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 310.0
+margin_top = 540.0
+margin_right = 520.0
+margin_bottom = 650.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "ADD_S"
+flat = false
+align = 1
+
+[connection signal="gui_input" from="." to="." method="_on_ArmoryPanel_gui_input"]
 
 [connection signal="value_changed" from="VScrollBar" to="." method="_on_VScrollBar_value_changed"]
 
 [connection signal="pressed" from="CloseButton" to="." method="_on_CloseButton_pressed"]
+
+[connection signal="pressed" from="Add_W" to="." method="_on_Add_W_pressed"]
+
+[connection signal="pressed" from="Add_Sur" to="." method="_on_Add_Sur_pressed"]
 
 

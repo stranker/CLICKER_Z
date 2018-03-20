@@ -72,13 +72,10 @@ margin_bottom = -1014.0
 
 [node name="Houses" parent="." index="2" instance=ExtResource( 3 )]
 
-rect_clip_content = false
-
 [node name="TrainingField" parent="." index="3" instance=ExtResource( 4 )]
 
 margin_right = -590.0
 margin_bottom = -1014.0
-rect_clip_content = false
 
 [node name="WatchTower" parent="." index="4" instance=ExtResource( 5 )]
 
@@ -86,6 +83,7 @@ _sections_unfolded = [ "Rect", "Visibility" ]
 
 [node name="GUI" type="CanvasLayer" parent="." index="5"]
 
+editor/display_folded = true
 layer = 1
 offset = Vector2( 0, 0 )
 rotation = 0.0

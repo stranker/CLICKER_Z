@@ -3,7 +3,7 @@ extends Node
 # Antiguas variables
 var player_pos = Vector2()
 var zombie_killed = 0
-const MAX_COUNT_ZOMBIES = 200
+const MAX_COUNT_ZOMBIES = 400
 var ZOMBI_LIST = []
 var GOLD = 99999
 var EXP = 0

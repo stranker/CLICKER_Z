@@ -14,7 +14,7 @@ func _ready():
 	pass
 
 func _process(delta):
-	if Global.ZOMBI_LIST.size()>200:
+	if Global.ZOMBI_LIST.size()>Global.MAX_COUNT_ZOMBIES:
 		var z = Global.ZOMBI_LIST.pop()
 		z.queue_free()
 	pass

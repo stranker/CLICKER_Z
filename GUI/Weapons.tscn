@@ -8,11 +8,10 @@ script/source = "extends GridContainer
 var w_panel = preload(\"res://GUI/WeaponPanel.tscn\")
 
 func _ready():
-	if get_children().size() > 0:
-		get_parent().get_parent().set_max_scroll(get_child_count()*get_children()[0].rect_size.y+get_child_count()*5)
-	else:
-		get_parent().get_parent().set_max_scroll(0)
 	pass
+
+func get_total_size():
+	return get_child_count()*95
 
 func create_panels():
 	clear_panels()
@@ -21,6 +20,7 @@ func create_panels():
 		var wp = w_panel.instance()
 		wp.create_panel(i)
 		add_child(wp)
+	get_parent().get_parent().configure_scroll()
 	pass
 
 func clear_panels():
@@ -50,6 +50,7 @@ margin_right = -20.0
 margin_bottom = -809.0
 rect_min_size = Vector2( 580, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1

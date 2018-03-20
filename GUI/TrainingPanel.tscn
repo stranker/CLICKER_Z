@@ -5,15 +5,55 @@
 resource_name = "TrainingPanel.gd"
 script/source = "extends Panel
 
+const drag_unit = 7
+var survivor = preload(\"res://Object/Characters/Survivor.tscn\")
+
 func _ready():
+	$ScrollBar.min_value = -20
+	$ScrollBar.max_value = $Container/TrainingGrid.get_total_size() - $Container.rect_min_size.y
+	pass
+
+func _process(delta):
+	if Global.SURVIVOR_LIST.size() != $Container/TrainingGrid.get_child_count():
+		create_panel()
 	pass
 
 func create_panel():
-	$TrainingGrid.create_panel()
+	$Container/TrainingGrid.create_panel()
 	pass
 
 func _on_CloseButton_pressed():
 	hide()
+	pass # replace with function body
+
+
+func _on_TrainingPanel_gui_input(ev):
+	if ev is InputEventScreenDrag:
+			if ev.relative.y > 0:
+				$ScrollBar.value -= drag_unit
+			else:
+				$ScrollBar.value += drag_unit
+	pass # replace with function body
+
+
+func _on_ScrollBar_value_changed(value):
+	$Container/TrainingGrid.rect_position.y = -value
+	$ScrollBar.max_value = $Container/TrainingGrid.get_total_size() - $Container.rect_min_size.y
+	print(\"TP \"+str($Container/TrainingGrid.rect_position.y))
+	print(\"TS \"+str($Container/TrainingGrid.get_total_size()))
+	print(\"CS \"+str($Container.rect_min_size.y))
+	pass # replace with function body
+
+func create_survivors_test():
+	print(\"Soy un test en TrainingPanel\")
+	for i in range(3):
+		var s = survivor.instance()
+		s.create_survivor(\"test\",\"\",0)
+	pass
+
+
+func _on_Add_S_pressed():
+	create_survivors_test()
 	pass # replace with function body
 "
 _sections_unfolded = [ "Resource" ]
@@ -35,6 +75,9 @@ func create_panel():
 		t.set_panel(i)
 		add_child(t)
 	pass
+
+func get_total_size():
+	return get_child_count()*85
 
 func reset_survivor():
 	for i in get_children():
@@ -62,26 +105,40 @@ size_flags_vertical = 1
 script = SubResource( 1 )
 _sections_unfolded = [ "Rect" ]
 
-[node name="TrainingGrid" type="GridContainer" parent="." index="0"]
+[node name="Container" type="Container" parent="." index="0"]
 
 anchor_left = 0.0
-anchor_top = 0.5
-anchor_right = 0.0
-anchor_bottom = 0.5
-margin_top = -210.0
-margin_right = 350.0
-margin_bottom = -100.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -20.0
+margin_bottom = -30.0
+rect_min_size = Vector2( 350, 390 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="TrainingGrid" type="GridContainer" parent="Container" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 rect_min_size = Vector2( 350, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
-mouse_filter = 1
+mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 custom_constants/vseparation = 5
 columns = 1
 script = SubResource( 2 )
-_sections_unfolded = [ "Rect", "custom_constants" ]
+_sections_unfolded = [ "Mouse", "custom_constants" ]
 
 [node name="ScrollBar" type="VScrollBar" parent="." index="1"]
 
@@ -91,7 +148,7 @@ anchor_right = 1.0
 anchor_bottom = 0.5
 margin_left = -20.0
 margin_top = -195.0
-margin_bottom = 195.0
+margin_bottom = 20.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -133,6 +190,37 @@ text = "X"
 flat = false
 align = 1
 
+[node name="Add_S" type="Button" parent="." index="3"]
+
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -280.0
+margin_top = 90.0
+margin_right = -140.0
+margin_bottom = 160.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "ADD_S"
+flat = false
+align = 1
+
+[connection signal="gui_input" from="." to="." method="_on_TrainingPanel_gui_input"]
+
+[connection signal="value_changed" from="ScrollBar" to="." method="_on_ScrollBar_value_changed"]
+
 [connection signal="pressed" from="CloseButton" to="." method="_on_CloseButton_pressed"]
+
+[connection signal="pressed" from="Add_S" to="." method="_on_Add_S_pressed"]
 
 

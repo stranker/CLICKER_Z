@@ -7,8 +7,17 @@ script/source = "extends Panel
 
 var survivor_panel = preload(\"res://GUI/SurvivorEquipPanel.tscn\")
 var weapon_to_change
+var drag_unit = 7
+var size_panel = 0
 
 func _ready():
+	size_panel = survivor_panel.instance().rect_min_size.y
+	create_panels()
+	pass
+
+func configure_scroll():
+	$Scroll.min_value = -20
+	$Scroll.max_value = $Container/Survivors.get_child_count() * (size_panel + 5) - $Container.rect_size.y
 	pass
 
 func create_panels():
@@ -16,11 +25,12 @@ func create_panels():
 	for i in Global.SURVIVOR_LIST:
 		var sp = survivor_panel.instance()
 		sp.set_info(i)
-		$Survivors.add_child(sp)
+		$Container/Survivors.add_child(sp)
+	configure_scroll()
 	pass
 
 func reset_panels():
-	for i in $Survivors.get_children():
+	for i in $Container/Survivors.get_children():
 		i.queue_free()
 	pass
 
@@ -39,18 +49,33 @@ func reset_info():
 	pass
 
 func get_weapon_to_change():
-	return weapon_to_change"
+	return weapon_to_change
+
+func _on_EquipWeaponPanel_gui_input(ev):
+	if ev is InputEventScreenDrag:
+			if ev.relative.y > 0:
+				$Scroll.value -= drag_unit
+			else:
+				$Scroll.value += drag_unit
+	pass # replace with function body
+
+
+func _on_Scroll_value_changed(value):
+	$Container/Survivors.rect_position.y = -value
+	$Scroll.max_value = $Container/Survivors.get_child_count() * (size_panel + 5) - $Container.rect_size.y
+	pass # replace with function body
+"
 _sections_unfolded = [ "Resource" ]
 
-[node name="EquipWeaponPanel" type="Panel" index="0"]
+[node name="EquipWeaponPanel" type="Panel"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 270.0
-margin_bottom = 370.0
-rect_min_size = Vector2( 270, 0 )
+margin_bottom = 400.0
+rect_min_size = Vector2( 270, 400 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -60,22 +85,38 @@ size_flags_vertical = 1
 script = SubResource( 1 )
 _sections_unfolded = [ "Rect", "Visibility" ]
 
-[node name="Survivors" type="GridContainer" parent="." index="0"]
+[node name="Container" type="Container" parent="." index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 250.0
+margin_bottom = 370.0
+rect_min_size = Vector2( 250, 370 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Survivors" type="GridContainer" parent="Container" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = -20.0
 rect_min_size = Vector2( 250, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
+rect_clip_content = true
+mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 columns = 1
-_sections_unfolded = [ "Rect" ]
+_sections_unfolded = [ "Mouse", "Rect" ]
 
 [node name="Scroll" type="VScrollBar" parent="." index="1"]
 
@@ -126,6 +167,10 @@ group = null
 text = "X"
 flat = false
 align = 1
+
+[connection signal="gui_input" from="." to="." method="_on_EquipWeaponPanel_gui_input"]
+
+[connection signal="value_changed" from="Scroll" to="." method="_on_Scroll_value_changed"]
 
 [connection signal="pressed" from="CloseButton" to="." method="_on_CloseButton_pressed"]
 
