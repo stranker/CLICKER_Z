@@ -1,4 +1,6 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Sprite/Supplies/Food.png" type="Texture" id=1]
 
 [sub_resource type="GDScript" id=1]
 
@@ -22,19 +24,22 @@ func create_food(c,pos):
 	create_supply(c,pos)
 	supply_type = TYPE_FOOD
 	type_pos = Global.food_pos
+	tex = \"res://Sprite/Supplies/Food.png\"
+	texture = load(tex)
 	pass
 
 func create_supply(c,pos):
 	active = true
 	global_position = pos
 	cant = c
-	texture = load(\"res://icon.png\")
 	pass
 
 func create_water(c,pos):
 	create_supply(c,pos)
 	supply_type = TYPE_WATER
 	type_pos = Global.water_pos
+	tex = \"res://Sprite/Supplies/Water.png\"
+	texture = load(tex)
 	pass
 
 func _process(delta):
@@ -47,9 +52,12 @@ func _process(delta):
 	pass"
 _sections_unfolded = [ "Resource" ]
 
-[node name="Supply" type="Sprite"]
+[node name="Supply" type="Sprite" index="0"]
 
+scale = Vector2( 2, 2 )
+texture = ExtResource( 1 )
 script = SubResource( 1 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="Tween" type="Tween" parent="." index="0"]
 

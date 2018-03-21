@@ -5,7 +5,7 @@ var player_pos = Vector2()
 var zombie_killed = 0
 const MAX_COUNT_ZOMBIES = 400
 var ZOMBI_LIST = []
-var GOLD = 99999
+var GOLD = 0
 var EXP = 0
 var GOLD_POS = Vector2()
 var curr_weapon = null
@@ -19,8 +19,8 @@ var food_pos = Vector2()
 var water_pos = Vector2()
 
 # Variables de Houses
-var curr_survivor = 0
-var MAX_SURVIVOR = 1
+var curr_cap_survivor = 1
+var MAX_SURVIVOR = 0
 
 # Survivors
 var SURVIVOR_LIST = []

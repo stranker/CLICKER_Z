@@ -34,7 +34,10 @@ func add_weapon(weap):
 
 func remove_weapon(weap):
 	$Weapons.remove_child(weap)
-	pass"
+	pass
+
+func get_last_weapon():
+	return $Weapons.get_child($Weapons.get_child_count()-1)"
 _sections_unfolded = [ "Resource" ]
 
 [node name="Armory" type="Control"]

@@ -57,10 +57,11 @@ func _process(delta):
 	pass
 
 func _on_SeekSurvivor_pressed():
-	if Global.MAX_SURVIVOR > Global.SURVIVOR_LIST.size():
+	if Global.curr_cap_survivor > Global.SURVIVOR_LIST.size():
 		if can_search_survivor():
 			seek_configure(TYPE_SURVIVOR,survivor_time)
 			Global.remove_resources(survivor_food_cost,survivor_water_cost,0)
+			up_cost_survivor()
 		else:
 			set_error(\"Not enough supplies\")
 	else:
@@ -76,6 +77,7 @@ func _on_SeekWeapon_pressed():
 	if can_search_weapon():
 		Global.remove_resources(weapon_food_cost,weapon_water_cost,weapon_gold_cost)	
 		seek_configure(TYPE_WEAPON,weapon_time)
+		up_cost_weapon()
 	else:
 		set_error(\"Not enough supplies\")
 	pass
@@ -148,10 +150,21 @@ func can_search_survivor():
 	return Global.curr_food >= survivor_food_cost and Global.curr_water>=survivor_water_cost
 
 func can_search_weapon():
-	return Global.curr_food >= weapon_food_cost and Global.curr_water>=weapon_water_cost and Global.GOLD >= weapon_food_cost"
+	return Global.curr_food >= weapon_food_cost and Global.curr_water>=weapon_water_cost and Global.GOLD >= weapon_food_cost
+
+func up_cost_survivor():
+	survivor_water_cost = survivor_water_cost * 2
+	survivor_food_cost = survivor_food_cost * 2
+	pass
+
+func up_cost_weapon():
+	weapon_water_cost = weapon_water_cost * 2
+	weapon_food_cost = weapon_food_cost * 2
+	weapon_gold_cost = weapon_gold_cost * 2
+	pass"
 _sections_unfolded = [ "Resource" ]
 
-[node name="WatchPanel" type="Panel" index="0"]
+[node name="WatchPanel" type="Panel"]
 
 anchor_left = 0.5
 anchor_top = 0.0
