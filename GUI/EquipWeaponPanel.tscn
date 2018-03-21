@@ -15,9 +15,14 @@ func _ready():
 	create_panels()
 	pass
 
+func _process(delta):
+	if Global.SURVIVOR_LIST.size() != $Container/Survivors.get_child_count():
+		create_panels()
+	pass
+
 func configure_scroll():
 	$Scroll.min_value = -20
-	$Scroll.max_value = $Container/Survivors.get_child_count() * (size_panel + 5) - $Container.rect_size.y
+	$Scroll.max_value = 20
 	pass
 
 func create_panels():
@@ -26,7 +31,6 @@ func create_panels():
 		var sp = survivor_panel.instance()
 		sp.set_info(i)
 		$Container/Survivors.add_child(sp)
-	configure_scroll()
 	pass
 
 func reset_panels():
@@ -62,7 +66,10 @@ func _on_EquipWeaponPanel_gui_input(ev):
 
 func _on_Scroll_value_changed(value):
 	$Container/Survivors.rect_position.y = -value
-	$Scroll.max_value = $Container/Survivors.get_child_count() * (size_panel + 5) - $Container.rect_size.y
+	if $Container/Survivors.get_child_count() * (size_panel + 5) - $Container.rect_size.y > 0:
+		$Scroll.max_value = $Container/Survivors.get_child_count() * (size_panel + 5) - $Container.rect_size.y
+	else:
+		$Scroll.max_value = 20
 	pass # replace with function body
 "
 _sections_unfolded = [ "Resource" ]
@@ -77,7 +84,6 @@ margin_right = 270.0
 margin_bottom = 400.0
 rect_min_size = Vector2( 270, 400 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -128,7 +134,6 @@ margin_left = -20.0
 margin_top = -150.0
 margin_bottom = 20.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 0
@@ -154,7 +159,6 @@ margin_top = -30.0
 margin_right = -10.0
 margin_bottom = 20.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
