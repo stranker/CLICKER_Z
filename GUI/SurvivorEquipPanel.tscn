@@ -22,8 +22,8 @@ func set_info(surv):
 	pass
 
 func _on_EquipButton_pressed():
-	survivor.change_weapon(get_parent().get_parent().get_weapon_to_change())
-	get_parent().get_parent().reset_info()
+	survivor.change_weapon(get_parent().get_parent().get_parent().get_weapon_to_change())
+	get_parent().get_parent().get_parent().reset_info()
 	pass # replace with function body
 "
 _sections_unfolded = [ "Resource" ]

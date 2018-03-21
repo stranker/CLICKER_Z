@@ -1,13 +1,16 @@
 extends Node2D
 
+# INFO VARS
 var survivor_name = ""
 var info = ""
 var level = 0
-var weapon_scene = preload("res://Object/Weapon.tscn")
-var weapon
 const TYPE_PLAYER = 0
 const TYPE_NPC = 1
 var survivor_type
+# WEAPON
+var weapon_scene = preload("res://Object/Weapon.tscn")
+var weapon
+# SHOOTING TIME SURVIVORS
 var shoot_time = 4
 
 func _ready():
@@ -26,6 +29,7 @@ func create_survivor(nam,inf,lvl):
 	Global.SURVIVOR_LIST.push_back(self)
 	add_child(weapon)
 	weapon.position = $WeaponPos.position
+	$Name.text = survivor_name
 	pass
 
 func create_player(nam):
@@ -47,17 +51,21 @@ func train():
 	level += 1
 
 func set_weapon(weap):
+	weapon.get_parent().remove_child(weapon)
+	Global.armory.add_weapon(weapon)
 	weapon = weap
+	Global.armory.remove_weapon(weapon)
+	$WeaponPos.add_child(weapon)
 	weapon.global_position = $WeaponPos.global_position
 	pass
 
 func change_weapon(weap):
 	if weap != weapon:
-		if weap.get_w_owner() != null:
-			weap.get_w_owner().set_weapon(null)
-		if weapon != null:
-			weapon.set_w_owner(null)
-		weap.set_w_owner(self)
+		if weap.get_w_owner() != null: #El arma tiene duenio
+			weap.get_w_owner().set_weapon(null) #Le saco el arma
+		if weapon != null: #Si tengo arma
+			weapon.set_w_owner(null) #Ya no soy el duenio
+		weap.set_w_owner(self) #Me aduenio del arma a cambiar
 		set_weapon(weap)
 	pass
 
@@ -77,4 +85,4 @@ func _on_ShootTime_timeout():
 			randomize()
 			var zn = int(rand_range(Global.ZOMBI_LIST.size()/2,Global.ZOMBI_LIST.size()))
 			get_weapon().shoot(Global.ZOMBI_LIST[zn])
-	pass # replace with function body
+	pass

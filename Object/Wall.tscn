@@ -67,7 +67,7 @@ polygon = PoolVector2Array( -37.0685, 172.1, -14.9078, 136.643, 89.2473, 199.801
 
 position = Vector2( 59.0052, 37.0123 )
 build_mode = 0
-polygon = PoolVector2Array( -258.253, 1055.79, 242.596, 1137.04, 731.239, 1043.96, 720.158, 1019.59, 241.167, 1118.01, -240.165, 1043.73 )
+polygon = PoolVector2Array( -258.253, 1055.79, 247.387, 1264.29, 731.239, 1043.96, 720.158, 1019.59, 242.843, 1234.75, -240.165, 1043.73 )
 
 [node name="Right" type="CollisionPolygon2D" parent="." index="8"]
 

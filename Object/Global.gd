@@ -28,6 +28,7 @@ var player
 
 # Weapons
 var WEAPON_LIST = []
+var armory = null
 
 func _ready():
 	pass
@@ -35,8 +36,19 @@ func _ready():
 func add_supplies(food,water):
 	curr_food += food
 	curr_water += water
+	limit_supplies()
+	pass
+
+func limit_supplies():
 	if curr_food > MAX_FOOD:
 		curr_food = MAX_FOOD
 	if curr_water > MAX_WATER:
 		curr_water = MAX_WATER
+	pass
+
+func remove_resources(food,water,gold):
+	curr_food -= food
+	curr_water -= water
+	GOLD -= gold
+	limit_supplies()
 	pass

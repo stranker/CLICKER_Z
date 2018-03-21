@@ -40,7 +40,7 @@ func show_equip_panel(weapon):
 	get_parent().get_parent().show_equip_panel(weapon)"
 _sections_unfolded = [ "Resource" ]
 
-[node name="Weapons" type="GridContainer"]
+[node name="Weapons" type="GridContainer" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
