@@ -11,8 +11,8 @@ var GOLD_POS = Vector2()
 var curr_weapon = null
 
 # Variables de Deposit
-var curr_food = 100
-var curr_water = 100
+var curr_food = 0
+var curr_water = 0
 var MAX_FOOD = 100
 var MAX_WATER = 100
 var food_pos = Vector2()

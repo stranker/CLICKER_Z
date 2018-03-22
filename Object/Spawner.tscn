@@ -15,7 +15,7 @@ func spawn():
 	randomize()
 	pos.x = rand_range(-50,50)
 	pos.y = rand_range(-50,50)
-	if Global.ZOMBI_LIST.size() < Global.MAX_COUNT_ZOMBIES and Performance.get_monitor(Performance.TIME_FPS)>=35:
+	if Global.ZOMBI_LIST.size() < Global.MAX_COUNT_ZOMBIES and Performance.get_monitor(Performance.TIME_FPS)>=40:
 		var z = zombies.instance()
 		get_node(\"/root/MainScene/InteractiveArea/Zombies\").call_deferred(\"add_child\",z)
 		z.global_position = global_position + pos

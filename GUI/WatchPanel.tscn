@@ -5,6 +5,9 @@
 resource_name = "WatchPanel.gd"
 script/source = "extends Panel
 
+# Upgrade COST
+var upgrade_cost = 1000
+
 # Seek time
 var survivor_time = 4
 var weapon_time = 4
@@ -16,9 +19,9 @@ const TYPE_WEAPON = 1
 const TYPE_SUPPLY = 2
 
 # Seek PROB
-const SURVIVOR_PROB = 0
-const WEAPON_PROB = 0
-const SUPPLY_PROB = 0
+var SURVIVOR_PROB = 75
+var WEAPON_PROB = 70
+var SUPPLY_PROB = 0
 
 # SUPPLY SEARCH COST
 var survivor_food_cost = 100
@@ -161,10 +164,19 @@ func up_cost_weapon():
 	weapon_water_cost = weapon_water_cost * 2
 	weapon_food_cost = weapon_food_cost * 2
 	weapon_gold_cost = weapon_gold_cost * 2
-	pass"
+	pass
+
+func _on_UpgradeWatch_pressed():
+	if Global.GOLD >= upgrade_cost:
+		Global.GOLD -= upgrade_cost
+		SUPPLY_PROB -= 1
+		WEAPON_PROB -= 2
+		upgrade_cost = int(upgrade_cost * 1.5)
+	pass # replace with function body
+"
 _sections_unfolded = [ "Resource" ]
 
-[node name="WatchPanel" type="Panel"]
+[node name="WatchPanel" type="Panel" index="0"]
 
 anchor_left = 0.5
 anchor_top = 0.0
@@ -190,9 +202,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -75.0
-margin_top = -88.0
+margin_top = -127.0
 margin_right = 75.0
-margin_bottom = -28.0
+margin_bottom = -67.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -215,9 +227,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -75.0
-margin_top = 20.0
+margin_top = -39.0
 margin_right = 75.0
-margin_bottom = 80.0
+margin_bottom = 21.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -259,7 +271,32 @@ text = "Search supplies"
 flat = false
 align = 1
 
-[node name="CloseButton" type="Button" parent="." index="3"]
+[node name="UpgradeWatch" type="Button" parent="." index="3"]
+
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -78.0
+margin_top = -104.0
+margin_right = 77.0
+margin_bottom = -41.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Upgrade watchtower"
+flat = false
+align = 1
+
+[node name="CloseButton" type="Button" parent="." index="4"]
 
 anchor_left = 1.0
 anchor_top = 1.0
@@ -284,7 +321,7 @@ text = "X"
 flat = false
 align = 1
 
-[node name="Error" type="Label" parent="." index="4"]
+[node name="Error" type="Label" parent="." index="5"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -305,14 +342,14 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="ErrorTimer" type="Timer" parent="." index="5"]
+[node name="ErrorTimer" type="Timer" parent="." index="6"]
 
 process_mode = 1
 wait_time = 4.0
 one_shot = true
 autostart = false
 
-[node name="SeekTimer" type="Timer" parent="." index="6"]
+[node name="SeekTimer" type="Timer" parent="." index="7"]
 
 process_mode = 1
 wait_time = 1.0
@@ -324,6 +361,8 @@ autostart = false
 [connection signal="pressed" from="SearchWeapon" to="." method="_on_SeekWeapon_pressed"]
 
 [connection signal="pressed" from="SearchSupplies" to="." method="_on_SeekSupplies_pressed"]
+
+[connection signal="pressed" from="UpgradeWatch" to="." method="_on_UpgradeWatch_pressed"]
 
 [connection signal="pressed" from="CloseButton" to="." method="_on_CloseButton_pressed"]
 

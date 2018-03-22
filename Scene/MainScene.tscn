@@ -90,13 +90,14 @@ func _on_Gold_pressed():
 "
 _sections_unfolded = [ "Resource" ]
 
-[node name="MainScene" type="Control" index="0"]
+[node name="MainScene" type="Control"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -124,6 +125,7 @@ margin_right = 560.0
 margin_bottom = 14.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -145,6 +147,7 @@ margin_right = 560.0
 margin_bottom = 54.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -156,6 +159,7 @@ _sections_unfolded = [ "Rect" ]
 
 [node name="InteractiveArea" type="Control" parent="." index="1"]
 
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -163,8 +167,9 @@ anchor_bottom = 1.0
 margin_left = -300.0
 margin_top = -724.0
 margin_right = 300.0
-margin_bottom = 56.0
+margin_bottom = 6.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -172,7 +177,7 @@ size_flags_vertical = 1
 
 [node name="Wall" parent="InteractiveArea" index="0" instance=ExtResource( 1 )]
 
-position = Vector2( 22, -348 )
+position = Vector2( 0, -340 )
 collision_layer = 3
 collision_mask = 3
 
@@ -210,37 +215,36 @@ autostart = false
 
 [node name="SurvivorPositions" type="Node2D" parent="InteractiveArea" index="3"]
 
-editor/display_folded = true
 position = Vector2( -8, 12 )
 
 [node name="PlayerPos" type="Position2D" parent="InteractiveArea/SurvivorPositions" index="0"]
 
-position = Vector2( 320, 140 )
+position = Vector2( 298, 138 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Survivor1" type="Position2D" parent="InteractiveArea/SurvivorPositions" index="1"]
 
-position = Vector2( 238, 118 )
+position = Vector2( 208, 118 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Survivor2" type="Position2D" parent="InteractiveArea/SurvivorPositions" index="2"]
 
-position = Vector2( 418, 128 )
+position = Vector2( 398, 128 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Survivor3" type="Position2D" parent="InteractiveArea/SurvivorPositions" index="3"]
 
-position = Vector2( 148, 88 )
+position = Vector2( 128, 88 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Survivor4" type="Position2D" parent="InteractiveArea/SurvivorPositions" index="4"]
 
-position = Vector2( 498, 108 )
+position = Vector2( 488, 108 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Survivor5" type="Position2D" parent="InteractiveArea/SurvivorPositions" index="5"]
 
-position = Vector2( 68, 58 )
+position = Vector2( 58, 58 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Survivor6" type="Position2D" parent="InteractiveArea/SurvivorPositions" index="6"]
@@ -254,8 +258,6 @@ _sections_unfolded = [ "Pause" ]
 
 [node name="Buildings" parent="." index="2" instance=ExtResource( 4 )]
 
-margin_bottom = -724.0
-
 [node name="Food" type="Button" parent="." index="3"]
 
 visible = false
@@ -267,6 +269,7 @@ margin_top = 320.0
 margin_right = 80.0
 margin_bottom = 360.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -291,6 +294,7 @@ margin_top = 260.0
 margin_right = 80.0
 margin_bottom = 300.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -315,6 +319,7 @@ margin_top = 380.0
 margin_right = 80.0
 margin_bottom = 420.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
