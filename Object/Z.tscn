@@ -94,7 +94,7 @@ linear_damp = -1.0
 angular_velocity = 0.0
 angular_damp = -1.0
 script = SubResource( 1 )
-_sections_unfolded = [ "collision" ]
+_sections_unfolded = [ "Collision", "collision" ]
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
 

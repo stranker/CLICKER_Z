@@ -97,7 +97,6 @@ anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -105,9 +104,58 @@ size_flags_vertical = 1
 script = SubResource( 1 )
 _sections_unfolded = [ "Rect" ]
 
-[node name="InteractiveArea" type="Control" parent="." index="0"]
+[node name="GUI" type="CanvasLayer" parent="." index="0"]
 
 editor/display_folded = true
+layer = 3
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+
+[node name="FPS" type="Label" parent="GUI" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 520.0
+margin_right = 560.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
+
+[node name="ZC" type="Label" parent="GUI" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 520.0
+margin_top = 40.0
+margin_right = 560.0
+margin_bottom = 54.0
+rect_scale = Vector2( 2, 2 )
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
+
+[node name="InteractiveArea" type="Control" parent="." index="1"]
+
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -117,16 +165,16 @@ margin_top = -724.0
 margin_right = 300.0
 margin_bottom = 56.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-_sections_unfolded = [ "Rect" ]
 
 [node name="Wall" parent="InteractiveArea" index="0" instance=ExtResource( 1 )]
 
 position = Vector2( 22, -348 )
+collision_layer = 3
+collision_mask = 3
 
 [node name="SpawnControl" parent="InteractiveArea" index="1" instance=ExtResource( 2 )]
 
@@ -200,61 +248,13 @@ _sections_unfolded = [ "Transform" ]
 position = Vector2( 568, 88 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Buildings" parent="." index="1" instance=ExtResource( 4 )]
+[node name="Zombies" type="Node" parent="InteractiveArea" index="4"]
+
+_sections_unfolded = [ "Pause" ]
+
+[node name="Buildings" parent="." index="2" instance=ExtResource( 4 )]
 
 margin_bottom = -724.0
-
-[node name="GUI" type="CanvasLayer" parent="." index="2"]
-
-editor/display_folded = true
-layer = 1
-offset = Vector2( 0, 0 )
-rotation = 0.0
-scale = Vector2( 1, 1 )
-transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-
-[node name="FPS" type="Label" parent="GUI" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 520.0
-margin_right = 560.0
-margin_bottom = 14.0
-rect_scale = Vector2( 2, 2 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
-
-[node name="ZC" type="Label" parent="GUI" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 520.0
-margin_top = 40.0
-margin_right = 560.0
-margin_bottom = 54.0
-rect_scale = Vector2( 2, 2 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect" ]
 
 [node name="Food" type="Button" parent="." index="3"]
 
@@ -267,7 +267,6 @@ margin_top = 320.0
 margin_right = 80.0
 margin_bottom = 360.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -292,7 +291,6 @@ margin_top = 260.0
 margin_right = 80.0
 margin_bottom = 300.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -317,7 +315,6 @@ margin_top = 380.0
 margin_right = 80.0
 margin_bottom = 420.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0

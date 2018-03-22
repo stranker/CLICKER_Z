@@ -17,13 +17,13 @@ func spawn():
 	pos.y = rand_range(-50,50)
 	if Global.ZOMBI_LIST.size() < Global.MAX_COUNT_ZOMBIES and Performance.get_monitor(Performance.TIME_FPS)>=35:
 		var z = zombies.instance()
-		get_tree().root.call_deferred(\"add_child\",z)
+		get_node(\"/root/MainScene/InteractiveArea/Zombies\").call_deferred(\"add_child\",z)
 		z.global_position = global_position + pos
 		Global.ZOMBI_LIST.append(z)
 	pass"
 _sections_unfolded = [ "Resource" ]
 
-[node name="Spawner" type="Position2D" index="0"]
+[node name="Spawner" type="Position2D"]
 
 script = SubResource( 1 )
 
