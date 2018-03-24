@@ -44,7 +44,7 @@ func get_damage(dmg):
 
 func drop_coin():
 	var c = coin.instance()
-	get_tree().root.call_deferred(\"add_child\",c)
+	get_node(\"/root/MainScene/Candy\").call_deferred(\"add_child\",c)
 	c.global_position = global_position
 	c.cant = gold
 	pass
@@ -58,7 +58,7 @@ func drop_supply():
 			s.create_food(int(rand_range(1,10)),global_position)
 		else:
 			s.create_water(int(rand_range(1,10)),global_position)
-		get_tree().root.call_deferred(\"add_child\",s)
+		get_node(\"/root/MainScene/Candy\").call_deferred(\"add_child\",s)
 		if s.is_inside_tree():
 			s.start_tween()
 	pass

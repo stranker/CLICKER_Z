@@ -15,27 +15,27 @@ func _ready():
 
 func set_info(typ,result):
 	var label = \"\"
-	match typ:
-		TYPE_SURVIVOR:
-			label = \"Survivor found!\"
-			var s = Global.SURVIVOR_LIST[Global.SURVIVOR_LIST.size()-1]
-			$Pic/Name.text = \"Nombre: \"+s.get_survivor_name()
-			$Pic/Level.text = \"Level \"+str(s.get_level())
-		TYPE_WEAPON:
-			label = \"Weapon found!\"
-			var w = Global.armory.get_last_weapon()
-			$Pic/Name.text = \"Arma: \"+w.get_weapon_name()
-			$Pic/Level.text = \"Level \"+str(w.get_level())
-		TYPE_SUPPLY:
-			label = \"Supplies found!\"
 	if result:
+		match typ:
+			TYPE_SURVIVOR:
+				label = \"Survivor found!\"
+				var s = Global.SURVIVOR_LIST[Global.SURVIVOR_LIST.size()-1]
+				$Pic/Name.text = \"Nombre: \"+s.get_survivor_name()
+				$Pic/Level.text = \"Level \"+str(s.get_level())
+			TYPE_WEAPON:
+				label = \"Weapon found!\"
+				var w = Global.armory.get_last_weapon()
+				$Pic/Name.text = \"Arma: \"+w.get_weapon_name()
+				$Pic/Level.text = \"Level \"+str(w.get_level())
+			TYPE_SUPPLY:
+				label = \"Supplies found!\"
 		$Result.text = label
 	else:
 		$Result.text = \"Search failed\"
 	pass
 
 func _on_CloseRButton_pressed():
-	queue_free()
+	hide()
 	pass # replace with function body
 "
 _sections_unfolded = [ "Resource" ]
@@ -52,7 +52,6 @@ margin_top = 51.0
 margin_right = 185.0
 margin_bottom = 281.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -71,7 +70,6 @@ margin_top = 10.0
 margin_bottom = 24.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -96,7 +94,6 @@ margin_top = -20.0
 margin_right = -10.0
 margin_bottom = 25.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -112,6 +109,7 @@ align = 1
 
 [node name="Pic" type="TextureRect" parent="." index="2"]
 
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -121,7 +119,6 @@ margin_top = -26.0
 margin_right = -30.0
 margin_bottom = 44.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -140,7 +137,6 @@ margin_right = 130.0
 margin_bottom = 24.0
 rect_scale = Vector2( 1.5, 1.5 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -162,7 +158,6 @@ margin_right = 130.0
 margin_bottom = 54.0
 rect_scale = Vector2( 1.5, 1.5 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1

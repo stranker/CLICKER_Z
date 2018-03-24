@@ -56,7 +56,7 @@ func _process(delta):
 				time = weapon_time
 			TYPE_SUPPLY:
 				time = supplies_time
-		get_node(\"/root/MainScene/Buildings\").set_seek_value(time - $SeekTimer.time_left)
+		get_node(\"/root/MainScene\").set_seek_value(time - $SeekTimer.time_left)
 	pass
 
 func _on_SeekSurvivor_pressed():
@@ -90,7 +90,7 @@ func _on_SeekSupplies_pressed():
 	pass # replace with function body
 
 func seek_configure(typ,time):
-	get_node(\"/root/MainScene/Buildings\").create_seek(time)
+	get_node(\"/root/MainScene\").create_seek(time)
 	curr_seek = typ
 	$SeekTimer.wait_time = time
 	$SeekTimer.start()
@@ -143,10 +143,8 @@ func create_supplies():
 	pass
 
 func _on_SeekTimer_timeout():
-	get_node(\"/root/MainScene/Buildings\").hide_seek()
-	var sr = seek_res.instance()
-	get_tree().root.call_deferred(\"add_child\",sr)
-	sr.set_info(curr_seek,seek_result())
+	get_node(\"/root/MainScene\").hide_seek()
+	get_parent().show_result(curr_seek,seek_result())
 	pass
 
 func can_search_survivor():
@@ -176,7 +174,7 @@ func _on_UpgradeWatch_pressed():
 "
 _sections_unfolded = [ "Resource" ]
 
-[node name="WatchPanel" type="Panel" index="0"]
+[node name="WatchPanel" type="Panel"]
 
 anchor_left = 0.5
 anchor_top = 0.0
@@ -187,7 +185,6 @@ margin_top = 37.0
 margin_right = 175.0
 margin_bottom = 387.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -206,7 +203,6 @@ margin_top = -127.0
 margin_right = 75.0
 margin_bottom = -67.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -231,7 +227,6 @@ margin_top = -39.0
 margin_right = 75.0
 margin_bottom = 21.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -257,7 +252,6 @@ margin_top = 63.0
 margin_right = 75.0
 margin_bottom = 123.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -282,7 +276,6 @@ margin_top = -104.0
 margin_right = 77.0
 margin_bottom = -41.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -307,7 +300,6 @@ margin_top = -20.0
 margin_right = -10.0
 margin_bottom = 30.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -330,7 +322,6 @@ anchor_bottom = 0.0
 margin_top = 10.0
 margin_bottom = 24.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1

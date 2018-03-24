@@ -12,6 +12,7 @@ var cant = 0
 func _ready():
 	$Tween.interpolate_property(self,\"global_position\",global_position,global_position+Vector2(0,-50),0.5,Tween.TRANS_LINEAR,Tween.EASE_IN,0)
 	$Tween.interpolate_property(self,\"global_position\",global_position+Vector2(0,-50),Global.GOLD_POS,1,Tween.TRANS_EXPO,Tween.EASE_OUT,0.7)
+	$Tween.interpolate_property(self,\"modulate\",Color(1,1,1,1),Color(1,1,1,0),2,Tween.TRANS_EXPO,Tween.EASE_OUT,1)
 	$Tween.start()
 	$Label.text = \"+\"+str(cant)
 	pass
@@ -23,12 +24,12 @@ func _process(delta):
 	pass "
 _sections_unfolded = [ "Resource" ]
 
-[node name="CoinCandy" type="Sprite"]
+[node name="CoinCandy" type="Sprite" index="0"]
 
 scale = Vector2( 0.7, 0.7 )
 texture = ExtResource( 1 )
 script = SubResource( 1 )
-_sections_unfolded = [ "Transform" ]
+_sections_unfolded = [ "Visibility" ]
 
 [node name="Label" type="Label" parent="." index="0"]
 
@@ -41,7 +42,6 @@ margin_top = -14.0
 margin_right = 57.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
