@@ -24,7 +24,7 @@ func _process(delta):
 	pass "
 _sections_unfolded = [ "Resource" ]
 
-[node name="CoinCandy" type="Sprite" index="0"]
+[node name="CoinCandy" type="Sprite"]
 
 scale = Vector2( 0.7, 0.7 )
 texture = ExtResource( 1 )
@@ -42,6 +42,7 @@ margin_top = -14.0
 margin_right = 57.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1

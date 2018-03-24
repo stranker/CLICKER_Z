@@ -12,6 +12,10 @@ var weapon_scene = preload("res://Object/Weapon.tscn")
 var weapon
 # SHOOTING TIME SURVIVORS
 var shoot_time = 4
+# TRAINING VARIABLES
+# Player
+var player_income = 0
+var player_critic = 10
 
 func _ready():
 	if survivor_type != TYPE_PLAYER:
@@ -49,6 +53,18 @@ func get_level():
 
 func train():
 	level += 1
+	if survivor_type == TYPE_PLAYER:
+		player_income += 1
+		Global.player_income = player_income
+		player_critic += 1
+	pass
+
+func get_critic():
+	if survivor_type == TYPE_PLAYER:
+		return player_critic
+	else:
+		return 0
+	pass
 
 func set_weapon(weap):
 	weapon.get_parent().remove_child(weapon)
@@ -81,7 +97,7 @@ func get_weapon():
 
 func _on_ShootTime_timeout():
 	if survivor_type != TYPE_PLAYER:
-		if get_weapon()!= null:
+		if get_weapon()!= null and !Global.ZOMBI_LIST.empty():
 			randomize()
 			var zn = int(rand_range(Global.ZOMBI_LIST.size()/2,Global.ZOMBI_LIST.size()))
 			get_weapon().shoot(Global.ZOMBI_LIST[zn])

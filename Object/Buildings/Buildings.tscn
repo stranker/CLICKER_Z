@@ -36,12 +36,23 @@ script = SubResource( 1 )
 
 [node name="Armory" parent="." index="0" instance=ExtResource( 1 )]
 
+margin_left = 10.0
+margin_top = 20.0
+margin_right = -589.0
+margin_bottom = -1003.0
+rect_clip_content = false
+
 [node name="Deposit" parent="." index="1" instance=ExtResource( 2 )]
 
 margin_right = -590.0
 margin_bottom = -1014.0
 
 [node name="Houses" parent="." index="2" instance=ExtResource( 3 )]
+
+margin_left = 40.0
+margin_top = 70.0
+margin_right = -559.0
+margin_bottom = -953.0
 
 [node name="TrainingField" parent="." index="3" instance=ExtResource( 4 )]
 

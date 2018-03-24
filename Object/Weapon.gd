@@ -96,6 +96,12 @@ func shoot(zombie):
 			var b = bullet.instance()
 			b.set_direction(zombie.global_position)
 			b.position = position
-			b.set_damage(get_dmg())
+			randomize()
+			var nr = int(rand_range(1,100))
+			if nr < get_w_owner().get_critic():
+				b.set_damage(get_dmg()*2)
+				b.set_critic()
+			else:
+				b.set_damage(get_dmg())
 			call_deferred("add_child",b)
 	pass

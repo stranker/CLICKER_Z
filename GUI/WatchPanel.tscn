@@ -1,4 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://GUI/CostSearch.tscn" type="PackedScene" id=1]
+[ext_resource path="res://GUI/CostLabel.tscn" type="PackedScene" id=2]
 
 [sub_resource type="GDScript" id=1]
 
@@ -11,17 +14,14 @@ var upgrade_cost = 1000
 # Seek time
 var survivor_time = 4
 var weapon_time = 4
-var supplies_time = 4
 
 # Seek TYPE
 const TYPE_SURVIVOR = 0
 const TYPE_WEAPON = 1
-const TYPE_SUPPLY = 2
 
 # Seek PROB
 var SURVIVOR_PROB = 75
 var WEAPON_PROB = 70
-var SUPPLY_PROB = 0
 
 # SUPPLY SEARCH COST
 var survivor_food_cost = 100
@@ -29,42 +29,35 @@ var survivor_water_cost = 150
 var weapon_food_cost = 100
 var weapon_water_cost = 200
 var weapon_gold_cost = 150
-var supplies_gold_cost = 300
 
 # KIND OF SEEK
 var survivor = preload(\"res://Object/Characters/Survivor.tscn\")
 var weapon = preload(\"res://Object/Weapon.tscn\")
 var seek_res = preload(\"res://GUI/SeekResult.tscn\")
-var supplies = preload(\"res://Object/Supply.tscn\")
-var curr_seek
 
 
 func _ready():
+	set_cost()
+	pass
+
+func set_cost():
+	$UpgradeWatch/Cost.text = str(upgrade_cost)
+	$SearchWeapon/CostSearch.set_info(weapon_food_cost,weapon_water_cost,weapon_gold_cost)
+	$SearchSurvivor/CostSearch.set_info(survivor_food_cost,survivor_water_cost,null)
 	pass
 
 func _on_CloseButton_pressed():
 	hide()
 	pass
 
-func _process(delta):
-	if !$SeekTimer.is_stopped():
-		var time = 0
-		match curr_seek:
-			TYPE_SURVIVOR:
-				time = survivor_time
-			TYPE_WEAPON:
-				time = weapon_time
-			TYPE_SUPPLY:
-				time = supplies_time
-		get_node(\"/root/MainScene\").set_seek_value(time - $SeekTimer.time_left)
-	pass
-
 func _on_SeekSurvivor_pressed():
 	if Global.curr_cap_survivor > Global.SURVIVOR_LIST.size():
 		if can_search_survivor():
-			seek_configure(TYPE_SURVIVOR,survivor_time)
-			Global.remove_resources(survivor_food_cost,survivor_water_cost,0)
-			up_cost_survivor()
+				if Global.search_master.can_search_survivor():
+					seek_configure(TYPE_SURVIVOR,survivor_time)
+					Global.remove_resources(survivor_food_cost,survivor_water_cost,0)
+				else:
+					set_error(\"Survivor search in progress!\")
 		else:
 			set_error(\"Not enough supplies\")
 	else:
@@ -78,44 +71,40 @@ func set_error(text):
 
 func _on_SeekWeapon_pressed():
 	if can_search_weapon():
-		Global.remove_resources(weapon_food_cost,weapon_water_cost,weapon_gold_cost)	
-		seek_configure(TYPE_WEAPON,weapon_time)
-		up_cost_weapon()
+		if Global.search_master.can_search_weapon():
+			Global.remove_resources(weapon_food_cost,weapon_water_cost,weapon_gold_cost)
+			seek_configure(TYPE_WEAPON,weapon_time)
+		else:
+			set_error(\"Weapon search in progress!\")
 	else:
 		set_error(\"Not enough supplies\")
 	pass
 
-func _on_SeekSupplies_pressed():
-	seek_configure(TYPE_SUPPLY,supplies_time)
-	pass # replace with function body
-
 func seek_configure(typ,time):
-	get_node(\"/root/MainScene\").create_seek(time)
-	curr_seek = typ
-	$SeekTimer.wait_time = time
-	$SeekTimer.start()
+	Global.search_master.create_search(typ,time)
+	Global.search_master.set_watch(get_parent())
 	pass
 
 func _on_ErrorTimer_timeout():
 	$Error.text = \"\"
 	pass # replace with function body
 
-func seek_result():
+func seek_result(typ):
 	randomize()
 	var nr = rand_range(0,100)
 	var result = false
-	match curr_seek:
+	match typ:
 		TYPE_SURVIVOR:
 			if nr > SURVIVOR_PROB:
 				create_survivor()
+				up_cost_survivor()
+				set_cost()
 				result = true
 		TYPE_WEAPON:
 			if nr > WEAPON_PROB:
+				up_cost_weapon()
 				create_weapon()
-				result = true
-		TYPE_SUPPLY:
-			if nr > SUPPLY_PROB:
-				create_supplies()
+				set_cost()
 				result = true
 	return result
 
@@ -128,23 +117,6 @@ func create_survivor():
 func create_weapon():
 	var w = weapon.instance().create_random_weapon()
 	Global.armory.add_weapon(w)
-	pass
-
-func create_supplies():
-	randomize()
-	var f = int(rand_range(1,Global.MAX_FOOD/2))
-	var w = int(rand_range(1,Global.MAX_WATER/2))
-	var sf = supplies.instance()
-	var sw = supplies.instance()
-	sf.create_food(f,rect_global_position)
-	sw.create_water(w,rect_global_position)
-	get_tree().root.call_deferred(\"add_child\",sf)
-	get_tree().root.call_deferred(\"add_child\",sw)
-	pass
-
-func _on_SeekTimer_timeout():
-	get_node(\"/root/MainScene\").hide_seek()
-	get_parent().show_result(curr_seek,seek_result())
 	pass
 
 func can_search_survivor():
@@ -167,9 +139,10 @@ func up_cost_weapon():
 func _on_UpgradeWatch_pressed():
 	if Global.GOLD >= upgrade_cost:
 		Global.GOLD -= upgrade_cost
-		SUPPLY_PROB -= 1
+		SURVIVOR_PROB -= 1
 		WEAPON_PROB -= 2
 		upgrade_cost = int(upgrade_cost * 1.5)
+		set_cost()
 	pass # replace with function body
 "
 _sections_unfolded = [ "Resource" ]
@@ -185,6 +158,7 @@ margin_top = 37.0
 margin_right = 175.0
 margin_bottom = 387.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -194,15 +168,17 @@ _sections_unfolded = [ "Rect" ]
 
 [node name="SearchSurvivor" type="Button" parent="." index="0"]
 
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -75.0
-margin_top = -127.0
-margin_right = 75.0
-margin_bottom = -67.0
+margin_left = -140.0
+margin_top = -132.0
+margin_right = 10.0
+margin_bottom = -72.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -216,17 +192,26 @@ text = "Search survivor"
 flat = false
 align = 1
 
+[node name="CostSearch" parent="SearchSurvivor" index="0" instance=ExtResource( 1 )]
+
+margin_left = 180.0
+margin_top = -20.0
+margin_right = 290.0
+margin_bottom = 60.0
+
 [node name="SearchWeapon" type="Button" parent="." index="1"]
 
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -75.0
-margin_top = -39.0
-margin_right = 75.0
-margin_bottom = 21.0
+margin_left = -140.0
+margin_top = -32.0
+margin_right = 10.0
+margin_bottom = 28.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -240,42 +225,25 @@ text = "Search weapon"
 flat = false
 align = 1
 
-[node name="SearchSupplies" type="Button" parent="." index="2"]
+[node name="CostSearch" parent="SearchWeapon" index="0" instance=ExtResource( 1 )]
 
-visible = false
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -75.0
-margin_top = 63.0
-margin_right = 75.0
-margin_bottom = 123.0
-rect_pivot_offset = Vector2( 0, 0 )
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "Search supplies"
-flat = false
-align = 1
+margin_left = 180.0
+margin_top = -20.0
+margin_right = 290.0
+margin_bottom = 60.0
 
-[node name="UpgradeWatch" type="Button" parent="." index="3"]
+[node name="UpgradeWatch" type="Button" parent="." index="2"]
 
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -78.0
-margin_top = -104.0
-margin_right = 77.0
-margin_bottom = -41.0
+margin_left = -70.0
+margin_top = -117.0
+margin_right = 85.0
+margin_bottom = -54.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -289,7 +257,16 @@ text = "Upgrade watchtower"
 flat = false
 align = 1
 
-[node name="CloseButton" type="Button" parent="." index="4"]
+[node name="Cost" parent="UpgradeWatch" index="0" instance=ExtResource( 2 )]
+
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = -17.5
+margin_top = -23.0
+margin_right = 42.5
+margin_bottom = -3.0
+
+[node name="CloseButton" type="Button" parent="." index="3"]
 
 anchor_left = 1.0
 anchor_top = 1.0
@@ -300,6 +277,7 @@ margin_top = -20.0
 margin_right = -10.0
 margin_bottom = 30.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -313,7 +291,7 @@ text = "X"
 flat = false
 align = 1
 
-[node name="Error" type="Label" parent="." index="5"]
+[node name="Error" type="Label" parent="." index="4"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -322,6 +300,7 @@ anchor_bottom = 0.0
 margin_top = 10.0
 margin_bottom = 24.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -333,17 +312,10 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="ErrorTimer" type="Timer" parent="." index="6"]
+[node name="ErrorTimer" type="Timer" parent="." index="5"]
 
 process_mode = 1
 wait_time = 4.0
-one_shot = true
-autostart = false
-
-[node name="SeekTimer" type="Timer" parent="." index="7"]
-
-process_mode = 1
-wait_time = 1.0
 one_shot = true
 autostart = false
 
@@ -351,14 +323,10 @@ autostart = false
 
 [connection signal="pressed" from="SearchWeapon" to="." method="_on_SeekWeapon_pressed"]
 
-[connection signal="pressed" from="SearchSupplies" to="." method="_on_SeekSupplies_pressed"]
-
 [connection signal="pressed" from="UpgradeWatch" to="." method="_on_UpgradeWatch_pressed"]
 
 [connection signal="pressed" from="CloseButton" to="." method="_on_CloseButton_pressed"]
 
 [connection signal="timeout" from="ErrorTimer" to="." method="_on_ErrorTimer_timeout"]
-
-[connection signal="timeout" from="SeekTimer" to="." method="_on_SeekTimer_timeout"]
 
 

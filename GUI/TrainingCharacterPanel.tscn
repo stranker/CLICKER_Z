@@ -31,7 +31,7 @@ func _on_TrainButton_pressed():
 "
 _sections_unfolded = [ "Resource" ]
 
-[node name="TrainingCharacterPanel" type="Panel" index="0"]
+[node name="TrainingCharacterPanel" type="Panel"]
 
 anchor_left = 0.5
 anchor_top = 0.0

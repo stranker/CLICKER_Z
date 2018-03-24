@@ -3,7 +3,7 @@ extends Node
 # Antiguas variables
 var player_pos = Vector2()
 var zombie_killed = 0
-const MAX_COUNT_ZOMBIES = 400
+const MAX_COUNT_ZOMBIES = 500
 var ZOMBI_LIST = []
 var GOLD = 0
 var EXP = 0
@@ -13,8 +13,8 @@ var curr_weapon = null
 # Variables de Deposit
 var curr_food = 0
 var curr_water = 0
-var MAX_FOOD = 100
-var MAX_WATER = 100
+var MAX_FOOD = 9999
+var MAX_WATER = 9999
 var food_pos = Vector2()
 var water_pos = Vector2()
 
@@ -25,10 +25,17 @@ var MAX_SURVIVOR = 0
 # Survivors
 var SURVIVOR_LIST = []
 var player
+var player_income = 0
 
 # Weapons
 var WEAPON_LIST = []
 var armory = null
+
+# Search Master
+var search_master = null
+
+#Wall Ref
+var wall
 
 func _ready():
 	pass

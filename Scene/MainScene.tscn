@@ -1,13 +1,16 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Sprite/Coin.png" type="Texture" id=1]
 [ext_resource path="res://Sprite/Supplies/Food.png" type="Texture" id=2]
 [ext_resource path="res://Sprite/Supplies/Water.png" type="Texture" id=3]
-[ext_resource path="res://icon.png" type="Texture" id=4]
-[ext_resource path="res://Object/Wall.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Object/SpawnControl.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Object/Spawner.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Object/Buildings/Buildings.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Sprite/Search/Survivor_und.png" type="Texture" id=4]
+[ext_resource path="res://Sprite/Search/Survivor_prog.png" type="Texture" id=5]
+[ext_resource path="res://Sprite/Search/Weapon_und.png" type="Texture" id=6]
+[ext_resource path="res://Sprite/Search/Weapon_prog.png" type="Texture" id=7]
+[ext_resource path="res://Object/Wall.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Object/SpawnControl.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Object/Spawner.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Object/Buildings/Buildings.tscn" type="PackedScene" id=11]
 
 [sub_resource type="GDScript" id=1]
 
@@ -26,11 +29,15 @@ func _ready():
 	create_player()
 	set_survivor_limit()
 	$Buildings._ready()
-	Global.food_pos = $GUI/Food.rect_global_position
-	Global.water_pos = $GUI/Water.rect_global_position
-	Global.GOLD_POS = $GUI/Gold.rect_global_position
-	$GUI/Seek.hide()
+	Global.food_pos = center_rect($GUI/Food/Food)
+	Global.water_pos = center_rect($GUI/Water/Water)
+	Global.GOLD_POS = center_rect($GUI/Gold/Gold)
 	pass
+
+func center_rect(rect):
+	var width = rect.rect_size.x
+	var height = rect.rect_size.y
+	return rect.rect_global_position + Vector2(width,height)/2
 
 func _process(delta):
 	if !$InteractiveArea/RageTimer.is_stopped() and curr_click > 30:
@@ -40,8 +47,8 @@ func _process(delta):
 	$GUI/FPS.text = \"FPS \"+str(Performance.get_monitor(Performance.TIME_FPS))
 	$GUI/ZC.text = \"ZC \"+str(Global.ZOMBI_LIST.size())
 	$GUI/Gold.text = str(Global.GOLD)
-	$GUI/Food.text = \"Food: \"+str(Global.curr_food)
-	$GUI/Water.text = \"Water: \"+str(Global.curr_water)
+	$GUI/Food.text = str(Global.curr_food)
+	$GUI/Water.text = str(Global.curr_water)
 	pass
 
 func set_survivor_limit():
@@ -98,29 +105,76 @@ func _on_Water_pressed():
 func _on_Gold_pressed():
 	Global.GOLD += 99999
 	pass # replace with function body
-
-func set_seek_value(val):
-	$GUI/Seek.value = val
-	pass
-
-func create_seek(time):
-	$GUI/Seek.show()
-	$GUI/Seek.max_value = time
-	pass
-
-func hide_seek():
-	$GUI/Seek.hide()
-	pass
 "
 _sections_unfolded = [ "Resource" ]
 
-[node name="MainScene" type="Control" index="0"]
+[sub_resource type="GDScript" id=2]
+
+resource_name = "SearchMaster.gd"
+script/source = "extends GridContainer
+
+const TYPE_SURVIVOR = 0
+const TYPE_WEAPON = 1
+
+var watchtower = null
+
+func _ready():
+	Global.search_master = self
+	pass
+
+func _process(delta):
+	if !$SurTime.is_stopped():
+		$Survivor.value = $SurTime.wait_time - $SurTime.time_left
+	if !$WeaTime.is_stopped():
+		$Weapon.value = $WeaTime.wait_time - $WeaTime.time_left
+	pass
+
+func create_search(curr_seek,time):
+	match curr_seek:
+		TYPE_SURVIVOR:
+			$Survivor.show()
+			$Survivor.max_value = time
+			$SurTime.wait_time = time
+			$SurTime.start()
+		TYPE_WEAPON:
+			$Weapon.show()
+			$Weapon.max_value = time
+			$WeaTime.wait_time = time
+			$WeaTime.start()
+	pass
+
+# MOSTRAR RESULTADO
+
+func set_watch(obj):
+	watchtower = obj
+	pass
+
+func _on_SurTime_timeout():
+	$Survivor.hide()
+	watchtower.show_result(TYPE_SURVIVOR)
+	pass # replace with function body
+
+func _on_WeaTime_timeout():
+	$Weapon.hide()
+	watchtower.show_result(TYPE_WEAPON)
+	pass # replace with function body
+
+func can_search_weapon():
+	return $WeaTime.is_stopped()
+
+func can_search_survivor():
+	return $SurTime.is_stopped()
+"
+_sections_unfolded = [ "Resource" ]
+
+[node name="MainScene" type="Control"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -147,6 +201,7 @@ margin_right = 560.0
 margin_bottom = 14.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -168,6 +223,7 @@ margin_right = 560.0
 margin_bottom = 54.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -179,6 +235,7 @@ _sections_unfolded = [ "Rect" ]
 
 [node name="Gold" type="Label" parent="GUI" index="2"]
 
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.0
 anchor_right = 0.5
@@ -189,6 +246,7 @@ margin_right = 27.0
 margin_bottom = 19.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -201,16 +259,17 @@ _sections_unfolded = [ "Rect" ]
 
 [node name="Gold" type="TextureRect" parent="GUI/Gold" index="0"]
 
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = -10.0
-margin_top = 2.0
-margin_right = 22.0
-margin_bottom = 34.0
-rect_scale = Vector2( 0.3, 0.3 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -43.5
+margin_top = -9.0
+margin_right = -11.5
+margin_bottom = 23.0
+rect_scale = Vector2( 0.5, 0.5 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -221,16 +280,18 @@ _sections_unfolded = [ "Rect" ]
 
 [node name="Food" type="Label" parent="GUI" index="3"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 60.0
-margin_bottom = 34.0
+margin_left = 40.0
+margin_top = 10.0
+margin_right = 80.0
+margin_bottom = 24.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -246,12 +307,12 @@ anchor_left = 0.0
 anchor_top = 0.5
 anchor_right = 0.0
 anchor_bottom = 0.5
-margin_left = -10.0
+margin_left = -20.0
 margin_top = -7.0
-margin_right = 6.0
+margin_right = -4.0
 margin_bottom = 9.0
-rect_scale = Vector2( 0.7, 0.7 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -262,15 +323,18 @@ _sections_unfolded = [ "Rect" ]
 
 [node name="Water" type="Label" parent="GUI" index="4"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 43.0
-margin_right = 40.0
-margin_bottom = 57.0
+margin_left = 40.0
+margin_top = 50.0
+margin_right = 80.0
+margin_bottom = 64.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -280,16 +344,17 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
-[node name="TextureRect" type="TextureRect" parent="GUI/Water" index="0"]
+[node name="Water" type="TextureRect" parent="GUI/Water" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 16.0
+margin_left = -20.0
+margin_right = -4.0
 margin_bottom = 16.0
-rect_scale = Vector2( 0.7, 0.7 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -298,16 +363,37 @@ texture = ExtResource( 3 )
 stretch_mode = 6
 _sections_unfolded = [ "Rect" ]
 
-[node name="Seek" type="TextureProgress" parent="GUI" index="5"]
+[node name="SearchMaster" type="GridContainer" parent="GUI" index="5"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 154.0
-margin_right = 70.0
-margin_bottom = 224.0
+margin_top = 100.0
+margin_right = 50.0
+margin_bottom = 175.0
+rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+columns = 1
+script = SubResource( 2 )
+_sections_unfolded = [ "Rect" ]
+
+[node name="Survivor" type="TextureProgress" parent="GUI/SearchMaster" index="0"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 64.0
+margin_bottom = 64.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -319,14 +405,61 @@ page = 0.0
 value = 0.0
 exp_edit = false
 rounded = false
-texture_under = null
+texture_under = ExtResource( 4 )
 texture_over = null
-texture_progress = ExtResource( 4 )
+texture_progress = ExtResource( 5 )
 fill_mode = 4
 radial_fill_degrees = 360.0
 radial_center_offset = Vector2( 0, 0 )
 nine_patch_stretch = false
 _sections_unfolded = [ "Rect", "Textures" ]
+
+[node name="Weapon" type="TextureProgress" parent="GUI/SearchMaster" index="1"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 4.0
+margin_right = 64.0
+margin_bottom = 36.0
+rect_scale = Vector2( 2, 2 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+min_value = 0.0
+max_value = 100.0
+step = 1.0
+page = 0.0
+value = 0.0
+exp_edit = false
+rounded = false
+texture_under = ExtResource( 6 )
+texture_over = null
+texture_progress = ExtResource( 7 )
+fill_mode = 4
+radial_fill_degrees = 360.0
+radial_center_offset = Vector2( 0, 0 )
+nine_patch_stretch = false
+_sections_unfolded = [ "Textures" ]
+
+[node name="SurTime" type="Timer" parent="GUI/SearchMaster" index="2"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = true
+autostart = false
+
+[node name="WeaTime" type="Timer" parent="GUI/SearchMaster" index="3"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = true
+autostart = false
 
 [node name="InteractiveArea" type="Control" parent="." index="1"]
 
@@ -340,41 +473,42 @@ margin_top = -724.0
 margin_right = 300.0
 margin_bottom = 6.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 
-[node name="Wall" parent="InteractiveArea" index="0" instance=ExtResource( 5 )]
+[node name="Wall" parent="InteractiveArea" index="0" instance=ExtResource( 8 )]
 
-position = Vector2( 0, -340 )
+position = Vector2( 0, -240 )
 collision_layer = 3
 collision_mask = 3
 
-[node name="SpawnControl" parent="InteractiveArea" index="1" instance=ExtResource( 6 )]
+[node name="SpawnControl" parent="InteractiveArea" index="1" instance=ExtResource( 9 )]
 
 editor/display_folded = true
 position = Vector2( -8, 12 )
 
-[node name="Spawner" parent="InteractiveArea/SpawnControl" index="1" instance=ExtResource( 7 )]
+[node name="Spawner" parent="InteractiveArea/SpawnControl" index="1" instance=ExtResource( 10 )]
 
-position = Vector2( -62, 588 )
+position = Vector2( -42, 648 )
 
-[node name="Spawner2" parent="InteractiveArea/SpawnControl" index="2" instance=ExtResource( 7 )]
+[node name="Spawner2" parent="InteractiveArea/SpawnControl" index="2" instance=ExtResource( 10 )]
 
-position = Vector2( 108, 738 )
+position = Vector2( 78, 778 )
 
-[node name="Spawner3" parent="InteractiveArea/SpawnControl" index="3" instance=ExtResource( 7 )]
+[node name="Spawner3" parent="InteractiveArea/SpawnControl" index="3" instance=ExtResource( 10 )]
 
-position = Vector2( 338, 798 )
+position = Vector2( 308, 778 )
 
-[node name="Spawner4" parent="InteractiveArea/SpawnControl" index="4" instance=ExtResource( 7 )]
+[node name="Spawner4" parent="InteractiveArea/SpawnControl" index="4" instance=ExtResource( 10 )]
 
-position = Vector2( 548, 738 )
+position = Vector2( 538, 778 )
 
-[node name="Spawner5" parent="InteractiveArea/SpawnControl" index="5" instance=ExtResource( 7 )]
+[node name="Spawner5" parent="InteractiveArea/SpawnControl" index="5" instance=ExtResource( 10 )]
 
-position = Vector2( 698, 578 )
+position = Vector2( 648, 628 )
 
 [node name="RageTimer" type="Timer" parent="InteractiveArea" index="2"]
 
@@ -385,48 +519,49 @@ autostart = false
 
 [node name="SurvivorPositions" type="Node2D" parent="InteractiveArea" index="3"]
 
+editor/display_folded = true
 position = Vector2( -8, 12 )
 
 [node name="PlayerPos" type="Position2D" parent="InteractiveArea/SurvivorPositions" index="0"]
 
-position = Vector2( 298, 138 )
+position = Vector2( 298, 228 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Survivor1" type="Position2D" parent="InteractiveArea/SurvivorPositions" index="1"]
 
-position = Vector2( 208, 118 )
+position = Vector2( 198, 228 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Survivor2" type="Position2D" parent="InteractiveArea/SurvivorPositions" index="2"]
 
-position = Vector2( 398, 128 )
+position = Vector2( 388, 228 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Survivor3" type="Position2D" parent="InteractiveArea/SurvivorPositions" index="3"]
 
-position = Vector2( 128, 88 )
+position = Vector2( 118, 218 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Survivor4" type="Position2D" parent="InteractiveArea/SurvivorPositions" index="4"]
 
-position = Vector2( 488, 108 )
+position = Vector2( 488, 218 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Survivor5" type="Position2D" parent="InteractiveArea/SurvivorPositions" index="5"]
 
-position = Vector2( 58, 58 )
+position = Vector2( 48, 198 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Survivor6" type="Position2D" parent="InteractiveArea/SurvivorPositions" index="6"]
 
-position = Vector2( 568, 88 )
+position = Vector2( 568, 208 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Zombies" type="Node" parent="InteractiveArea" index="4"]
 
 _sections_unfolded = [ "Pause" ]
 
-[node name="Buildings" parent="." index="2" instance=ExtResource( 8 )]
+[node name="Buildings" parent="." index="2" instance=ExtResource( 11 )]
 
 [node name="Candy" type="CanvasLayer" parent="." index="3"]
 
@@ -446,6 +581,7 @@ margin_top = 320.0
 margin_right = 80.0
 margin_bottom = 360.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -469,6 +605,7 @@ margin_top = 260.0
 margin_right = 80.0
 margin_bottom = 300.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -492,6 +629,7 @@ margin_top = 380.0
 margin_right = 80.0
 margin_bottom = 420.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -504,6 +642,10 @@ group = null
 text = "Gold"
 flat = false
 align = 1
+
+[connection signal="timeout" from="GUI/SearchMaster/SurTime" to="GUI/SearchMaster" method="_on_SurTime_timeout"]
+
+[connection signal="timeout" from="GUI/SearchMaster/WeaTime" to="GUI/SearchMaster" method="_on_WeaTime_timeout"]
 
 [connection signal="gui_input" from="InteractiveArea" to="." method="_on_InteractiveArea_gui_input"]
 

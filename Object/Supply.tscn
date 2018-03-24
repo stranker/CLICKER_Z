@@ -21,6 +21,7 @@ func _ready():
 	var int_y = -30
 	$Tween.interpolate_property(self,\"global_position\",global_position,global_position+Vector2(rand_x,int_y),1.5,Tween.TRANS_EXPO,Tween.EASE_OUT,0)
 	$Tween.interpolate_property(self,\"global_position\",global_position,type_pos,1,Tween.TRANS_EXPO,Tween.EASE_OUT,1.5)
+	$Tween.interpolate_property(self,\"modulate\",Color(1,1,1,1),Color(1,1,1,0),2,Tween.TRANS_EXPO,Tween.EASE_OUT,2)
 	$Tween.start()
 	pass
 
@@ -36,6 +37,7 @@ func create_supply(c,pos):
 	active = true
 	global_position = pos
 	cant = c
+	$Cant.text = \"+\"+str(cant)
 	pass
 
 func create_water(c,pos):
@@ -56,7 +58,7 @@ func _process(delta):
 	pass"
 _sections_unfolded = [ "Resource" ]
 
-[node name="Supply" type="Sprite" index="0"]
+[node name="Supply" type="Sprite"]
 
 scale = Vector2( 2, 2 )
 texture = ExtResource( 1 )
@@ -71,5 +73,25 @@ playback_speed = 1.0
 playback/active = false
 playback/repeat = false
 playback/speed = 1.0
+
+[node name="Cant" type="Label" parent="." index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 10.0
+margin_top = -7.0
+margin_right = 50.0
+margin_bottom = 7.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 
 

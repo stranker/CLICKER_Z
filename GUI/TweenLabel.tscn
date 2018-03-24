@@ -1,0 +1,69 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends Label
+
+var end_pos = Vector2()
+var duration = 0
+
+func _ready():
+	$Tween.interpolate_property(self,\"rect_global_position\",rect_global_position,rect_global_position + end_pos,duration,Tween.TRANS_EXPO,Tween.EASE_OUT,0)
+	$Tween.start()
+	$Timer.wait_time = duration + 0.5
+	$Timer.start()
+	pass
+
+func set_critic_label():
+	text = \"CRITIC!\"
+	modulate = Color(1,0,0)
+	end_pos = Vector2(0,-50)
+	duration = 1
+	pass
+
+
+func _on_Timer_timeout():
+	queue_free()
+	pass # replace with function body
+"
+
+[node name="TweenLabel" type="Label"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 40.0
+margin_bottom = 14.0
+rect_scale = Vector2( 2, 2 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+script = SubResource( 1 )
+_sections_unfolded = [ "Rect" ]
+
+[node name="Tween" type="Tween" parent="." index="0"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+[node name="Timer" type="Timer" parent="." index="1"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = false
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+
+

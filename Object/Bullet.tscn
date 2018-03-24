@@ -11,6 +11,7 @@ var direction = Vector2()
 const VELOCITY = 1000
 var damage = 0
 var init_pos = Vector2()
+var critic = false
 
 func _ready():
 	set_process(true)
@@ -32,9 +33,22 @@ func set_damage(val):
 func _on_Col_body_entered(body):
 	if body.is_in_group(\"enemy\"):
 		body.get_damage(damage)
+		if critic:
+			create_critic_label()
 		queue_free()
 	pass # replace with function body
 
+func set_critic():
+	modulate = Color(1,0,0)
+	critic = true
+	pass
+
+func create_critic_label():
+	var critic_label = preload(\"res://GUI/TweenLabel.tscn\").instance()
+	get_tree().root.call_deferred(\"add_child\",critic_label)
+	critic_label.rect_global_position = global_position
+	critic_label.set_critic_label()
+	pass
 
 func _on_Vis_screen_exited():
 	queue_free()
