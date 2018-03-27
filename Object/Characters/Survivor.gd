@@ -11,16 +11,15 @@ var survivor_type
 var weapon_scene = preload("res://Object/Weapon.tscn")
 var weapon
 # SHOOTING TIME SURVIVORS
-var shoot_time = 4
+var shoot_time = 0
 # TRAINING VARIABLES
 # Player
 var player_income = 0
-var player_critic = 10
+var player_critic = 5
+# NPC
+var npc_critic = 3
 
 func _ready():
-	if survivor_type != TYPE_PLAYER:
-		$ShootTime.wait_time = shoot_time
-		$ShootTime.start()
 	pass
 
 func create_survivor(nam,inf,lvl):
@@ -34,6 +33,8 @@ func create_survivor(nam,inf,lvl):
 	add_child(weapon)
 	weapon.position = $WeaponPos.position
 	$Name.text = survivor_name
+	shoot_time = 4
+	$ShootTime.wait_time = shoot_time
 	pass
 
 func create_player(nam):
@@ -57,13 +58,16 @@ func train():
 		player_income += 1
 		Global.player_income = player_income
 		player_critic += 1
+	else:
+		npc_critic += 1
+		shoot_time -= 0.1
 	pass
 
 func get_critic():
 	if survivor_type == TYPE_PLAYER:
 		return player_critic
 	else:
-		return 0
+		return npc_critic
 	pass
 
 func set_weapon(weap):
