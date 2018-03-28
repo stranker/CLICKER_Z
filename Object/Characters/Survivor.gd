@@ -15,16 +15,13 @@ var shoot_time = 0
 # TRAINING VARIABLES
 # Player
 var player_income = 0
-var player_critic = 5
-# NPC
-var npc_critic = 3
+var critic = 1
 
 func _ready():
 	pass
 
-func create_survivor(nam,inf,lvl):
+func create_survivor(nam,lvl):
 	survivor_name = nam
-	info = inf
 	level = lvl
 	survivor_type = TYPE_NPC
 	weapon = weapon_scene.instance()
@@ -35,12 +32,14 @@ func create_survivor(nam,inf,lvl):
 	$Name.text = survivor_name
 	shoot_time = 4
 	$ShootTime.wait_time = shoot_time
+	
 	pass
 
 func create_player(nam):
-	create_survivor(nam,"Player character",1)
+	create_survivor(nam,1)
 	Global.player = self
 	survivor_type = TYPE_PLAYER
+	info = "Critic: "+str(critic)+"% +Income: "+"$"+str(player_income)
 	pass
 
 func get_survivor_name():
@@ -54,21 +53,19 @@ func get_level():
 
 func train():
 	level += 1
+	critic += 1
 	if survivor_type == TYPE_PLAYER:
 		player_income += 1
 		Global.player_income = player_income
-		player_critic += 1
+		info = "Critic: "+str(critic)+"% +Income: "+"$"+str(player_income)
 	else:
-		npc_critic += 1
+		
 		shoot_time -= 0.1
+		info = "Critic: "+str(critic)+"% Rlding time: "+str(shoot_time)+"s"
 	pass
 
 func get_critic():
-	if survivor_type == TYPE_PLAYER:
-		return player_critic
-	else:
-		return npc_critic
-	pass
+	return critic
 
 func set_weapon(weap):
 	weapon.get_parent().remove_child(weapon)

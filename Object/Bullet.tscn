@@ -61,7 +61,7 @@ _sections_unfolded = [ "Resource" ]
 custom_solver_bias = 0.0
 radius = 3.91658
 
-[node name="Bullet" type="Sprite"]
+[node name="Bullet" type="Sprite" index="0"]
 
 texture = ExtResource( 1 )
 script = SubResource( 1 )
