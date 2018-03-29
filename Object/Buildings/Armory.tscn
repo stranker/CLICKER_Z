@@ -40,7 +40,7 @@ func get_last_weapon():
 	return $Weapons.get_child($Weapons.get_child_count()-1)"
 _sections_unfolded = [ "Resource" ]
 
-[node name="Armory" type="Control"]
+[node name="Armory" type="Control" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -81,15 +81,15 @@ texture_normal = ExtResource( 1 )
 stretch_mode = 5
 _sections_unfolded = [ "Rect", "Textures" ]
 
-[node name="ArmoryPanel" parent="." index="1" instance=ExtResource( 2 )]
+[node name="Weapons" type="Node" parent="." index="1"]
+
+[node name="ArmoryPanel" parent="." index="2" instance=ExtResource( 2 )]
 
 visible = false
-margin_left = 43.5
-margin_top = 30.0
-margin_right = 558.5
-margin_bottom = 530.0
-
-[node name="Weapons" type="Node" parent="." index="2"]
+margin_left = 92.5
+margin_top = 60.0
+margin_right = 507.5
+margin_bottom = 480.0
 
 [connection signal="pressed" from="Skin" to="." method="_on_Skin_pressed"]
 

@@ -23,7 +23,7 @@ func close_panel():
 	$TrainingPanel.hide()"
 _sections_unfolded = [ "Resource" ]
 
-[node name="TrainingField" type="Control"]
+[node name="TrainingField" type="Control" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -67,8 +67,10 @@ _sections_unfolded = [ "Textures" ]
 [node name="TrainingPanel" parent="." index="1" instance=ExtResource( 2 )]
 
 visible = false
-margin_left = 119.5
-margin_right = 489.5
+margin_left = 116.5
+margin_top = 52.0
+margin_right = 486.5
+margin_bottom = 472.0
 
 [connection signal="pressed" from="TrainingButton" to="." method="_on_TrainingButton_pressed"]
 
