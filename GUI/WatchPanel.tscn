@@ -110,7 +110,7 @@ func seek_result(typ):
 
 func create_survivor():
 	var s = survivor.instance()
-	s.create_survivor(\"Ramiro\",\"Some stuff\",1)
+	s.create_random_survivor()
 	get_parent().get_parent().get_parent().set_pos_survivor(s)
 	pass
 
@@ -147,7 +147,7 @@ func _on_UpgradeWatch_pressed():
 "
 _sections_unfolded = [ "Resource" ]
 
-[node name="WatchPanel" type="Panel"]
+[node name="WatchPanel" type="Panel" index="0"]
 
 anchor_left = 0.5
 anchor_top = 0.0

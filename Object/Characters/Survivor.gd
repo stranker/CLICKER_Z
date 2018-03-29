@@ -32,7 +32,6 @@ func create_survivor(nam,lvl):
 	$Name.text = survivor_name
 	shoot_time = 4
 	$ShootTime.wait_time = shoot_time
-	
 	pass
 
 func create_player(nam):
@@ -41,6 +40,23 @@ func create_player(nam):
 	survivor_type = TYPE_PLAYER
 	info = "Critic: "+str(critic)+"% +Income: "+"$"+str(player_income)
 	pass
+
+func create_random_survivor():
+	create_survivor(get_random_name(),get_random_level())
+	pass
+
+func get_random_name():
+	randomize()
+	var name_list = ["Jorge","Pedro","Raul","Marcelo","Alberto","Carlos","Roberto","Ricardo","Agustin","Leandro","Leonardo"]
+	var lastname_list = ["Gonzalez","Martinez","Maldonado","Fernandez","Garcia","Veron","Isveche","Dujovick","Laine","Gorzuk"]
+	var num_name = randi()%name_list.size()
+	var num_last = randi()%lastname_list.size()
+	return name_list[num_name]+" "+lastname_list[num_last]
+
+func get_random_level():
+	randomize()
+	var lvl = 1 + randi()%Global.player.get_level()
+	return lvl
 
 func get_survivor_name():
 	return survivor_name
@@ -53,7 +69,7 @@ func get_level():
 
 func train():
 	level += 1
-	critic += 1
+	critic += 0.5
 	if survivor_type == TYPE_PLAYER:
 		player_income += 1
 		Global.player_income = player_income
