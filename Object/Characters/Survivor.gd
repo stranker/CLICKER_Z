@@ -15,7 +15,7 @@ var shoot_time = 0
 # TRAINING VARIABLES
 # Player
 var player_income = 0
-var critic = 50
+var critic = 1
 
 func _ready():
 	pass
