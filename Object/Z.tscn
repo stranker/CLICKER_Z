@@ -12,7 +12,7 @@ var player = Global.player_pos
 var direction = Vector2()
 var life = 2
 var gold = 2
-var wall_damage = 1
+var killer
 # DROP
 const DROP_PROB = 70
 var coin = preload(\"res://Object/CoinCandy.tscn\")
@@ -26,6 +26,7 @@ func _ready():
 	randomize()
 	WALK = int(rand_range(20,30))
 	direction = (player-global_position).normalized()
+	z_index = int(get_number())
 	pass
 
 func _integrate_forces(state):
@@ -35,7 +36,10 @@ func _integrate_forces(state):
 	set_axis_velocity(direction*WALK)
 	pass
 
-func get_damage(dmg):
+func get_number():
+	return get_name().right(get_name().find_last(\"@\")+1)
+
+func get_damage(dmg,kille):
 	if life > 0:
 		life -= dmg
 		set_axis_velocity(Vector2(0,100))
@@ -43,6 +47,7 @@ func get_damage(dmg):
 		Global.ZOMBI_LIST.erase(self)
 		Global.zombie_killed += 1
 		Global.EXP += 1
+		killer = kille
 		drop_coin()
 		drop_supply()
 		queue_free()
@@ -52,7 +57,7 @@ func drop_coin():
 	var c = coin.instance()
 	get_node(\"/root/MainScene/Candy\").call_deferred(\"add_child\",c)
 	c.global_position = global_position
-	c.cant = gold + Global.player_income
+	c.cant = gold + killer.get_income()
 	pass
 
 func drop_supply():
@@ -69,19 +74,9 @@ func drop_supply():
 			s.start_tween()
 	pass
 
-func get_wall_damage():
-	return wall_damage
-
 func alive():
 	return life>0
 
-func _on_AttackTimer_timeout():
-	Global.wall.get_damage(wall_damage)
-	pass # replace with function body
-
-func can_attack():
-	$AttackTimer.start()
-	pass
 "
 _sections_unfolded = [ "Resource" ]
 
@@ -89,9 +84,9 @@ _sections_unfolded = [ "Resource" ]
 
 custom_solver_bias = 0.0
 radius = 9.55702
-height = 14.019
+height = 14.1628
 
-[node name="Z" type="RigidBody2D" groups=[
+[node name="Z" type="RigidBody2D" index="0" groups=[
 "enemy",
 ]]
 
@@ -115,25 +110,17 @@ linear_damp = -1.0
 angular_velocity = 0.0
 angular_damp = -1.0
 script = SubResource( 1 )
-_sections_unfolded = [ "collision" ]
+_sections_unfolded = [ "Transform", "Z Index", "collision" ]
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
 
+scale = Vector2( 1.2, 1.2 )
 texture = ExtResource( 1 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
 
-position = Vector2( 1.62795, -0.155176 )
+position = Vector2( 3.55563, -3.62501 )
 shape = SubResource( 2 )
-
-[node name="AttackTimer" type="Timer" parent="." index="2"]
-
-process_mode = 1
-wait_time = 1.0
-one_shot = false
-autostart = false
-
-[connection signal="timeout" from="AttackTimer" to="." method="_on_AttackTimer_timeout"]
 
 

@@ -34,9 +34,6 @@ var armory = null
 # Search Master
 var search_master = null
 
-#Wall Ref
-var wall
-
 func _ready():
 	pass
 

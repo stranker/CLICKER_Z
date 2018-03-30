@@ -13,9 +13,8 @@ var weapon
 # SHOOTING TIME SURVIVORS
 var shoot_time = 0
 # TRAINING VARIABLES
-# Player
-var player_income = 0
-var critic = 1
+var income = 0
+var critic = 0
 
 func _ready():
 	pass
@@ -23,22 +22,24 @@ func _ready():
 func create_survivor(nam,lvl):
 	survivor_name = nam
 	level = lvl
+	critic = lvl / 2
 	survivor_type = TYPE_NPC
 	weapon = weapon_scene.instance()
 	weapon = weapon.create_default_weapon(self)
 	Global.SURVIVOR_LIST.push_back(self)
-	add_child(weapon)
+	$WeaponPos.add_child(weapon)
 	weapon.position = $WeaponPos.position
 	$Name.text = survivor_name
-	shoot_time = 4
+	shoot_time = 4 - level*0.1
 	$ShootTime.wait_time = shoot_time
+	info = "+Critic: "+str(critic)+"% -Rlding time: "+str(shoot_time)+"s +Income: "+"$"+str(income)
 	pass
 
 func create_player(nam):
 	create_survivor(nam,1)
 	Global.player = self
 	survivor_type = TYPE_PLAYER
-	info = "Critic: "+str(critic)+"% +Income: "+"$"+str(player_income)
+	info = "+Critic: "+str(critic)+"% +Income: "+"$"+str(income)
 	pass
 
 func create_random_survivor():
@@ -47,8 +48,8 @@ func create_random_survivor():
 
 func get_random_name():
 	randomize()
-	var name_list = ["Jorge","Pedro","Raul","Marcelo","Alberto","Carlos","Roberto","Ricardo","Agustin","Leandro","Leonardo"]
-	var lastname_list = ["Gonzalez","Martinez","Maldonado","Fernandez","Garcia","Veron","Isveche","Dujovick","Laine","Gorzuk"]
+	var name_list = ["Jorge","Pedro","Raul","Marcelo","Alberto","Carlos","Roberto","Ricardo","Agustin","Leandro","Leonardo","John","Michael","George","Daniel","Julian","Francisco","Indiana","Laura","Dana","Paloma","Lis","Lilen","Sofia","Josefina","Cecilia","Patricia"]
+	var lastname_list = ["Gonzalez","Martinez","Maldonado","Fernandez","Garcia","Veron","Isveche","Dujovick","Laine","Gorzuk","Guevara","Westwood","Fairchild","Rosenberg","Cabrera","Almiron"]
 	var num_name = randi()%name_list.size()
 	var num_last = randi()%lastname_list.size()
 	return name_list[num_name]+" "+lastname_list[num_last]
@@ -70,34 +71,39 @@ func get_level():
 func train():
 	level += 1
 	critic += 0.5
+	income += 1
 	if survivor_type == TYPE_PLAYER:
-		player_income += 1
-		Global.player_income = player_income
-		info = "Critic: "+str(critic)+"% +Income: "+"$"+str(player_income)
+		info = "Critic: "+str(critic)+"% +Income: "+"$"+str(income)
 	else:
-		
-		shoot_time -= 0.1
-		info = "Critic: "+str(critic)+"% Rlding time: "+str(shoot_time)+"s"
+		if shoot_time > 0.2:
+			shoot_time -= 0.1
+			info = "+Critic: "+str(critic)+"% -Rlding time: "+str(shoot_time)+"s"
+			$ShootTime.wait_time = shoot_time
 	pass
 
 func get_critic():
 	return critic
 
 func set_weapon(weap):
-	weapon.get_parent().remove_child(weapon)
-	Global.armory.add_weapon(weapon)
 	weapon = weap
 	Global.armory.remove_weapon(weapon)
 	$WeaponPos.add_child(weapon)
 	weapon.global_position = $WeaponPos.global_position
 	pass
 
+func remove_weapon():
+	var w = get_weapon()
+	$WeaponPos.remove_child(w)
+	Global.armory.add_weapon(w)
+	w.set_w_owner(null)
+	pass
+
 func change_weapon(weap):
 	if weap != weapon:
 		if weap.get_w_owner() != null: #El arma tiene duenio
-			weap.get_w_owner().set_weapon(null) #Le saco el arma
-		if weapon != null: #Si tengo arma
-			weapon.set_w_owner(null) #Ya no soy el duenio
+			weap.get_w_owner().remove_weapon() #Le saco el arma
+		if get_weapon() != null: #Si tengo arma
+			remove_weapon()
 		weap.set_w_owner(self) #Me aduenio del arma a cambiar
 		set_weapon(weap)
 	pass
@@ -109,8 +115,12 @@ func get_player_type():
 func get_survivor_type():
 	return survivor_type
 
+func get_income():
+	return income
+
 func get_weapon():
-	return weapon
+	if !$WeaponPos.get_children().empty():
+		return $WeaponPos.get_child(0)
 
 func _on_ShootTime_timeout():
 	if survivor_type != TYPE_PLAYER:

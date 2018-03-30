@@ -20,8 +20,8 @@ const TYPE_SURVIVOR = 0
 const TYPE_WEAPON = 1
 
 # Seek PROB
-var SURVIVOR_PROB = 75
-var WEAPON_PROB = 70
+var SURVIVOR_PROB = 1
+var WEAPON_PROB = 1
 
 # SUPPLY SEARCH COST
 var survivor_food_cost = 100
@@ -147,7 +147,7 @@ func _on_UpgradeWatch_pressed():
 "
 _sections_unfolded = [ "Resource" ]
 
-[node name="WatchPanel" type="Panel" index="0"]
+[node name="WatchPanel" type="Panel"]
 
 anchor_left = 0.5
 anchor_top = 0.0
@@ -158,7 +158,6 @@ margin_top = 37.0
 margin_right = 175.0
 margin_bottom = 387.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -178,7 +177,6 @@ margin_top = -132.0
 margin_right = 10.0
 margin_bottom = -72.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -211,7 +209,6 @@ margin_top = -32.0
 margin_right = 10.0
 margin_bottom = 28.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -243,7 +240,6 @@ margin_top = -117.0
 margin_right = 85.0
 margin_bottom = -54.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -277,7 +273,6 @@ margin_top = -20.0
 margin_right = -10.0
 margin_bottom = 30.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -300,7 +295,6 @@ anchor_bottom = 0.0
 margin_top = 10.0
 margin_bottom = 24.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1

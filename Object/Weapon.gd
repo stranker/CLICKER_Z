@@ -85,7 +85,10 @@ func set_w_owner(own):
 	pass
 
 func get_w_owner():
-	return weapon_owner
+	if get_parent().get_parent().get_name().findn("Survivor")>=0:
+		return get_parent().get_parent()
+	else:
+		return null
 
 func update():
 	pass

@@ -10,6 +10,7 @@ script/source = "extends Control
 
 func _ready():
 	$TrainingPanel.hide()
+	$Name.text = get_name()
 	pass
 
 func _on_TrainingButton_pressed():
@@ -23,7 +24,7 @@ func close_panel():
 	$TrainingPanel.hide()"
 _sections_unfolded = [ "Resource" ]
 
-[node name="TrainingField" type="Control" index="0"]
+[node name="TrainingField" type="Control"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -45,10 +46,10 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 110.0
-margin_top = 270.0
-margin_right = 234.0
-margin_bottom = 394.0
+margin_left = 90.0
+margin_top = 250.0
+margin_right = 214.0
+margin_bottom = 374.0
 rect_pivot_offset = Vector2( 0, 0 )
 focus_mode = 2
 mouse_filter = 0
@@ -71,6 +72,27 @@ margin_left = 116.5
 margin_top = 52.0
 margin_right = 486.5
 margin_bottom = 472.0
+
+[node name="Name" type="Label" parent="." index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 80.0
+margin_top = 240.0
+margin_right = 210.0
+margin_bottom = 260.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 
 [connection signal="pressed" from="TrainingButton" to="." method="_on_TrainingButton_pressed"]
 

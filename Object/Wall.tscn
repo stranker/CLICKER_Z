@@ -7,30 +7,11 @@
 resource_name = "Wall.gd"
 script/source = "extends StaticBody2D
 
-var life = 3000
-
 func _ready():
-	$Life.max_value = 3000
-	Global.wall = self
-	pass
-
-func _process(delta):
-	$Life/LifeLabel.text = \"Health \\t\"+str(life)
-	pass
-
-func get_damage(val):
-	if life > 0:
-		life -= val
-	pass
-
-func _on_Colision_body_entered(body):
-	if body.is_in_group(\"enemy\"):
-		body.can_attack()
-	pass # replace with function body
-"
+	pass"
 _sections_unfolded = [ "Resource" ]
 
-[node name="Wall" type="StaticBody2D" groups=[
+[node name="Wall" type="StaticBody2D" index="0" groups=[
 "wall",
 ]]
 
@@ -50,94 +31,29 @@ position = Vector2( 300.205, 518.476 )
 rotation = 0.00283048
 texture = ExtResource( 1 )
 
-[node name="Colision" type="Area2D" parent="." index="1"]
-
-input_pickable = true
-gravity_vec = Vector2( 0, 1 )
-gravity = 98.0
-linear_damp = 0.1
-angular_damp = 1.0
-audio_bus_override = false
-audio_bus_name = "Master"
-
-[node name="Wall" type="CollisionPolygon2D" parent="Colision" index="0"]
-
-position = Vector2( 13.4978, 305.884 )
-build_mode = 0
-polygon = PoolVector2Array( -13.4327, 227.299, -14.1678, 189.809, 51.9903, 218.478, 526.35, 225.106, 585.013, 194.422, 587.72, 230.521, 528.155, 246.766, 54.3441, 246.766 )
-
-[node name="Bottom" type="CollisionPolygon2D" parent="." index="2"]
+[node name="Bottom" type="CollisionPolygon2D" parent="." index="1"]
 
 position = Vector2( 59.0052, 37.0123 )
 build_mode = 0
 polygon = PoolVector2Array( -258.253, 1055.79, 247.387, 1264.29, 731.239, 1043.96, 720.158, 1019.59, 242.843, 1234.75, -240.165, 1043.73 )
 
-[node name="Right" type="CollisionPolygon2D" parent="." index="3"]
+[node name="Right" type="CollisionPolygon2D" parent="." index="2"]
 
 position = Vector2( 26.2012, -22.2074 )
 scale = Vector2( 1.02375, 1 )
 build_mode = 0
 polygon = PoolVector2Array( 732.247, 1078.81, 748.482, 1098.75, 559.18, 516.635, 563.416, 553.207 )
 
-[node name="Left" type="CollisionPolygon2D" parent="." index="4"]
+[node name="Left" type="CollisionPolygon2D" parent="." index="3"]
 
 position = Vector2( -748.275, -30.1422 )
 build_mode = 0
 polygon = PoolVector2Array( 547.296, 1124.3, 746.206, 519.919, 746.206, 563.613, 568.398, 1112.24 )
 
-[node name="ColisionWall" type="CollisionPolygon2D" parent="." index="5"]
+[node name="ColisionWall" type="CollisionPolygon2D" parent="." index="4"]
 
 position = Vector2( 13.4978, 299.368 )
 build_mode = 0
 polygon = PoolVector2Array( -13.4327, 227.299, -14.1678, 189.809, 51.9903, 218.478, 526.35, 225.106, 585.013, 194.422, 587.72, 230.521, 528.155, 246.766, 54.3441, 246.766 )
-
-[node name="Life" type="ProgressBar" parent="." index="6"]
-
-editor/display_folded = true
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 139.0
-margin_top = 494.0
-margin_right = 384.0
-margin_bottom = 514.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 0
-min_value = 0.0
-max_value = 100.0
-step = 1.0
-page = 0.0
-value = 0.0
-exp_edit = false
-rounded = false
-percent_visible = false
-_sections_unfolded = [ "Percent" ]
-
-[node name="LifeLabel" type="Label" parent="Life" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-margin_top = -7.0
-margin_bottom = 7.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-
-[connection signal="body_entered" from="Colision" to="." method="_on_Colision_body_entered"]
 
 
