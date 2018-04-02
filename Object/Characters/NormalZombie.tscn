@@ -26,7 +26,6 @@ func _ready():
 	randomize()
 	WALK = int(rand_range(20,30))
 	direction = (player-global_position).normalized()
-	z_index = int(get_number())
 	pass
 
 func _integrate_forces(state):
@@ -35,9 +34,6 @@ func _integrate_forces(state):
 	direction = (player-global_position).normalized()
 	set_axis_velocity(direction*WALK)
 	pass
-
-func get_number():
-	return get_name().right(get_name().find_last(\"@\")+1)
 
 func get_damage(dmg,kille):
 	if life > 0:
@@ -83,10 +79,10 @@ _sections_unfolded = [ "Resource" ]
 [sub_resource type="CapsuleShape2D" id=2]
 
 custom_solver_bias = 0.0
-radius = 9.55702
-height = 14.1628
+radius = 12.7556
+height = 21.6435
 
-[node name="Z" type="RigidBody2D" index="0" groups=[
+[node name="Z" type="RigidBody2D" groups=[
 "enemy",
 ]]
 
@@ -114,13 +110,13 @@ _sections_unfolded = [ "Transform", "Z Index", "collision" ]
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
 
-scale = Vector2( 1.2, 1.2 )
+scale = Vector2( 1.5, 1.5 )
 texture = ExtResource( 1 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
 
-position = Vector2( 3.55563, -3.62501 )
+position = Vector2( 4.35006, -0.0500697 )
 shape = SubResource( 2 )
 
 

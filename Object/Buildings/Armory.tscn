@@ -15,10 +15,13 @@ func _ready():
 	pass
 
 func _on_Skin_pressed():
+	$ArmoryPanel.rect_scale = Vector2(0,0)
 	get_parent().close_panels()
 	get_parent().move_child(self,get_parent().get_child_count())
 	init_weapons()
 	$ArmoryPanel.show()
+	$Tween.interpolate_property($ArmoryPanel,\"rect_scale\",Vector2(0,0),Vector2(1,1),0.5,Tween.TRANS_EXPO,Tween.EASE_OUT,0.1)
+	$Tween.start()
 	pass # replace with function body
 
 func close_panel():
@@ -38,7 +41,8 @@ func remove_weapon(weap):
 	pass
 
 func get_last_weapon():
-	return $Weapons.get_child($Weapons.get_child_count()-1)"
+	return $Weapons.get_child($Weapons.get_child_count()-1)
+"
 _sections_unfolded = [ "Resource" ]
 
 [node name="Armory" type="Control"]
@@ -50,6 +54,7 @@ anchor_bottom = 1.0
 margin_right = -599.0
 margin_bottom = -1023.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -68,6 +73,7 @@ margin_top = 40.0
 margin_right = 509.0
 margin_bottom = 54.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -91,6 +97,7 @@ margin_right = 444.0
 margin_bottom = 110.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -106,13 +113,22 @@ _sections_unfolded = [ "Rect", "Textures" ]
 
 [node name="Weapons" type="Node" parent="." index="2"]
 
-[node name="ArmoryPanel" parent="." index="3" instance=ExtResource( 2 )]
+[node name="Tween" type="Tween" parent="." index="3"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+[node name="ArmoryPanel" parent="." index="4" instance=ExtResource( 2 )]
 
 visible = false
-margin_left = 92.5
-margin_top = 60.0
-margin_right = 507.5
-margin_bottom = 480.0
+margin_left = 89.5
+margin_top = 70.0
+margin_right = 504.5
+margin_bottom = 490.0
 
 [connection signal="pressed" from="Skin" to="." method="_on_Skin_pressed"]
 

@@ -81,14 +81,12 @@ func _on_InteractiveArea_gui_input( ev ):
 			curr_click += 1
 			$InteractiveArea/RageTimer.start()
 			attack()
-			print(Global.ZOMBI_LIST[0].global_position)
 	pass
 
 func attack():
 	if Global.ZOMBI_LIST.size()>0:
 		player.get_weapon().shoot(Global.ZOMBI_LIST[0]) #ATACA AL PRIMERO
 	pass
-
 
 func _on_RageTimer_timeout():
 	curr_click = 0
@@ -98,11 +96,9 @@ func _on_Food_pressed():
 	Global.curr_food += 99999
 	pass # replace with function body
 
-
 func _on_Water_pressed():
 	Global.curr_water += 99999
 	pass # replace with function body
-
 
 func _on_Gold_pressed():
 	Global.GOLD += 99999
@@ -169,13 +165,14 @@ func can_search_survivor():
 "
 _sections_unfolded = [ "Resource" ]
 
-[node name="MainScene" type="Control"]
+[node name="MainScene" type="Control" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -185,6 +182,7 @@ _sections_unfolded = [ "Rect" ]
 
 [node name="InteractiveArea" type="Control" parent="." index="0"]
 
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -194,6 +192,7 @@ margin_top = -784.0
 margin_right = 300.0
 margin_bottom = -54.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -216,19 +215,19 @@ position = Vector2( -42, 648 )
 
 [node name="Spawner2" parent="InteractiveArea/SpawnControl" index="2" instance=ExtResource( 3 )]
 
-position = Vector2( 78, 778 )
+position = Vector2( 78, 818 )
 
 [node name="Spawner3" parent="InteractiveArea/SpawnControl" index="3" instance=ExtResource( 3 )]
 
-position = Vector2( 308, 778 )
+position = Vector2( 308, 818 )
 
 [node name="Spawner4" parent="InteractiveArea/SpawnControl" index="4" instance=ExtResource( 3 )]
 
-position = Vector2( 538, 778 )
+position = Vector2( 558, 818 )
 
 [node name="Spawner5" parent="InteractiveArea/SpawnControl" index="5" instance=ExtResource( 3 )]
 
-position = Vector2( 648, 628 )
+position = Vector2( 648, 658 )
 
 [node name="RageTimer" type="Timer" parent="InteractiveArea" index="2"]
 
@@ -294,7 +293,6 @@ transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 
 [node name="GUI" type="CanvasLayer" parent="." index="3"]
 
-editor/display_folded = true
 layer = 0
 offset = Vector2( 0, 0 )
 rotation = 0.0
@@ -312,6 +310,7 @@ margin_right = 560.0
 margin_bottom = 14.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -333,6 +332,7 @@ margin_right = 560.0
 margin_bottom = 54.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -344,7 +344,6 @@ _sections_unfolded = [ "Rect" ]
 
 [node name="Gold" type="Label" parent="GUI" index="2"]
 
-editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.0
 anchor_right = 0.5
@@ -355,6 +354,7 @@ margin_right = 27.0
 margin_bottom = 19.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -377,6 +377,7 @@ margin_right = -11.5
 margin_bottom = 23.0
 rect_scale = Vector2( 0.5, 0.5 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -398,6 +399,7 @@ margin_right = 80.0
 margin_bottom = 24.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -418,6 +420,7 @@ margin_top = -7.0
 margin_right = -4.0
 margin_bottom = 9.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -439,6 +442,7 @@ margin_right = 80.0
 margin_bottom = 64.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -458,6 +462,7 @@ margin_left = -20.0
 margin_right = -4.0
 margin_bottom = 16.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -478,6 +483,7 @@ margin_right = 50.0
 margin_bottom = 175.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -496,6 +502,7 @@ anchor_bottom = 0.0
 margin_right = 64.0
 margin_bottom = 64.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -528,6 +535,7 @@ margin_right = 64.0
 margin_bottom = 36.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -572,6 +580,7 @@ margin_top = 320.0
 margin_right = 80.0
 margin_bottom = 360.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -595,6 +604,7 @@ margin_top = 260.0
 margin_right = 80.0
 margin_bottom = 300.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -618,6 +628,7 @@ margin_top = 380.0
 margin_right = 80.0
 margin_bottom = 420.0
 rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0

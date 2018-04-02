@@ -5,7 +5,7 @@
 resource_name = "Spawner.gd"
 script/source = "extends Position2D
 
-var zombies = preload(\"res://Object/Z.tscn\")
+var zombies = preload(\"res://Object/Characters/NormalZombie.tscn\")
 var pos = Vector2()
 
 func _ready():
@@ -15,7 +15,7 @@ func spawn():
 	randomize()
 	pos.x = rand_range(-50,50)
 	pos.y = rand_range(-50,50)
-	if Global.ZOMBI_LIST.size() < Global.MAX_COUNT_ZOMBIES and Performance.get_monitor(Performance.TIME_FPS)>=40:
+	if Global.ZOMBI_LIST.size() < Global.MAX_COUNT_ZOMBIES and Performance.get_monitor(Performance.TIME_FPS)>=30:
 		var z = zombies.instance()
 		get_node(\"/root/MainScene/InteractiveArea/Zombies\").call_deferred(\"add_child\",z)
 		z.global_position = global_position + pos
