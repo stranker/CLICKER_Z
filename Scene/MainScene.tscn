@@ -1,16 +1,17 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Object/Wall.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Object/SpawnControl.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Object/Spawner.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Object/Buildings/Buildings.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Sprite/Coin.png" type="Texture" id=5]
-[ext_resource path="res://Sprite/Supplies/Food.png" type="Texture" id=6]
-[ext_resource path="res://Sprite/Supplies/Water.png" type="Texture" id=7]
-[ext_resource path="res://Sprite/Search/Survivor_und.png" type="Texture" id=8]
-[ext_resource path="res://Sprite/Search/Survivor_prog.png" type="Texture" id=9]
-[ext_resource path="res://Sprite/Search/Weapon_und.png" type="Texture" id=10]
-[ext_resource path="res://Sprite/Search/Weapon_prog.png" type="Texture" id=11]
+[ext_resource path="res://GUI/Achievements.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Sprite/Coin.png" type="Texture" id=6]
+[ext_resource path="res://Sprite/Supplies/Food.png" type="Texture" id=7]
+[ext_resource path="res://Sprite/Supplies/Water.png" type="Texture" id=8]
+[ext_resource path="res://Sprite/Search/Survivor_und.png" type="Texture" id=9]
+[ext_resource path="res://Sprite/Search/Survivor_prog.png" type="Texture" id=10]
+[ext_resource path="res://Sprite/Search/Weapon_und.png" type="Texture" id=11]
+[ext_resource path="res://Sprite/Search/Weapon_prog.png" type="Texture" id=12]
 
 [sub_resource type="GDScript" id=1]
 
@@ -103,6 +104,12 @@ func _on_Water_pressed():
 func _on_Gold_pressed():
 	Global.GOLD += 99999
 	pass # replace with function body
+
+
+func _on_Achieve_pressed():
+	$OnTop/Achieve/Achievements.show()
+	$OnTop/Achieve/Achievements.update()
+	pass # replace with function body
 "
 _sections_unfolded = [ "Resource" ]
 
@@ -165,14 +172,13 @@ func can_search_survivor():
 "
 _sections_unfolded = [ "Resource" ]
 
-[node name="MainScene" type="Control" index="0"]
+[node name="MainScene" type="Control"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -192,7 +198,6 @@ margin_top = -784.0
 margin_right = 300.0
 margin_bottom = -54.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -291,7 +296,47 @@ rotation = 0.0
 scale = Vector2( 1, 1 )
 transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 
-[node name="GUI" type="CanvasLayer" parent="." index="3"]
+[node name="OnTop" type="CanvasLayer" parent="." index="3"]
+
+layer = 3
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+
+[node name="Achieve" type="Button" parent="OnTop" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 490.0
+margin_top = 190.0
+margin_right = 594.0
+margin_bottom = 230.0
+rect_pivot_offset = Vector2( 0, 0 )
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Achievements"
+flat = false
+align = 1
+
+[node name="Achievements" parent="OnTop/Achieve" index="0" instance=ExtResource( 5 )]
+
+visible = false
+margin_left = -490.0
+margin_top = -120.0
+margin_right = 6.0
+margin_bottom = 730.0
+
+[node name="GUI" type="CanvasLayer" parent="." index="4"]
 
 layer = 0
 offset = Vector2( 0, 0 )
@@ -310,7 +355,6 @@ margin_right = 560.0
 margin_bottom = 14.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -332,7 +376,6 @@ margin_right = 560.0
 margin_bottom = 54.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -354,7 +397,6 @@ margin_right = 27.0
 margin_bottom = 19.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -377,12 +419,11 @@ margin_right = -11.5
 margin_bottom = 23.0
 rect_scale = Vector2( 0.5, 0.5 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 stretch_mode = 6
 _sections_unfolded = [ "Rect" ]
 
@@ -399,7 +440,6 @@ margin_right = 80.0
 margin_bottom = 24.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -420,12 +460,11 @@ margin_top = -7.0
 margin_right = -4.0
 margin_bottom = 9.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-texture = ExtResource( 6 )
+texture = ExtResource( 7 )
 stretch_mode = 6
 _sections_unfolded = [ "Rect" ]
 
@@ -442,7 +481,6 @@ margin_right = 80.0
 margin_bottom = 64.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -462,12 +500,11 @@ margin_left = -20.0
 margin_right = -4.0
 margin_bottom = 16.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-texture = ExtResource( 7 )
+texture = ExtResource( 8 )
 stretch_mode = 6
 _sections_unfolded = [ "Rect" ]
 
@@ -483,7 +520,6 @@ margin_right = 50.0
 margin_bottom = 175.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -502,7 +538,6 @@ anchor_bottom = 0.0
 margin_right = 64.0
 margin_bottom = 64.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -514,9 +549,9 @@ page = 0.0
 value = 0.0
 exp_edit = false
 rounded = false
-texture_under = ExtResource( 8 )
+texture_under = ExtResource( 9 )
 texture_over = null
-texture_progress = ExtResource( 9 )
+texture_progress = ExtResource( 10 )
 fill_mode = 4
 radial_fill_degrees = 360.0
 radial_center_offset = Vector2( 0, 0 )
@@ -535,7 +570,6 @@ margin_right = 64.0
 margin_bottom = 36.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
@@ -547,9 +581,9 @@ page = 0.0
 value = 0.0
 exp_edit = false
 rounded = false
-texture_under = ExtResource( 10 )
+texture_under = ExtResource( 11 )
 texture_over = null
-texture_progress = ExtResource( 11 )
+texture_progress = ExtResource( 12 )
 fill_mode = 4
 radial_fill_degrees = 360.0
 radial_center_offset = Vector2( 0, 0 )
@@ -570,7 +604,7 @@ wait_time = 1.0
 one_shot = true
 autostart = false
 
-[node name="Food" type="Button" parent="." index="4"]
+[node name="Food" type="Button" parent="." index="5"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -580,7 +614,6 @@ margin_top = 320.0
 margin_right = 80.0
 margin_bottom = 360.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -594,7 +627,7 @@ text = "Food"
 flat = false
 align = 1
 
-[node name="Water" type="Button" parent="." index="5"]
+[node name="Water" type="Button" parent="." index="6"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -604,7 +637,6 @@ margin_top = 260.0
 margin_right = 80.0
 margin_bottom = 300.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -618,7 +650,7 @@ text = "Water"
 flat = false
 align = 1
 
-[node name="Gold" type="Button" parent="." index="6"]
+[node name="Gold" type="Button" parent="." index="7"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -628,7 +660,6 @@ margin_top = 380.0
 margin_right = 80.0
 margin_bottom = 420.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 focus_mode = 2
 mouse_filter = 0
 mouse_default_cursor_shape = 0
@@ -645,6 +676,8 @@ align = 1
 [connection signal="gui_input" from="InteractiveArea" to="." method="_on_InteractiveArea_gui_input"]
 
 [connection signal="timeout" from="InteractiveArea/RageTimer" to="." method="_on_RageTimer_timeout"]
+
+[connection signal="pressed" from="OnTop/Achieve" to="." method="_on_Achieve_pressed"]
 
 [connection signal="timeout" from="GUI/SearchMaster/SurTime" to="GUI/SearchMaster" method="_on_SurTime_timeout"]
 

@@ -7,18 +7,49 @@ script/source = "extends Panel
 
 var achieve_panel = preload(\"res://GUI/AchievePanel.tscn\")
 var achieve = preload(\"res://Object/Achieve.tscn\")
+var achieve_dic = {}
 var achieve_list = []
+var test_dic = {0:[\"Zombie Killer\",100,\"res://icon.png\",false]}
+var size_panel
+var drag_unit = 7
+
 
 func _ready():
-	init_achieves()
+	load_achieves()
+	create_achieves()
 	create_panels()
 	pass
 
-func init_achieves():
-	var a = achieve.instance()
-	a.create_achieve(\"test\",100,\"res://icon.png\")
-	achieve_list.push_back(a)
+func load_achieves():
+	var afile = File.new()
+	if !afile.file_exists(\"user://Achievements.bin\"):
+		print(\"No file Achievements\")
+		return
+	if afile.open(\"user://Achievements.bin\",File.READ) != 0:
+		print(\"Error opening file Achievements\")
+		return
+	var line = afile.get_line()
+	achieve_dic = parse_json(line)
+	afile.close()
 	pass
+
+func create_achieves():
+	if !achieve_dic.keys().empty():
+		for id in achieve_dic.keys():
+			var ach = achieve.instance()
+			var nom = achieve_dic[id][0]
+			var inf = achieve_dic[id][1]
+			var cant = achieve_dic[id][2]
+			var text = achieve_dic[id][3]
+			var rew = achieve_dic[id][4]
+			var compl = achieve_dic[id][5]
+			ach.create_achieve(id,nom,inf,cant,text,rew,compl) #(_id,nam,info,cant,text,reward,compl)
+			achieve_list.push_back(ach)
+	pass
+
+func update():
+	for i in $Container/GridContainer.get_children():
+		i.update()
 
 func create_panels():
 	if !achieve_list.empty():
@@ -26,35 +57,56 @@ func create_panels():
 			var ap = achieve_panel.instance()
 			$Container/GridContainer.add_child(ap)
 			ap.set_info(i)
-	pass"
+			size_panel = ap.rect_min_size.y
+	pass
+
+func _on_Scroll_value_changed( value ):
+	$Container/GridContainer.rect_position.y = -value
+	if $Container/GridContainer.get_child_count() * (size_panel + 5) - $Container.rect_size.y > 0:
+		$Scroll.max_value = $Container/GridContainer.get_child_count() * (size_panel + 5) - $Container.rect_min_size.y
+	else:
+		$Scroll.max_value = 20
+	pass # replace with function body
+
+func _on_Container_gui_input( ev ):
+	if ev is InputEventScreenDrag:
+			if ev.relative.y > 0:
+				$Scroll.value -= drag_unit
+			else:
+				$Scroll.value += drag_unit
+	pass # replace with function body
+
+
+func _on_Close_pressed():
+	hide()
+	pass # replace with function body
+"
 _sections_unfolded = [ "Resource" ]
 
 [node name="Achievements" type="Panel" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 60.0
-margin_top = 60.0
-margin_right = 310.0
-margin_bottom = 300.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 100.0
+margin_bottom = -84.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 script = SubResource( 1 )
+_sections_unfolded = [ "Rect" ]
 
 [node name="Container" type="Container" parent="." index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 240.0
-margin_bottom = 240.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -15.0
+rect_min_size = Vector2( 585, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = true
 mouse_filter = 0
@@ -69,13 +121,15 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_right = 30.0
+margin_bottom = 140.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
+mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 columns = 4
+_sections_unfolded = [ "Mouse" ]
 
 [node name="Scroll" type="VScrollBar" parent="." index="1"]
 
@@ -84,8 +138,8 @@ anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -12.0
+margin_right = 3.0
 rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 0
@@ -98,5 +152,36 @@ value = 0.0
 exp_edit = false
 rounded = false
 custom_step = -1.0
+_sections_unfolded = [ "Rect" ]
+
+[node name="Close" type="Button" parent="." index="2"]
+
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -140.0
+margin_top = -40.0
+margin_right = -20.0
+margin_bottom = 30.0
+rect_pivot_offset = Vector2( 0, 0 )
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "X"
+flat = false
+align = 1
+
+[connection signal="gui_input" from="Container" to="." method="_on_Container_gui_input"]
+
+[connection signal="value_changed" from="Scroll" to="." method="_on_Scroll_value_changed"]
+
+[connection signal="pressed" from="Close" to="." method="_on_Close_pressed"]
 
 
