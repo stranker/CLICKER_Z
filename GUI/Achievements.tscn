@@ -1,11 +1,10 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [sub_resource type="GDScript" id=1]
 
 resource_name = "Achievements.gd"
 script/source = "extends Panel
 
-var achieve_panel = preload(\"res://GUI/AchievePanel.tscn\")
 var achieve = preload(\"res://Object/Achieve.tscn\")
 var achieve_dic = {}
 var achieve_list = []
@@ -28,8 +27,12 @@ func load_achieves():
 	if afile.open(\"user://Achievements.bin\",File.READ) != 0:
 		print(\"Error opening file Achievements\")
 		return
-	var line = afile.get_line()
-	achieve_dic = parse_json(line)
+	var dic_string = \"\"
+	while !afile.eof_reached():
+		var line = afile.get_line()
+		dic_string = dic_string + line
+	achieve_dic = parse_json(dic_string)
+	print(achieve_dic)
 	afile.close()
 	pass
 
@@ -53,17 +56,13 @@ func update():
 
 func create_panels():
 	if !achieve_list.empty():
-		for i in achieve_list:
-			var ap = achieve_panel.instance()
-			$Container/GridContainer.add_child(ap)
-			ap.set_info(i)
-			size_panel = ap.rect_min_size.y
+		$Container/GridContainer.create_panels(achieve_list)
 	pass
 
 func _on_Scroll_value_changed( value ):
 	$Container/GridContainer.rect_position.y = -value
-	if $Container/GridContainer.get_child_count() * (size_panel + 5) - $Container.rect_size.y > 0:
-		$Scroll.max_value = $Container/GridContainer.get_child_count() * (size_panel + 5) - $Container.rect_min_size.y
+	if $Container/GridContainer.get_total_size() - $Container.rect_size.y > 0:
+		$Scroll.max_value = $Container/GridContainer.get_total_size() - $Container.rect_min_size.y
 	else:
 		$Scroll.max_value = 20
 	pass # replace with function body
@@ -83,7 +82,31 @@ func _on_Close_pressed():
 "
 _sections_unfolded = [ "Resource" ]
 
-[node name="Achievements" type="Panel" index="0"]
+[sub_resource type="GDScript" id=2]
+
+resource_name = "AchieveGrid.gd"
+script/source = "extends GridContainer
+
+var achieve_panel = preload(\"res://GUI/AchievePanel.tscn\")
+var size_panel = 0
+
+func _ready():
+	pass
+
+func create_panels(achieve_list):
+	if !achieve_list.empty():
+		for i in achieve_list:
+			var ap = achieve_panel.instance()
+			add_child(ap)
+			ap.set_info(i)
+			size_panel = ap.rect_min_size.y
+	pass
+
+func get_total_size():
+	return (size_panel + 1) * get_child_count()"
+_sections_unfolded = [ "Resource" ]
+
+[node name="Achievements" type="Panel"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -121,15 +144,15 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = 30.0
-margin_bottom = 140.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-columns = 4
-_sections_unfolded = [ "Mouse" ]
+custom_constants/vseparation = 1
+columns = 1
+script = SubResource( 2 )
+_sections_unfolded = [ "custom_constants" ]
 
 [node name="Scroll" type="VScrollBar" parent="." index="1"]
 

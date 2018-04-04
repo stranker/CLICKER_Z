@@ -31,11 +31,21 @@ func set_reward():
 func update():
 	match MyAchieve.get_id():
 		0:
-			$ProgressBar.value = Global.zombie_killed
-			$ProgressBar/Cant.text = str(Global.zombie_killed)+\"/\"+str(MyAchieve.get_amount())
-			if $ProgressBar.value >= MyAchieve.get_amount():
-				$Reward.show()
-				$ProgressBar.hide()
+			zombi_kill_achieve()
+		1:
+			zombi_kill_achieve()
+	if_achieve_complete()
+	pass
+
+func if_achieve_complete():
+	if $ProgressBar.value >= MyAchieve.get_amount():
+		$Reward.show()
+		$ProgressBar.hide()
+	pass
+
+func zombi_kill_achieve():
+	$ProgressBar.value = Global.zombie_killed
+	$ProgressBar/Cant.text = str(Global.zombie_killed)+\"/\"+str(MyAchieve.get_amount())
 	pass
 
 func _on_Reward_pressed():
