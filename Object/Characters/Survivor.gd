@@ -77,8 +77,8 @@ func train():
 	else:
 		if shoot_time > 0.2:
 			shoot_time -= 0.1
-			info = "+Critic: "+str(critic)+"% -Rlding time: "+str(shoot_time)+"s"
 			$ShootTime.wait_time = shoot_time
+		info = "+Critic: "+str(critic)+"% -Rlding time: "+str(shoot_time)+"s +Income: "+"$"+str(income)
 	pass
 
 func get_critic():

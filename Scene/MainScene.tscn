@@ -188,7 +188,6 @@ _sections_unfolded = [ "Rect" ]
 
 [node name="InteractiveArea" type="Control" parent="." index="0"]
 
-editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -243,7 +242,6 @@ autostart = false
 
 [node name="SurvivorPositions" type="Node2D" parent="InteractiveArea" index="3"]
 
-editor/display_folded = true
 position = Vector2( -8, 12 )
 _sections_unfolded = [ "Z Index" ]
 
@@ -298,6 +296,7 @@ transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 
 [node name="OnTop" type="CanvasLayer" parent="." index="3"]
 
+editor/display_folded = true
 layer = 3
 offset = Vector2( 0, 0 )
 rotation = 0.0
@@ -338,6 +337,7 @@ margin_bottom = 730.0
 
 [node name="GUI" type="CanvasLayer" parent="." index="4"]
 
+editor/display_folded = true
 layer = 0
 offset = Vector2( 0, 0 )
 rotation = 0.0
