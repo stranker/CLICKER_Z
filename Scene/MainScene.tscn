@@ -210,12 +210,11 @@ collision_mask = 3
 
 [node name="SpawnControl" parent="InteractiveArea" index="1" instance=ExtResource( 2 )]
 
-editor/display_folded = true
 position = Vector2( -8, 12 )
 
 [node name="Spawner" parent="InteractiveArea/SpawnControl" index="1" instance=ExtResource( 3 )]
 
-position = Vector2( -42, 648 )
+position = Vector2( -92, 728 )
 
 [node name="Spawner2" parent="InteractiveArea/SpawnControl" index="2" instance=ExtResource( 3 )]
 
@@ -223,7 +222,7 @@ position = Vector2( 78, 818 )
 
 [node name="Spawner3" parent="InteractiveArea/SpawnControl" index="3" instance=ExtResource( 3 )]
 
-position = Vector2( 308, 818 )
+position = Vector2( 308, 908 )
 
 [node name="Spawner4" parent="InteractiveArea/SpawnControl" index="4" instance=ExtResource( 3 )]
 
@@ -231,7 +230,7 @@ position = Vector2( 558, 818 )
 
 [node name="Spawner5" parent="InteractiveArea/SpawnControl" index="5" instance=ExtResource( 3 )]
 
-position = Vector2( 648, 658 )
+position = Vector2( 698, 718 )
 
 [node name="RageTimer" type="Timer" parent="InteractiveArea" index="2"]
 
@@ -242,6 +241,7 @@ autostart = false
 
 [node name="SurvivorPositions" type="Node2D" parent="InteractiveArea" index="3"]
 
+editor/display_folded = true
 position = Vector2( -8, 12 )
 _sections_unfolded = [ "Z Index" ]
 

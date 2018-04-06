@@ -5,8 +5,10 @@
 resource_name = "Spawner.gd"
 script/source = "extends Position2D
 
-var zombies = preload(\"res://Object/Characters/NormalZombie.tscn\")
+var normal_zombie = preload(\"res://Object/Characters/NormalZombie.tscn\")
+var warrior_zombie = preload(\"res://Object/Characters/ZombieWarrior.tscn\")
 var pos = Vector2()
+var z = null
 
 func _ready():
 	pass
@@ -15,12 +17,27 @@ func spawn():
 	randomize()
 	pos.x = rand_range(-50,50)
 	pos.y = rand_range(-50,50)
-	if Global.ZOMBI_LIST.size() < Global.MAX_COUNT_ZOMBIES and Performance.get_monitor(Performance.TIME_FPS)>=30:
-		var z = zombies.instance()
+	var nr = int(rand_range(0,100))
+	if can_spawn():
+		if nr > 85:
+			spawn_warrior_zombie()
+		else:
+			spawn_normal_zombie()
 		get_node(\"/root/MainScene/InteractiveArea/Zombies\").call_deferred(\"add_child\",z)
 		z.global_position = global_position + pos
 		Global.ZOMBI_LIST.append(z)
-	pass"
+	pass
+
+func spawn_normal_zombie():
+	z = normal_zombie.instance()
+	pass
+
+func spawn_warrior_zombie():
+	z = warrior_zombie.instance()
+	pass
+
+func can_spawn():
+	return Global.ZOMBI_LIST.size() < Global.MAX_COUNT_ZOMBIES and Performance.get_monitor(Performance.TIME_FPS)>=30"
 _sections_unfolded = [ "Resource" ]
 
 [node name="Spawner" type="Position2D"]

@@ -14,14 +14,21 @@ func _ready():
 	pass
 
 func _on_TrainingButton_pressed():
+	$TrainingPanel.rect_scale = Vector2(0,0)
 	get_parent().close_panels()
 	get_parent().move_child(self,get_parent().get_child_count())
 	$TrainingPanel.create_panel()
 	$TrainingPanel.show()
+	tween_configure()
+	$Tween.start()
 	pass
 
 func close_panel():
-	$TrainingPanel.hide()"
+	$TrainingPanel.hide()
+
+func tween_configure():
+	$Tween.interpolate_property($TrainingPanel,\"rect_scale\",Vector2(0,0),Vector2(1,1),0.5,Tween.TRANS_EXPO,Tween.EASE_OUT,0.1)
+	pass"
 _sections_unfolded = [ "Resource" ]
 
 [node name="TrainingField" type="Control"]
@@ -88,10 +95,20 @@ _sections_unfolded = [ "Textures" ]
 
 [node name="TrainingPanel" parent="." index="2" instance=ExtResource( 2 )]
 
+visible = false
 margin_left = 66.5
 margin_top = 55.0
 margin_right = 536.5
 margin_bottom = 525.0
+
+[node name="Tween" type="Tween" parent="." index="3"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
 
 [connection signal="pressed" from="TrainingButton" to="." method="_on_TrainingButton_pressed"]
 

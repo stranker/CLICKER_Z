@@ -1,10 +1,10 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://Sprite/Zombi.png" type="Texture" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=1]
 
 [sub_resource type="GDScript" id=1]
 
-resource_name = "Zombie.gd"
+resource_name = "ZombieWarrior.gd"
 script/source = "extends \"res://Object/Characters/Enemy.gd\"
 
 func _ready():
@@ -12,11 +12,11 @@ func _ready():
 	pass
 
 func initialize():
-	set_walking_speed(2000)
-	set_life(2)
-	set_gold(2)
+	set_walking_speed(800)
+	set_life(5)
+	set_gold(10)
 	set_initial_speed()
-	set_drop_prob(75)
+	set_drop_prob(60)
 	hide()
 	pass
 
@@ -24,8 +24,7 @@ func _integrate_forces(state):
 	if direction.x > 0:
 		$Sprite.flip_h = true
 	direction = (Global.player_pos-global_position).normalized()
-	if get_curr_state() == get_state_walk():
-		linear_velocity = direction*get_walking_speed()*state.step
+	linear_velocity = direction*get_walking_speed()*state.step
 	pass
 
 func get_damage(dmg,kille):
@@ -45,18 +44,18 @@ func get_damage(dmg,kille):
 
 func _on_VisibilityNotifier2D_screen_entered():
 	show()
-	pass # replace with function body"
+	pass # replace with function body
+"
 _sections_unfolded = [ "Resource" ]
 
 [sub_resource type="CapsuleShape2D" id=2]
 
-custom_solver_bias = 0.0
-radius = 12.7556
-height = 21.6435
+custom_solver_bias = 0.001
+radius = 16.6571
+height = 13.6739
 
-[node name="Z" type="RigidBody2D" index="0"]
+[node name="ZombieWarrior" type="RigidBody2D"]
 
-position = Vector2( 0, -0.142397 )
 input_pickable = false
 collision_layer = 3
 collision_mask = 3
@@ -65,10 +64,10 @@ mass = 1.0
 friction = 1.0
 bounce = 0.0
 gravity_scale = 1.0
-custom_integrator = true
+custom_integrator = false
 continuous_cd = 0
 contacts_reported = 0
-contact_monitor = true
+contact_monitor = false
 sleeping = false
 can_sleep = true
 linear_velocity = Vector2( 0, 0 )
@@ -76,19 +75,17 @@ linear_damp = -1.0
 angular_velocity = 0.0
 angular_damp = -1.0
 script = SubResource( 1 )
-_sections_unfolded = [ "Collision", "Transform", "Z Index", "collision" ]
+_sections_unfolded = [ "Collision" ]
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
 
-scale = Vector2( 1.5, 1.5 )
+scale = Vector2( 0.530112, 0.795167 )
 texture = ExtResource( 1 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
 
-position = Vector2( 4.35006, -0.0500697 )
 shape = SubResource( 2 )
-_sections_unfolded = [ "Transform" ]
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="." index="2"]
 

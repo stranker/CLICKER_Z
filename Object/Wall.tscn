@@ -42,13 +42,13 @@ polygon = PoolVector2Array( -258.253, 1055.79, 247.387, 1264.29, 731.239, 1043.9
 position = Vector2( 26.2012, -22.2074 )
 scale = Vector2( 1.02375, 1 )
 build_mode = 0
-polygon = PoolVector2Array( 732.247, 1078.81, 748.482, 1098.75, 559.18, 516.635, 563.416, 553.207 )
+polygon = PoolVector2Array( 557.036, 516.587, 773.475, 576.881, 752.862, 1104.45, 730.776, 1084.85, 720.47, 600.998, 559.981, 557.285 )
 
 [node name="Left" type="CollisionPolygon2D" parent="." index="3"]
 
 position = Vector2( -748.275, -30.1422 )
 build_mode = 0
-polygon = PoolVector2Array( 547.296, 1124.3, 746.206, 519.919, 746.206, 563.613, 568.398, 1112.24 )
+polygon = PoolVector2Array( 546.272, 1126.25, 569.97, 607.426, 747.836, 521.507, 750.85, 559.191, 609.161, 636.065, 574.492, 1107.86 )
 
 [node name="ColisionWall" type="CollisionPolygon2D" parent="." index="4"]
 
