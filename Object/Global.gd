@@ -9,6 +9,8 @@ var GOLD = 0
 var EXP = 0
 var GOLD_POS = Vector2()
 var curr_weapon = null
+#Achieves
+var gold_obtained = 0
 
 # Variables de Deposit
 var curr_food = 0
