@@ -46,6 +46,15 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
+[node name="RageTime" type="Timer" parent="." index="4"]
+
+process_mode = 1
+wait_time = 0.3
+one_shot = false
+autostart = false
+
 [connection signal="timeout" from="ShootTime" to="." method="_on_ShootTime_timeout"]
+
+[connection signal="timeout" from="RageTime" to="." method="_on_RageTime_timeout"]
 
 

@@ -15,8 +15,18 @@ var shoot_time = 0
 # TRAINING VARIABLES
 var income = 0
 var critic = 0
+# Rage
+enum STATES {IDLE,RAGE}
+var state = STATES.IDLE
+var clicks = 0
 
 func _ready():
+	pass
+
+func _process(delta):
+	if survivor_type == TYPE_PLAYER:
+		if clicks > 30:
+			state = STATES.RAGE
 	pass
 
 func create_survivor(nam,lvl):
@@ -84,6 +94,12 @@ func train():
 func get_critic():
 	return critic
 
+func get_state():
+	return state
+
+func is_on_rage():
+	return state == STATES.RAGE
+
 func set_weapon(weap):
 	weapon = weap
 	Global.armory.remove_weapon(weapon)
@@ -129,3 +145,14 @@ func _on_ShootTime_timeout():
 			var zn = int(rand_range(Global.ZOMBI_LIST.size()/2,Global.ZOMBI_LIST.size()))
 			get_weapon().shoot(Global.ZOMBI_LIST[zn])
 	pass
+
+func attack():
+	if Global.ZOMBI_LIST.size()>0:
+		$RageTime.start()
+		clicks += 1
+		get_weapon().shoot(Global.ZOMBI_LIST[0])
+	pass
+
+func _on_RageTime_timeout():
+	clicks = 0
+	pass # replace with function body

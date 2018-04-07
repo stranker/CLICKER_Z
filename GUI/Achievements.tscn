@@ -11,6 +11,7 @@ var achieve_list = []
 var test_dic = {0:[\"Zombie Killer\",100,\"res://icon.png\",false]}
 var size_panel
 var drag_unit = 7
+var file_path = \"res://Data/Achievements.bin\"
 
 
 func _ready():
@@ -21,18 +22,18 @@ func _ready():
 
 func load_achieves():
 	var afile = File.new()
-	if !afile.file_exists(\"user://Achievements.bin\"):
+	if !afile.file_exists(file_path):
 		print(\"No file Achievements\")
 		return
-	if afile.open(\"user://Achievements.bin\",File.READ) != 0:
+	if afile.open(file_path,File.READ) != 0:
 		print(\"Error opening file Achievements\")
 		return
 	var dic_string = \"\"
 	while !afile.eof_reached():
 		var line = afile.get_line()
 		dic_string = dic_string + line
+	print(dic_string)
 	achieve_dic = parse_json(dic_string)
-	print(achieve_dic)
 	afile.close()
 	pass
 
@@ -106,7 +107,7 @@ func get_total_size():
 	return (size_panel + 1) * get_child_count()"
 _sections_unfolded = [ "Resource" ]
 
-[node name="Achievements" type="Panel"]
+[node name="Achievements" type="Panel" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0

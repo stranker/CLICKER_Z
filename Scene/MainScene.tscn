@@ -21,15 +21,17 @@ script/source = "extends Control
 var survivor = preload(\"res://Object/Characters/Survivor.tscn\")
 
 var curr_click = 0
-enum STATES {IDLE,RAGE}
-var state = STATES.IDLE
 var player
 var survivor_pos = 1
 
 func _ready():
 	create_player()
 	set_survivor_limit()
+	set_globalpos_gui()
 	$Buildings._ready()
+	pass
+
+func set_globalpos_gui():
 	Global.food_pos = center_rect($GUI/Food/Food)
 	Global.water_pos = center_rect($GUI/Water/Water)
 	Global.GOLD_POS = center_rect($GUI/Gold/Gold)
@@ -41,15 +43,15 @@ func center_rect(rect):
 	return rect.rect_global_position + Vector2(width,height)/2
 
 func _process(delta):
-	if !$InteractiveArea/RageTimer.is_stopped() and curr_click > 30:
-		state = STATES.RAGE
-	else:
-		state = STATES.IDLE
 	$GUI/FPS.text = \"FPS \"+str(Performance.get_monitor(Performance.TIME_FPS))
 	$GUI/ZC.text = \"ZC \"+str(Global.ZOMBI_LIST.size())
 	$GUI/Gold.text = str(Global.GOLD)
 	$GUI/Food.text = str(Global.curr_food)
 	$GUI/Water.text = str(Global.curr_water)
+	if player.is_on_rage():
+		$GUI/Rage.text = \"Rage!!!\"
+	else:
+		$GUI/Rage.text = \"Idle\"
 	pass
 
 func set_survivor_limit():
@@ -79,18 +81,7 @@ func set_pos_survivor(s):
 func _on_InteractiveArea_gui_input( ev ):
 	if ev is InputEventScreenTouch:
 		if ev.is_pressed():
-			curr_click += 1
-			$InteractiveArea/RageTimer.start()
-			attack()
-	pass
-
-func attack():
-	if Global.ZOMBI_LIST.size()>0:
-		player.get_weapon().shoot(Global.ZOMBI_LIST[0]) #ATACA AL PRIMERO
-	pass
-
-func _on_RageTimer_timeout():
-	curr_click = 0
+			player.attack()
 	pass
 
 func _on_Food_pressed():
@@ -105,12 +96,10 @@ func _on_Gold_pressed():
 	Global.GOLD += 99999
 	pass # replace with function body
 
-
 func _on_Achieve_pressed():
 	$OnTop/Achieve/Achievements.show()
 	$OnTop/Achieve/Achievements.update()
-	pass # replace with function body
-"
+	pass # replace with function body"
 _sections_unfolded = [ "Resource" ]
 
 [sub_resource type="GDScript" id=2]
@@ -188,6 +177,7 @@ _sections_unfolded = [ "Rect" ]
 
 [node name="InteractiveArea" type="Control" parent="." index="0"]
 
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -210,6 +200,7 @@ collision_mask = 3
 
 [node name="SpawnControl" parent="InteractiveArea" index="1" instance=ExtResource( 2 )]
 
+editor/display_folded = true
 position = Vector2( -8, 12 )
 
 [node name="Spawner" parent="InteractiveArea/SpawnControl" index="1" instance=ExtResource( 3 )]
@@ -232,14 +223,7 @@ position = Vector2( 558, 818 )
 
 position = Vector2( 698, 718 )
 
-[node name="RageTimer" type="Timer" parent="InteractiveArea" index="2"]
-
-process_mode = 1
-wait_time = 1.0
-one_shot = false
-autostart = false
-
-[node name="SurvivorPositions" type="Node2D" parent="InteractiveArea" index="3"]
+[node name="SurvivorPositions" type="Node2D" parent="InteractiveArea" index="2"]
 
 editor/display_folded = true
 position = Vector2( -8, 12 )
@@ -280,7 +264,7 @@ _sections_unfolded = [ "Transform" ]
 position = Vector2( 568, 208 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Zombies" type="Node" parent="InteractiveArea" index="4"]
+[node name="Zombies" type="Node" parent="InteractiveArea" index="3"]
 
 _sections_unfolded = [ "Pause", "Z Index" ]
 
@@ -385,7 +369,28 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
-[node name="Gold" type="Label" parent="GUI" index="2"]
+[node name="Rage" type="Label" parent="GUI" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 240.0
+margin_top = 370.0
+margin_right = 280.0
+margin_bottom = 384.0
+rect_scale = Vector2( 2, 2 )
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Gold" type="Label" parent="GUI" index="3"]
 
 anchor_left = 0.5
 anchor_top = 0.0
@@ -427,7 +432,7 @@ texture = ExtResource( 6 )
 stretch_mode = 6
 _sections_unfolded = [ "Rect" ]
 
-[node name="Food" type="Label" parent="GUI" index="3"]
+[node name="Food" type="Label" parent="GUI" index="4"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -468,7 +473,7 @@ texture = ExtResource( 7 )
 stretch_mode = 6
 _sections_unfolded = [ "Rect" ]
 
-[node name="Water" type="Label" parent="GUI" index="4"]
+[node name="Water" type="Label" parent="GUI" index="5"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -508,7 +513,7 @@ texture = ExtResource( 8 )
 stretch_mode = 6
 _sections_unfolded = [ "Rect" ]
 
-[node name="SearchMaster" type="GridContainer" parent="GUI" index="5"]
+[node name="SearchMaster" type="GridContainer" parent="GUI" index="6"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -674,8 +679,6 @@ flat = false
 align = 1
 
 [connection signal="gui_input" from="InteractiveArea" to="." method="_on_InteractiveArea_gui_input"]
-
-[connection signal="timeout" from="InteractiveArea/RageTimer" to="." method="_on_RageTimer_timeout"]
 
 [connection signal="pressed" from="OnTop/Achieve" to="." method="_on_Achieve_pressed"]
 

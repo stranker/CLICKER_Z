@@ -1,0 +1,10 @@
+{"0":["Zombie Killer","Destroy 100 zombies",100,"res://icon.png",{"gold":200},false],
+"1":["Zombie Slaugther","Destroy 5000 zombies",5000,"res://icon.png",{"gold":20000},false],
+"2":["Zombie Mastah","Destroy 100000 zombies",100000,"res://icon.png",{"diamond":200},false],
+"3":["Money Maker","Obtain 1000 gold",1000,"res://icon.png",{"gold":3000},false],
+"4":["Gold Seeker","Obtain 30000 gold",30000,"res://icon.png",{"diamond":100},false],
+"5":["Goldigger","Obtain 1000000 gold",1000000,"res://icon.png",{"diamond":300},false],
+"6":["My First House","Upgrade House to lvl 1",1,"res://icon.png",{"diamond":10},false],
+"7":["Weapon Entusiast","Collect 5 weapons",3,"res://icon.png",{"gold":2000},false],
+"8":["Rambo","Collect 20 weapons",20,"res://icon.png",{"diamond":150},false]
+}
