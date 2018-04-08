@@ -51,3 +51,6 @@ func create_achieve(_id,nam,inf,cant,text,rew,compl):
 
 func set_complete(val):
 	complete = val
+
+func get_completed():
+	return complete

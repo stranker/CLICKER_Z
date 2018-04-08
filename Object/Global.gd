@@ -5,10 +5,14 @@ var player_pos = Vector2()
 var zombie_killed = 0
 const MAX_COUNT_ZOMBIES = 500
 var ZOMBI_LIST = []
-var GOLD = 0
 var EXP = 0
-var GOLD_POS = Vector2()
 var curr_weapon = null
+# Gold y Diamonds
+var diamonds = 0
+var diamond_pos = Vector2()
+var GOLD_POS = Vector2()
+var GOLD = 0
+
 #Achieves
 var gold_obtained = 0
 

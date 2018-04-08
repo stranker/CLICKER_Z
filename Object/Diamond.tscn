@@ -1,0 +1,82 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Sprite/Reward/Diamond.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=1]
+
+resource_name = "Diamond.gd"
+script/source = "extends Sprite
+
+var cant = 0
+
+func _ready():
+	configure_tween()
+	pass
+
+func _process(delta):
+	if global_position == Global.diamond_pos:
+		Global.diamonds += cant
+		queue_free()
+	pass
+
+func set_cant(val):
+	cant = val
+	$Cant.text = \"+\"+str(cant)
+	pass
+
+func go_to_diamond():
+	$Tween.interpolate_property(self,\"global_position\",global_position,Global.diamond_pos,1.5,Tween.TRANS_EXPO,Tween.EASE_OUT,0.1)
+	$Tween.start()
+	pass
+
+func configure_tween():
+	$Tween.interpolate_property(self,\"scale\",Vector2(1.5,1.5),Vector2(2,2),1.5,Tween.TRANS_LINEAR,Tween.EASE_IN_OUT,0.1)
+	$Tween.interpolate_property(self,\"global_position\",global_position,global_position+Vector2(0,-50),1.5,Tween.TRANS_LINEAR,Tween.EASE_IN,0)
+	$Tween.start()
+	pass
+
+func _on_Tween_tween_completed( object, key ):
+	if key == \":global_position\":
+		go_to_diamond()
+	pass # replace with function body
+"
+_sections_unfolded = [ "Resource" ]
+
+[node name="Diamond" type="Sprite" index="0"]
+
+position = Vector2( 60, 70 )
+scale = Vector2( 1.5, 1.5 )
+texture = ExtResource( 1 )
+script = SubResource( 1 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Cant" type="Label" parent="." index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 40.0
+margin_bottom = 14.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Tween" type="Tween" parent="." index="1"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+_sections_unfolded = [ "playback" ]
+
+[connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]
+
+
