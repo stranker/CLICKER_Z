@@ -42,7 +42,6 @@ func get_damage(dmg,kille):
 		queue_free()
 	pass
 
-
 func _on_VisibilityNotifier2D_screen_entered():
 	show()
 	pass # replace with function body"
@@ -51,8 +50,8 @@ _sections_unfolded = [ "Resource" ]
 [sub_resource type="CapsuleShape2D" id=2]
 
 custom_solver_bias = 0.0
-radius = 12.7556
-height = 21.6435
+radius = 15.9949
+height = 17.1185
 
 [node name="Z" type="RigidBody2D" index="0"]
 
@@ -67,8 +66,8 @@ bounce = 0.0
 gravity_scale = 1.0
 custom_integrator = true
 continuous_cd = 0
-contacts_reported = 0
-contact_monitor = true
+contacts_reported = 4
+contact_monitor = false
 sleeping = false
 can_sleep = true
 linear_velocity = Vector2( 0, 0 )
@@ -82,11 +81,11 @@ _sections_unfolded = [ "Collision", "Transform", "Z Index", "collision" ]
 
 scale = Vector2( 1.5, 1.5 )
 texture = ExtResource( 1 )
-_sections_unfolded = [ "Transform" ]
+_sections_unfolded = [ "Offset", "Transform" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
 
-position = Vector2( 4.35006, -0.0500697 )
+position = Vector2( 0.774483, 0.10771 )
 shape = SubResource( 2 )
 _sections_unfolded = [ "Transform" ]
 

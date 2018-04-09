@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Object/Wall.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Object/SpawnControl.tscn" type="PackedScene" id=2]
@@ -8,10 +8,11 @@
 [ext_resource path="res://Sprite/Coin.png" type="Texture" id=6]
 [ext_resource path="res://Sprite/Supplies/Food.png" type="Texture" id=7]
 [ext_resource path="res://Sprite/Supplies/Water.png" type="Texture" id=8]
-[ext_resource path="res://Sprite/Search/Survivor_und.png" type="Texture" id=9]
-[ext_resource path="res://Sprite/Search/Survivor_prog.png" type="Texture" id=10]
-[ext_resource path="res://Sprite/Search/Weapon_und.png" type="Texture" id=11]
-[ext_resource path="res://Sprite/Search/Weapon_prog.png" type="Texture" id=12]
+[ext_resource path="res://Sprite/Reward/Diamond.png" type="Texture" id=9]
+[ext_resource path="res://Sprite/Search/Survivor_und.png" type="Texture" id=10]
+[ext_resource path="res://Sprite/Search/Survivor_prog.png" type="Texture" id=11]
+[ext_resource path="res://Sprite/Search/Weapon_und.png" type="Texture" id=12]
+[ext_resource path="res://Sprite/Search/Weapon_prog.png" type="Texture" id=13]
 
 [sub_resource type="GDScript" id=1]
 
@@ -35,6 +36,7 @@ func set_globalpos_gui():
 	Global.food_pos = center_rect($GUI/Food/Food)
 	Global.water_pos = center_rect($GUI/Water/Water)
 	Global.GOLD_POS = center_rect($GUI/Gold/Gold)
+	Global.diamond_pos = center_rect($GUI/Diamonds/Diamond)
 	pass
 
 func center_rect(rect):
@@ -45,9 +47,10 @@ func center_rect(rect):
 func _process(delta):
 	$GUI/FPS.text = \"FPS \"+str(Performance.get_monitor(Performance.TIME_FPS))
 	$GUI/ZC.text = \"ZC \"+str(Global.ZOMBI_LIST.size())
-	$GUI/Gold.text = str(Global.GOLD)
+	$GUI/Gold.text = Global.number_converter(Global.GOLD)
 	$GUI/Food.text = str(Global.curr_food)
 	$GUI/Water.text = str(Global.curr_water)
+	$GUI/Diamonds.text = str(Global.diamonds)
 	if player.is_on_rage():
 		$GUI/Rage.text = \"Rage!!!\"
 	else:
@@ -62,7 +65,6 @@ func create_player():
 	player = survivor.instance()
 	player.create_player(\"Placeholder\")
 	Global.player_pos = $InteractiveArea/SurvivorPositions/PlayerPos.global_position
-	Global.curr_weapon = player.get_weapon()
 	Global.player = player
 	set_pos_survivor(player)
 	pass
@@ -93,12 +95,12 @@ func _on_Water_pressed():
 	pass # replace with function body
 
 func _on_Gold_pressed():
-	Global.GOLD += 99999
-	Global.gold_obtained += 99999
+	Global.GOLD += 33333
+	Global.gold_obtained += 33333
 	pass # replace with function body"
 _sections_unfolded = [ "Resource" ]
 
-[sub_resource type="GDScript" id=3]
+[sub_resource type="GDScript" id=2]
 
 resource_name = "AchieveButton.gd"
 script/source = "extends Button
@@ -126,9 +128,8 @@ func _on_Achieve_pressed():
 "
 _sections_unfolded = [ "Resource" ]
 
-[sub_resource type="GDScript" id=2]
+[sub_resource type="GDScript" id=3]
 
-resource_name = "SearchMaster.gd"
 script/source = "extends GridContainer
 
 const TYPE_SURVIVOR = 0
@@ -333,7 +334,7 @@ group = null
 text = "Achievements"
 flat = false
 align = 1
-script = SubResource( 3 )
+script = SubResource( 2 )
 
 [node name="Achievements" parent="OnTop/Achieve" index="0" instance=ExtResource( 5 )]
 
@@ -345,7 +346,6 @@ margin_bottom = 730.0
 
 [node name="GUI" type="CanvasLayer" parent="." index="4"]
 
-editor/display_folded = true
 layer = 0
 offset = Vector2( 0, 0 )
 rotation = 0.0
@@ -359,8 +359,9 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 520.0
+margin_top = 50.0
 margin_right = 560.0
-margin_bottom = 14.0
+margin_bottom = 64.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 2
@@ -379,9 +380,9 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 520.0
-margin_top = 40.0
+margin_top = 90.0
 margin_right = 560.0
-margin_bottom = 54.0
+margin_bottom = 104.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 2
@@ -416,6 +417,7 @@ _sections_unfolded = [ "Rect" ]
 
 [node name="Gold" type="Label" parent="GUI" index="3"]
 
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.0
 anchor_right = 0.5
@@ -537,7 +539,47 @@ texture = ExtResource( 8 )
 stretch_mode = 6
 _sections_unfolded = [ "Rect" ]
 
-[node name="SearchMaster" type="GridContainer" parent="GUI" index="6"]
+[node name="Diamonds" type="Label" parent="GUI" index="6"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 520.0
+margin_top = 4.0
+margin_right = 560.0
+margin_bottom = 18.0
+rect_scale = Vector2( 2, 2 )
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
+
+[node name="Diamond" type="TextureRect" parent="GUI/Diamonds" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -17.0
+margin_top = -1.0
+margin_right = -1.0
+margin_bottom = 15.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+texture = ExtResource( 9 )
+stretch_mode = 6
+_sections_unfolded = [ "Rect" ]
+
+[node name="SearchMaster" type="GridContainer" parent="GUI" index="7"]
 
 editor/display_folded = true
 anchor_left = 0.0
@@ -554,7 +596,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 columns = 1
-script = SubResource( 2 )
+script = SubResource( 3 )
 _sections_unfolded = [ "Rect" ]
 
 [node name="Survivor" type="TextureProgress" parent="GUI/SearchMaster" index="0"]
@@ -578,9 +620,9 @@ page = 0.0
 value = 0.0
 exp_edit = false
 rounded = false
-texture_under = ExtResource( 9 )
+texture_under = ExtResource( 10 )
 texture_over = null
-texture_progress = ExtResource( 10 )
+texture_progress = ExtResource( 11 )
 fill_mode = 4
 radial_fill_degrees = 360.0
 radial_center_offset = Vector2( 0, 0 )
@@ -610,9 +652,9 @@ page = 0.0
 value = 0.0
 exp_edit = false
 rounded = false
-texture_under = ExtResource( 11 )
+texture_under = ExtResource( 12 )
 texture_over = null
-texture_progress = ExtResource( 12 )
+texture_progress = ExtResource( 13 )
 fill_mode = 4
 radial_fill_degrees = 360.0
 radial_center_offset = Vector2( 0, 0 )

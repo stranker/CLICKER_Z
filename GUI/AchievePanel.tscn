@@ -9,6 +9,7 @@ script/source = "extends Panel
 var MyAchieve
 # Reward type
 var coin = preload(\"res://Object/CoinCandy.tscn\")
+var diamond = preload(\"res://Object/Diamond.tscn\")
 var reward_taken = false
 
 func _ready():
@@ -73,13 +74,17 @@ func gold_achieve():
 func _on_Reward_pressed():
 	MyAchieve.set_complete(true)
 	var AchieveType = MyAchieve.get_reward().keys()[0]
+	var reward
 	match AchieveType:
 		\"gold\":
-			var c = coin.instance()
-			c.set_cant(int(MyAchieve.get_reward()[AchieveType]))
-			$Reward.add_child(c)
-			c.global_position = $Reward/Pos.global_position
+			reward = coin.instance()
+		\"diamond\":
+			reward = diamond.instance()
+	reward.set_cant(int(MyAchieve.get_reward()[AchieveType]))
+	reward.global_position = $Reward/Pos.global_position + Vector2(0,-50)
+	get_parent().get_parent().get_parent().add_child(reward)
 	$Reward.disabled = true
+	$Reward/Sprite.modulate = Color(1,1,1,0.5)
 	reward_taken = true
 	pass # replace with function body
 
