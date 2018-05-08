@@ -8,10 +8,11 @@ resource_name = "Wall.gd"
 script/source = "extends StaticBody2D
 
 func _ready():
+	Global.wallPosition = $Position.global_position
 	pass"
 _sections_unfolded = [ "Resource" ]
 
-[node name="Wall" type="StaticBody2D" index="0" groups=[
+[node name="Wall" type="StaticBody2D" groups=[
 "wall",
 ]]
 
@@ -55,5 +56,9 @@ polygon = PoolVector2Array( 546.272, 1126.25, 569.97, 607.426, 747.836, 521.507,
 position = Vector2( 13.4978, 299.368 )
 build_mode = 0
 polygon = PoolVector2Array( -13.4327, 227.299, -14.1678, 189.809, 51.9903, 218.478, 526.35, 225.106, 585.013, 194.422, 587.72, 230.521, 528.155, 246.766, 54.3441, 246.766 )
+
+[node name="Position" type="Position2D" parent="." index="5"]
+
+position = Vector2( 300.599, 538.175 )
 
 

@@ -6,6 +6,7 @@ resource_name = "Spawner.gd"
 script/source = "extends Position2D
 
 var normal_zombie = preload(\"res://Object/Characters/NormalZombie.tscn\")
+var normal_zombie_v2 = preload(\"res://Object/Characters/ZombieNormalv2.tscn\")
 var warrior_zombie = preload(\"res://Object/Characters/ZombieWarrior.tscn\")
 var pos = Vector2()
 var z = null
@@ -19,10 +20,10 @@ func spawn():
 	pos.y = rand_range(-50,50)
 	var nr = int(rand_range(0,100))
 	if can_spawn():
-		if nr > 85:
+		if nr > 99:
 			spawn_warrior_zombie()
 		else:
-			spawn_normal_zombie()
+			spawn_normal_zombie_v2()
 		get_node(\"/root/MainScene/InteractiveArea/Zombies\").call_deferred(\"add_child\",z)
 		z.global_position = global_position + pos
 		Global.ZOMBI_LIST.append(z)
@@ -30,6 +31,10 @@ func spawn():
 
 func spawn_normal_zombie():
 	z = normal_zombie.instance()
+	pass
+
+func spawn_normal_zombie_v2():
+	z = normal_zombie_v2.instance()
 	pass
 
 func spawn_warrior_zombie():

@@ -53,6 +53,15 @@ func create_critic_label():
 func _on_Vis_screen_exited():
 	queue_free()
 	pass # replace with function body
+
+
+func _on_Col_area_entered( area ):
+	if area.is_in_group(\"enemy\"):
+		area.get_damage(damage,get_parent().get_w_owner())
+		if critic:
+			create_critic_label()
+		queue_free()
+	pass # replace with function body
 "
 _sections_unfolded = [ "Resource" ]
 
@@ -86,6 +95,8 @@ shape = SubResource( 2 )
 position = Vector2( 0.0451856, -0.131954 )
 scale = Vector2( 0.404416, 0.469122 )
 rect = Rect2( -10, -10, 20, 20 )
+
+[connection signal="area_entered" from="Col" to="." method="_on_Col_area_entered"]
 
 [connection signal="body_entered" from="Col" to="." method="_on_Col_body_entered"]
 

@@ -40,6 +40,9 @@ var armory = null
 # Search Master
 var search_master = null
 
+# Wall
+var wallPosition = Vector2()
+
 func _ready():
 	pass
 

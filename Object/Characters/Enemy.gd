@@ -7,7 +7,7 @@ var direction = Vector2()
 var gold = 0
 var killer = null
 
-#Dop
+#Drop
 var coin = preload("res://Object/CoinCandy.tscn")
 var supply = preload("res://Object/Supply.tscn")
 var drop_prob = 0
