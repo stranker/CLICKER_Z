@@ -14,6 +14,7 @@ var direction = Vector2()
 var gold = 0
 var killer = null
 var desviacion = Vector2()
+var zombieNumber
 
 #Drop
 var coin = preload(\"res://Object/CoinCandy.tscn\")
@@ -96,7 +97,14 @@ func initialize():
 	set_gold(2)
 	set_initial_speed()
 	set_drop_prob(75)
-	desviacion = Vector2(rand_range(-200,200),rand_range(5,200))
+	desviacion.x = rand_range(-200,200)
+	zombieNumber = Global.ZOMBI_LIST.find(self)
+	if zombieNumber <= 100:
+		desviacion.y = rand_range(5,100)
+	elif zombieNumber > 100 and zombieNumber < 300:
+		desviacion.y = rand_range(100,200)
+	elif zombieNumber >= 300:
+		desviacion.y = rand_range(200,300)
 	pass
 
 func get_damage(dmg,kille):
@@ -115,6 +123,9 @@ func get_damage(dmg,kille):
 	pass
 
 func _process(delta):
+	if Global.ZOMBI_LIST.find(self) != zombieNumber:
+		zombieNumber = Global.ZOMBI_LIST.find(self)
+		desviacion.y = desviacion.y - rand_range(1,10)
 	if direction.x > 0:
 		$Sprite.flip_h = true
 	direction.x = Global.player_pos.x + desviacion.x - global_position.x
@@ -122,6 +133,8 @@ func _process(delta):
 	direction = direction.normalized()
 	if global_position.y > Global.wallPosition.y + desviacion.y:
 		translate(direction * delta * walkingSpeed)
+	if global_position.y > Global.wallPosition.y:
+		global_position = global_position
 	pass"
 _sections_unfolded = [ "Resource" ]
 
